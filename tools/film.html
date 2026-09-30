@@ -1,0 +1,28 @@
+<!doctype html><meta charset="utf-8"><title>film</title>
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style><body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
+<script>window.MARFA_LIGHT_GALLERY = true;</script>
+<script src="../marfa-light.js"></script>
+<script>
+// Driven by tools/film.js over the DevTools protocol. One shot at a time:
+// __load(hash, w, h) builds a token; __frame(utc, dt, orbit, snap) draws one frame.
+var ctl = null, canvas = null;
+window.__load = function (hash, w, h, film) {
+  if (ctl) ctl.dispose();
+  if (canvas) canvas.remove();
+  canvas = document.createElement('canvas');
+  canvas.style.cssText = 'width:' + w + 'px;height:' + h + 'px';
+  document.body.appendChild(canvas);
+  ctl = marfaLight.create(canvas, hash, { mode: 'still', interactive: false, overlay: false, keys: false, maxPixelRatio: 1 });
+  if (film) ctl.setFilm(film);
+  return JSON.stringify(ctl.features);
+};
+window.__frame = function (utc, dt, orbit, lift, snap) {
+  var W = ctl.world, c = W.cam, a = Math.atan2(c.pos.x, -c.pos.z) + orbit, d = c.dist * (1 - lift * 0.15);
+  var pos = new THREE.Vector3(Math.sin(a) * d, c.h + lift * 2.5, -Math.cos(a) * d);
+  ctl.setCamera(pos, new THREE.Vector3(0, c.lookY, 0));
+  ctl.setClock(utc, snap);
+  ctl.renderOnce(dt);
+  return 1;
+};
+</script>

@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Marfa Light: a long-form generative series by Michael Low. Every token is a working clock for Marfa, Texas.">
+<style>body{margin:0}img{max-width:100%}</style>
+<title>Marfa Light</title>
+<style>
+  :root {
+    --bg: #F0F4F8; --surface: #FFFFFF; --ink: #0D0D0D; --muted: #55636F; --line: #CFD7DF;
+    --accent: #2962FF; --on-accent: #FFFFFF; --orange: #FF6B00;
+    --display: Georgia, "Playfair Display", "EB Garamond", "Times New Roman", serif;
+    --body: Calibri, Carlito, "Helvetica Neue", Arial, sans-serif;
+    --mono: Consolas, Menlo, "SF Mono", "Courier New", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { color-scheme: dark; --bg: #0D0D0D; --surface: #16191D; --ink: #F0F4F8; --muted: #8899AA; --line: #2A3038; --accent: #7A9CFF; --on-accent: #0D0D0D; }
+    :root:not([data-theme="light"]) .logo-light { display: none; }
+    :root:not([data-theme="light"]) .logo-dark { display: block; }
+  }
+  :root[data-theme="dark"] { color-scheme: dark; --bg: #0D0D0D; --surface: #16191D; --ink: #F0F4F8; --muted: #8899AA; --line: #2A3038; --accent: #7A9CFF; --on-accent: #0D0D0D; }
+  :root[data-theme="dark"] .logo-light { display: none; }
+  :root[data-theme="dark"] .logo-dark { display: block; }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.5; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding-inline: 24px; padding-block: 28px 72px; display: flex; flex-direction: column; gap: 64px; }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .logo-light { display: block; } .logo-dark { display: none; }
+  .top img { height: 30px; width: auto; }
+  .mono { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .lede { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 24px 56px; align-items: end; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(44px, 8vw, 104px); line-height: 0.94; letter-spacing: -0.02em; margin: 10px 0 0; text-wrap: balance; }
+  .lede p { margin: 0; font-size: 20px; line-height: 1.45; max-width: 34em; }
+  .lede p + p { margin-top: 12px; color: var(--muted); font-size: 17px; }
+  .counts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 16px; }
+  .counts span { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .counts b { font-family: var(--display); font-size: 22px; letter-spacing: 0; margin-right: 6px; }
+
+  .stage { display: flex; flex-direction: column; gap: 14px; }
+  .screen { position: relative; background: #0D0D0D; }
+  #hero { display: block; width: 100%; aspect-ratio: 3 / 2; max-width: 100%; cursor: grab; touch-action: none; }
+  #hero:active { cursor: grabbing; }
+  .readout { position: absolute; left: 16px; bottom: 14px; right: 16px; display: flex; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #F0F4F8; text-shadow: 0 1px 3px rgba(0,0,0,0.7); pointer-events: none; z-index: 4; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+  .seg { display: inline-flex; border: 1px solid var(--ink); }
+  .seg button, .btn, select { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; border: 0; padding: 10px 12px; cursor: pointer; background: transparent; color: var(--ink); }
+  select { border: 1px solid var(--ink); background: var(--bg); max-width: 100%; }
+  .seg button + button { border-left: 1px solid var(--ink); }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .btn { background: var(--ink); color: var(--bg); }
+  .btn:hover { background: var(--accent); color: var(--on-accent); }
+  .seg button:focus-visible, .btn:focus-visible, .thumb:focus-visible, #scrub:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .scrub { display: flex; align-items: center; gap: 10px; flex: 1 1 240px; min-width: 0; }
+  #scrub { flex: 1; min-width: 0; accent-color: var(--accent); }
+  #scrubVal { font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; min-width: 5ch; }
+  .label { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px 24px; margin: 0; padding-top: 14px; border-top: 1px solid var(--ink); }
+  .label div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .label .wide { grid-column: 1 / -1; }
+  .label dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .label dd { margin: 0; font-family: var(--mono); font-size: 14px; overflow-wrap: anywhere; }
+  .hint { font-size: 14px; color: var(--muted); margin: 0; }
+  .keys { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; color: var(--muted); }
+  .keys kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--line); padding: 1px 6px; margin-right: 5px; color: var(--ink); }
+
+  section { display: flex; flex-direction: column; gap: 22px; }
+  .head { display: flex; justify-content: space-between; align-items: end; gap: 16px 32px; flex-wrap: wrap; }
+  h2 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.08; margin: 0; text-wrap: balance; }
+  .head p { margin: 0; color: var(--muted); max-width: 44em; }
+  .clocks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 16px; }
+  .clock { display: flex; flex-direction: column; gap: 6px; }
+  .thumb { appearance: none; border: 0; padding: 0; background: var(--line); cursor: pointer; display: block; aspect-ratio: 3 / 2; width: 100%; max-width: 100%; position: relative; }
+  .thumb canvas { display: block; width: 100%; height: 100%; }
+  .thumb[aria-pressed="true"] { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .clock h3 { font-family: var(--display); font-size: 19px; margin: 4px 0 0; line-height: 1.2; }
+  .clock p { margin: 0; font-size: 14px; color: var(--muted); }
+  .clock .mono { font-size: 10.5px; }
+  .wall { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+  .wall .thumb span { position: absolute; left: 6px; bottom: 5px; right: 6px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; text-shadow: 0 1px 2px #000; text-align: left; }
+  .films { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+  .films figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .films figcaption { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+  .facts div { padding: 22px 18px 20px 0; display: flex; flex-direction: column; gap: 6px; }
+  .facts div + div { padding-left: 18px; border-left: 1px solid var(--line); }
+  .facts b { font-family: var(--display); font-size: clamp(30px, 4vw, 46px); line-height: 1; font-variant-numeric: tabular-nums; }
+  .facts span { font-size: 15px; color: var(--muted); }
+  .save { gap: 10px 12px; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+  .btn.ghost:hover { background: var(--ink); color: var(--bg); }
+  .btn:disabled { opacity: 0.45; cursor: progress; }
+  .saved { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; }
+  .saved figure { margin: 0; flex: 0 0 auto; width: 220px; display: flex; flex-direction: column; gap: 6px; }
+  .saved img { width: 100%; height: auto; display: block; background: var(--line); }
+  .saved a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  .gen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 32px; margin: 0; }
+  .gen div { border-top: 1px solid var(--ink); padding-top: 10px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .gen dt { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .gen dd { margin: 0; color: var(--muted); font-size: 15px; }
+  @media (max-width: 900px) { .gen { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 480px) { .gen { grid-template-columns: minmax(0, 1fr); } }
+  .memories { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+  .memories figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .memories img { width: 100%; height: auto; display: block; }
+  .memories figcaption { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  @media (max-width: 1000px) { .memories { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 480px) { .memories { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .eggs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .eggs h3, .ledger h3 { font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 10px; padding-bottom: 10px; border-bottom: 1px solid var(--ink); }
+  .eggs dl { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .eggs dt { font-weight: 700; }
+  .eggs dd { margin: 0; color: var(--muted); font-size: 15px; }
+  .places { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 56px; margin: 0; }
+  .places div { padding: 12px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 14em minmax(0, 1fr); gap: 16px; }
+  .places dt { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+  .places dd { margin: 0; }
+  .ledger { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .ledger ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .ledger .later li { color: var(--muted); }
+  footer { border-top: 1px solid var(--ink); padding-top: 18px; display: flex; justify-content: space-between; gap: 12px 32px; flex-wrap: wrap; }
+  footer a { color: var(--ink); text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  @media (max-width: 1000px) { .clocks { grid-template-columns: repeat(3, minmax(0, 1fr)); } .wall { grid-template-columns: repeat(4, minmax(0, 1fr)); } .films { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 760px) {
+    .wrap { gap: 48px; padding-inline: 16px; }
+    .lede { grid-template-columns: minmax(0, 1fr); }
+    .clocks, .eggs, .ledger { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .wall { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .facts div:nth-child(3) { padding-left: 0; border-left: 0; }
+    .places { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 480px) { .clocks, .eggs, .ledger { grid-template-columns: minmax(0, 1fr); } .wall, .films { grid-template-columns: repeat(2, minmax(0, 1fr)); } .places div { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <img class="logo-light" src="img/logo_black.png" alt="MLOW">
+    <img class="logo-dark" src="img/logo_white.png" alt="MLOW">
+    <span class="mono">Prototype v0.4.1 · September 2026</span>
+  </div>
+
+  <div class="lede">
+    <div>
+      <span class="mono">Working title · a long-form generative series</span>
+      <h1>Marfa Light</h1>
+    </div>
+    <div>
+      <p>Every token is a working clock for Marfa, Texas. The hash chooses the clock, how it is made, where it stands, the weather, the film it is shot on, and what is hidden around it. The sun, the moon, and the stars are computed for Marfa and for the minute you are looking.</p>
+      <p>One JavaScript file on three.js r124, the version Art Blocks stores onchain. Textures are computed, relics are sculpted in Blender and packed into the file, and nothing loads from anywhere else.</p>
+      <div class="counts" id="counts"></div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="screen">
+      <canvas id="hero" role="img" aria-label="A clock in Marfa, drawn live"></canvas>
+      <div class="readout"><span id="ro1">Marfa</span><span id="ro2"></span></div>
+    </div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Time">
+        <button type="button" id="mLive" aria-pressed="true">Live</button>
+        <button type="button" id="mLapse" aria-pressed="false">Time-lapse</button>
+        <button type="button" id="mStill" aria-pressed="false">Residency</button>
+      </div>
+      <div class="scrub"><label class="mono" for="scrub">Hour</label><input id="scrub" type="range" min="0" max="23.98" step="0.02" value="12"><span id="scrubVal">12:00</span></div>
+      <label class="mono" for="pickClock" hidden>Clock</label><select id="pickClock" aria-label="Clock type"></select>
+      <select id="pickFilm" aria-label="Film stock"></select>
+      <button type="button" class="btn" id="view">View</button>
+      <button type="button" class="btn" id="rand">Random token</button>
+    </div>
+    <div class="controls save" role="group" aria-label="Save">
+      <span class="mono">Save</span>
+      <button type="button" class="btn ghost" id="sStill">Still (PNG)</button>
+      <button type="button" class="btn ghost" id="sGif">Three seconds (GIF)</button>
+      <button type="button" class="btn ghost" id="sDay">The whole day (GIF)</button>
+      <span class="mono" id="sMsg" aria-live="polite"></span>
+    </div>
+    <div class="saved" id="saved" hidden></div>
+    <dl class="label" id="label"></dl>
+    <div class="keys">
+      <span><kbd>Drag</kbd>walk around</span><span><kbd>Click</kbd>read what you clicked</span><span><kbd>Ctrl + scroll</kbd>move closer</span>
+      <span><kbd>[ ]</kbd>an hour</span><span><kbd>, .</kbd>a day</span><span><kbd>Space</kbd>hold time</span><span><kbd>C</kbd>view</span><span><kbd>F</kbd>film</span><span><kbd>P</kbd>still</span><span><kbd>G</kbd>GIF</span><span><kbd>?</kbd>all keys</span>
+    </div>
+  </div>
+
+  <section>
+    <div class="head"><div><h2>Every kind of clock</h2><p>One token of each kind, at a minute of April 17, 2027, inside the residency. Select one to bring it up live.</p></div></div>
+    <div class="clocks" id="clocks"></div>
+  </section>
+
+  <section>
+    <div class="head">
+      <div><h2>Twenty-four draws</h2><p>Random hashes, straight from the generator. No two share their full set of traits.</p></div>
+      <button type="button" class="btn" id="more">Draw twenty-four more</button>
+    </div>
+    <div class="wall" id="wall"></div>
+  </section>
+
+  <section>
+    <div class="head"><div><h2>Seven films</h2><p>Every token is shot on one film stock. Here is one token on all seven. Press F on any token to try the others.</p></div></div>
+    <div class="films" id="films"></div>
+  </section>
+
+  <section>
+    <div class="facts">
+      <div><b>5,000+</b><span>NYC taxis carrying MLow's work</span></div>
+      <div><b>10+</b><span>countries where the work has shown</span></div>
+      <div><b>7,541</b><span>painted characters in NEW YORKERS</span></div>
+      <div><b>2018</b><span>full time in generative work since</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><div><h2>The generative layer</h2><p>Every token carries all nine of these, drawn from their own part of the hash, whatever the clock and the place. The sky events only appear when the real sky allows them: a rainbow needs a monsoon and a low sun behind you, sun dogs sit 22° from the sun, meteors wait for full dark.</p></div></div>
+    <dl class="gen" id="gen"></dl>
+  </section>
+
+  <section>
+    <div class="head"><div><h2>Look closer</h2><p>Every token hides between two and seven of these. Click one in the scene to read about it.</p></div></div>
+    <div class="eggs" id="eggs"></div>
+  </section>
+
+  <section>
+    <div class="head"><h2>Where they stand</h2></div>
+    <dl class="places" id="places"></dl>
+    <p class="hint">Behind every place, the real skyline: the Davis Mountains to the north, the Chinati Mountains to the southwest, the Sierra Vieja to the west.</p>
+  </section>
+
+  <section>
+    <div class="head"><div><h2>Where the light model started</h2><p>Memories, my open source onchain renderer system: 612 deterministic drawing programs in 87 families. The first five are drawn for Marfa's coordinates on April 17, 2027. The last seven are SIGNAL, screen-native abstracts from the same catalog. The sun model and the Blossom grid in Marfa Light both came from here.</p></div></div>
+    <div class="memories"><figure><img src="img/terminator_globe.jpg" alt="In Daylight, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>In Daylight</figcaption></figure><figure><img src="img/azimuthal_range.jpg" alt="Azimuthal Range, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Azimuthal Range</figcaption></figure><figure><img src="img/compass_rose.jpg" alt="Compass Rose, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Compass Rose</figcaption></figure><figure><img src="img/contour_stack.jpg" alt="Contour Stack, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Contour Stack</figcaption></figure><figure><img src="img/antipode.jpg" alt="Antipode, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Antipode</figcaption></figure><figure><img src="img/si_interference.jpg" alt="Interference, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Interference</figcaption></figure><figure><img src="img/si_moire.jpg" alt="Moire, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Moire</figcaption></figure><figure><img src="img/si_standing_wave.jpg" alt="Standing Wave, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Standing Wave</figcaption></figure><figure><img src="img/si_aperture.jpg" alt="Aperture, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Aperture</figcaption></figure><figure><img src="img/si_displace.jpg" alt="Displace, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Displace</figcaption></figure><figure><img src="img/si_quantise.jpg" alt="Quantise, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Quantise</figcaption></figure><figure><img src="img/si_horizon.jpg" alt="Horizon, a Memories renderer" loading="lazy" width="800" height="800"><figcaption>Horizon</figcaption></figure></div>
+  </section>
+  <section>
+    <div class="head"><h2>What is computed, and what is not yet</h2><p>Four weeks in Marfa move items from the second and third columns into the first.</p></div>
+    <div class="ledger">
+      <div><h3>Computed</h3><ul>
+        <li>Sun position, rise and set, for any minute</li><li>Moon position, phase, rise and set</li>
+        <li>Stars turned by sidereal time, the galaxy included</li><li>Sundial hour lines for latitude 30.3° and Marfa's longitude</li><li>The equation of time, as a noon mark some dials carry: a figure eight traced by the sun</li>
+        <li>Central Time and daylight saving</li><li>Real shadows, by sun or by moon</li><li>The season, for the flowers</li></ul></div>
+      <div><h3>Set by eye</h3><ul><li>Sky colours at each elevation</li><li>Ground and mountain colours</li><li>Exposure as the light drops</li><li>The seven film stocks</li></ul></div>
+      <div class="later"><h3>Not yet</h3><ul><li>Shadow edges checked against a real gnomon</li><li>Volumetric cloud and haze</li><li>Light bounced between objects, outside Blender</li><li>Measured sky colour from the casita</li></ul></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Michael Low (MLow), New York</span>
+    <span><a href="https://mlow.xyz">mlow.xyz</a> · <a href="https://n3wyorkers.com">n3wyorkers.com</a> · <a href="https://mlow.nyc">mlow.nyc</a> · <a href="https://thesoftconspiracy.com">thesoftconspiracy.com</a> · <a href="https://x.com/degens">@degens</a></span>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
+<script>window.MARFA_LIGHT_GALLERY = true;</script>
+<script src="marfa-light.js"></script>
+<script>
+(function () {
+  var L = window.marfaLight, $ = function (id) { return document.getElementById(id); };
+  var hero = $('hero'), ctl = null, mode = 'live', hash = null;
+  var PLACE_LINES = {
+    'Chinati Field': 'Grassland, and a line of concrete boxes toward the horizon.',
+    'Highway 90': 'Two lanes, telephone poles, barbed wire, and Prada Marfa across the road.',
+    'Marfa Lights Viewing Area': 'A roofed platform east of town, facing the dark.',
+    'Salt Playa': 'Cracked white ground and almost nothing else.',
+    'Mesa Rim': 'Red dirt, ocotillo, prickly pear, and stepped mesas in the distance.',
+    'Adobe Courtyard': 'Plaster walls with vigas, a blue door, a cottonwood, and string lights.',
+    'Artillery Shed': 'Inside a long brick shed of windows, with rows of aluminum boxes, after Judd at Chinati.',
+    'Highland Avenue': 'Downtown Marfa, storefronts to either side, the courthouse dome at the end of the street.',
+    'Observatory Ridge': 'A mountaintop in the Davis Mountains with telescope domes that open at night.',
+    'Hadid Pavilion': 'A flowing white canopy over a terrazzo floor and a long reflecting pool.',
+    'Prairie Terrace': 'Wright’s horizontals: sandstone terraces under a cantilevered Cherokee red roof.',
+    'Railroad Depot': 'A Spanish revival depot, the main line, freight cars on the siding, and a crossing whose lights take turns after dark.',
+    'Arroyo': 'A dry creek bed of sand and cobbles under cottonwoods, with a low water crossing and its depth gauges.',
+    'Rodeo Arena': 'Raked dirt inside a pipe fence, bucking chutes, bleachers, and lights that come up at dusk.',
+    'Ghost Town': 'After Shafter, the silver town south of Marfa: roofless stone ruins, a headframe on the hill, and a church still lit at night.',
+    'Aerostat Field': 'A fenced gravel yard, a mooring mast, and a tether climbing out of frame.',
+    'Drive-In Lot': 'Speaker posts in rows before a white screen. After dark the screen shows Marfa time.',
+    'Empty Pool': 'A drained public pool in pale blue tile. Small clocks stand in the deep end.',
+    'Hot Springs': 'Stone tubs steaming in the wind, adobe cabins, palms and cane along the river.'
+  };
+  // the generative layer, read from the generator: each trait and how often each value comes up
+  (function () {
+    var tally = {}, N = 1500, g = $('gen');
+    for (var i = 0; i < N; i++) { var G = L.plan(hashFrom(Math.imul(i + 7, 2654435761))).gen.features; for (var k in G) { tally[k] = tally[k] || {}; tally[k][G[k]] = (tally[k][G[k]] || 0) + 1; } }
+    Object.keys(tally).forEach(function (k) {
+      var d = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
+      dt.textContent = k;
+      dd.textContent = Object.keys(tally[k]).sort(function (a, b) { return tally[k][b] - tally[k][a]; }).map(function (v) { var pc = tally[k][v] * 100 / N; return v + ' ' + (pc < 1 ? '<1' : Math.round(pc)) + '%'; }).join(' · ');
+      d.appendChild(dt); d.appendChild(dd); g.appendChild(d);
+    });
+  })();
+  var EGG_GROUPS = {
+    'Marfa': ['Prada Marfa', 'Judd Boxes', 'Marfa Lights', 'Marfa Blimp', 'Mile Marker 317', 'Reata Facade', 'Freight Train', 'Pronghorn', 'Roadrunner', 'Vintage Trailer'],
+    'Art Blocks and the Canon': ['Chromie Squiggle', 'Ringers Board', 'Fidenza Mural', 'Archetype Stack', 'Meridian Painting', 'Friendship Bracelets', 'Calcified Taxi', 'Eroded Eye']
+  };
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function fmtHour(h) { var hh = Math.floor(h), mm = Math.floor((h - hh) * 60); return pad(hh) + ':' + pad(mm); }
+  function hashFrom(x) { var h = '0x'; x = x >>> 0; for (var j = 0; j < 64; j++) { x = (Math.imul(x, 1664525) + 1013904223) >>> 0; h += ((x >>> 16) & 15).toString(16); } return h; }
+  function randomHash() { var a = new Uint8Array(32); crypto.getRandomValues(a); return '0x' + Array.prototype.map.call(a, function (b) { return (b < 16 ? '0' : '') + b.toString(16); }).join(''); }
+  function findClock(name, start) { for (var s = start || 1; s < start + 60000; s++) { var h = hashFrom(Math.imul(s, 2654435761)); if (L.plan(h).clock === name) return h; } return null; }
+
+  // counts
+  var nClocks = Object.keys(L.clocks).length, nPlaces = Object.keys(L.places).length, nEggs = Object.keys(L.eggs).length, nFilms = Object.keys(L.films).length;
+  $('counts').innerHTML = '<span><b>' + nClocks + '</b>clocks</span><span><b>' + nPlaces + '</b>places</span><span><b>' + nEggs + '</b>easter eggs</span><span><b>' + nFilms + '</b>films</span><span><b>5</b>skies</span><span><b>' + Object.keys(L.plan(hashFrom(317)).features).length + '</b>traits a token</span>';
+
+  // pickers
+  Object.keys(L.clocks).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = k; $('pickClock').appendChild(o); });
+  Object.keys(L.films).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = 'Film: ' + k; $('pickFilm').appendChild(o); });
+
+  function setPressed(m) { [['mLive', 'live'], ['mLapse', 'lapse'], ['mStill', 'still']].forEach(function (q) { $(q[0]).setAttribute('aria-pressed', m === q[1] ? 'true' : 'false'); }); }
+  function label() {
+    var F = ctl.features, el = $('label'); el.textContent = '';
+    Object.keys(F).forEach(function (k) {
+      if (k === 'Easter Eggs') return;
+      var d = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
+      dt.textContent = k; dd.textContent = F[k]; d.appendChild(dt); d.appendChild(dd); el.appendChild(d);
+    });
+    [['Easter eggs', F['Easter Eggs']], ['Token hash', hash]].forEach(function (q) {
+      var d = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
+      d.className = 'wide'; dt.textContent = q[0]; dd.textContent = q[1]; d.appendChild(dt); d.appendChild(dd); el.appendChild(d);
+    });
+    $('pickClock').value = F.Clock; $('pickFilm').value = F.Film;
+    hero.setAttribute('aria-label', F.Clock + ' in ' + F.Material + ', ' + F.Place + ', drawn live');
+    Array.prototype.forEach.call(document.querySelectorAll('.thumb'), function (b) { b.setAttribute('aria-pressed', b.dataset.hash === hash ? 'true' : 'false'); });
+  }
+  function scrubUtc() { var t = L.marfaTime(Date.now() / 1000), v = +$('scrub').value, hh = Math.floor(v); return L.marfaUtc(t.y, t.mo, t.d, hh, Math.floor((v - hh) * 60)); }
+  function load(h) {
+    hash = h;
+    if (ctl) ctl.dispose();
+    var fresh = document.createElement('canvas'); fresh.id = 'hero'; fresh.setAttribute('role', 'img');
+    hero.parentNode.replaceChild(fresh, hero); hero = fresh;
+    ctl = L.create(hero, h, { mode: mode === 'scrub' ? 'still' : mode, overlayHost: hero.parentNode, onSave: function (r, kind) { showSaved(r, kind); deliver(r.blob, kind).then(function (msg) { $('sMsg').textContent = msg; }); } });
+    if (mode === 'scrub') ctl.setTime(scrubUtc());
+    ctl.start(); label();
+  }
+  // saving: the engine renders the file; the tray keeps a copy to open or save
+  var busy = false, dlCap = null;
+  // saves are ordinary browser downloads
+  function fileName(kind) { return 'marfa-light-' + hash.slice(2, 10) + (kind === 'day' ? '-day.gif' : kind === 'gif' ? '.gif' : '.png'); }
+  function deliver(blob, kind) {
+    if (dlCap) return dlCap.save({ filename: fileName(kind), data: blob }).then(function () { return 'Saved'; }, function (e) { return e && e.code === 'declined' ? 'Not saved' : 'Open it from the tray'; });
+    var url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = fileName(kind); document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    return Promise.resolve('Saved');
+  }
+  function showSaved(r, kind) {
+    var url = URL.createObjectURL(r.blob), box = $('saved'), fig = document.createElement('figure');
+    var img = document.createElement('img'); img.src = url; img.alt = 'Saved ' + kind + ' of ' + (ctl.features.Clock || 'the clock');
+    var a = document.createElement('a'); a.href = url; a.download = fileName(kind);
+    a.textContent = (kind === 'png' ? 'Still' : kind === 'gif' ? 'GIF' : 'Day GIF') + ' · ' + Math.round(r.blob.size / 1024) + ' KB · save';
+    var cap = document.createElement('figcaption'); cap.appendChild(a);
+    fig.appendChild(img); fig.appendChild(cap); box.insertBefore(fig, box.firstChild); box.hidden = false;
+    while (box.children.length > 6) box.removeChild(box.lastChild);
+  }
+  function doSave(kind) {
+    if (busy || !ctl) return; busy = true;
+    ['sStill', 'sGif', 'sDay'].forEach(function (id) { $(id).disabled = true; });
+    $('sMsg').textContent = kind === 'png' ? 'Rendering' : 'Recording 0%';
+    var p = kind === 'png' ? ctl.saveStill({ download: false }) : ctl.recordGif({ day: kind === 'day', download: false, onProgress: function (f) { $('sMsg').textContent = 'Recording ' + Math.round(f * 100) + '%'; } });
+    p.then(function (r) { showSaved(r, kind); return deliver(r.blob, kind); }).then(function (msg) { $('sMsg').textContent = msg; })
+      .catch(function () { $('sMsg').textContent = 'Could not save here'; })
+      .then(function () { busy = false; ['sStill', 'sGif', 'sDay'].forEach(function (id) { $(id).disabled = false; }); });
+  }
+  $('sStill').onclick = function () { doSave('png'); };
+  $('sGif').onclick = function () { doSave('gif'); };
+  $('sDay').onclick = function () { doSave('day'); };
+  $('mLive').onclick = function () { mode = 'live'; setPressed(mode); ctl.setMode('live'); };
+  $('mLapse').onclick = function () { mode = 'lapse'; setPressed(mode); ctl.setMode('lapse'); };
+  $('mStill').onclick = function () { mode = 'still'; setPressed(mode); ctl.setMode('still'); };
+  $('scrub').oninput = function () { mode = 'scrub'; setPressed(''); $('scrubVal').textContent = fmtHour(+this.value); ctl.setClock(scrubUtc(), false); };
+  $('pickClock').onchange = function () { load(findClock(this.value, 1 + Math.floor(Math.random() * 5000))); };
+  $('pickFilm').onchange = function () { ctl.setFilm(this.value); };
+  $('view').onclick = function () { ctl.cycleView(); };
+  $('rand').onclick = function () { load(randomHash()); };
+  window.addEventListener('resize', function () { if (ctl) ctl.resize(); });
+  setInterval(function () {
+    if (!ctl) return;
+    var t = ctl.getTime(), s = L.sunPos(t.utc), m = L.moonPos(t.utc);
+    $('ro1').textContent = 'Marfa · ' + pad(t.h) + ':' + pad(t.m) + ':' + pad(t.s) + ' ' + t.zone + ' · ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][t.mo - 1] + ' ' + t.d + ' ' + t.y;
+    $('ro2').textContent = 'Sun ' + Math.round(s.el) + '° · Moon ' + Math.round(m.illum * 100) + '%';
+    if (mode !== 'scrub') { $('scrub').value = t.hours.toFixed(2); $('scrubVal').textContent = fmtHour(t.hours); }
+  }, 250);
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { if (!ctl) return; if (e.isIntersecting) ctl.start(); else ctl.stop(); }); }).observe(document.querySelector('.screen'));
+
+  // queue of snapshots, drawn one at a time so the page stays responsive
+  var queue = [];
+  function snap(h, hour, w, hgt, into, film) { queue.push([h, hour, w, hgt, into, film]); }
+  (function pump() {
+    var job = queue.shift();
+    if (job) {
+      try {
+        var hh = Math.floor(job[1]), mm = Math.round((job[1] - hh) * 60);
+        var s = L.snapshot(job[0], L.marfaUtc(2027, 4, 17, hh, mm), job[2], job[3], { film: job[5] });
+        job[4].insertBefore(s.canvas, job[4].firstChild);
+      } catch (e) { }
+    }
+    setTimeout(pump, job ? 20 : 200);
+  })();
+  function thumbButton(h, text) {
+    var b = document.createElement('button'); b.className = 'thumb'; b.type = 'button'; b.dataset.hash = h;
+    b.setAttribute('aria-label', text); b.onclick = function () { load(h); document.querySelector('.stage').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    return b;
+  }
+  // every clock
+  var HOURS = [19.6, 10.4, 21.7, 17.2, 8.2, 20.2, 13.1, 18.7, 22.4, 9.3, 19.9, 16.4, 7.8, 21.1, 12.2, 18.1, 20.6, 11.3];
+  Object.keys(L.clocks).forEach(function (name, i) {
+    var h = findClock(name, 1 + i * 997), P = L.plan(h), card = document.createElement('div'), b = thumbButton(h, 'Show the ' + name + ' live');
+    card.className = 'clock';
+    var h3 = document.createElement('h3'); h3.textContent = name;
+    var meta = document.createElement('span'); meta.className = 'mono'; meta.textContent = fmtHour(HOURS[i % HOURS.length]) + ' · ' + P.place + ' · ' + P.material;
+    var p = document.createElement('p'); p.textContent = L.clocks[name].line || '';
+    card.appendChild(b); card.appendChild(h3); card.appendChild(meta); card.appendChild(p); $('clocks').appendChild(card);
+    snap(h, HOURS[i % HOURS.length], 480, 320, b);
+    if (i === 0) hash = h;
+  });
+  // twenty-four draws
+  function drawWall() {
+    $('wall').textContent = '';
+    for (var i = 0; i < 24; i++) {
+      var h = randomHash(), P = L.plan(h), b = thumbButton(h, P.clock + ', ' + P.place);
+      var sp = document.createElement('span'); sp.textContent = P.clock + ' · ' + P.film; b.appendChild(sp);
+      $('wall').appendChild(b);
+      snap(h, 7.5 + ((i * 7) % 15), 360, 240, b);
+    }
+  }
+  $('more').onclick = drawWall;
+  drawWall();
+  // seven films
+  var filmHash = findClock('Split-Flap Board', 4242) || hash;
+  Object.keys(L.films).forEach(function (f) {
+    var fig = document.createElement('figure'), holder = document.createElement('div'), cap = document.createElement('figcaption');
+    holder.className = 'thumb'; holder.style.cursor = 'default'; cap.textContent = f;
+    fig.appendChild(holder); fig.appendChild(cap); $('films').appendChild(fig);
+    snap(filmHash, 19.4, 360, 240, holder, f);
+  });
+  // eggs by group
+  var groups = { 'Marfa': [], 'Art Blocks and the Canon': [], 'MLow': [] };
+  Object.keys(L.eggs).forEach(function (e) {
+    if (!L.eggs[e].w) return;
+    var g = EGG_GROUPS['Marfa'].indexOf(e) >= 0 ? 'Marfa' : EGG_GROUPS['Art Blocks and the Canon'].indexOf(e) >= 0 ? 'Art Blocks and the Canon' : 'MLow';
+    groups[g].push(e);
+  });
+  Object.keys(groups).forEach(function (g) {
+    var col = document.createElement('div'), h3 = document.createElement('h3'), dl = document.createElement('dl');
+    h3.textContent = g; col.appendChild(h3);
+    groups[g].forEach(function (e) {
+      var d = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
+      dt.textContent = e; dd.textContent = L.eggs[e].line || ''; d.appendChild(dt); d.appendChild(dd); dl.appendChild(d);
+    });
+    col.appendChild(dl); $('eggs').appendChild(col);
+  });
+  // places
+  Object.keys(L.places).forEach(function (p) {
+    var d = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
+    dt.textContent = p; dd.textContent = L.places[p].line || PLACE_LINES[p] || ''; d.appendChild(dt); d.appendChild(dd); $('places').appendChild(d);
+  });
+  load(hash);
+})();
+</script>
+</body>
+</html>

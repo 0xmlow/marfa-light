@@ -1,0 +1,33 @@
+{
+  "name": "marfa-light",
+  "version": "0.4.0",
+  "description": "A long-form generative series by MLow. Every token is a working clock for Marfa, Texas, in 3D on three.js r124.",
+  "private": true,
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Michael Low (MLow) <https://mlow.xyz>",
+  "scripts": {
+    "build": "node tools/build.js",
+    "traits": "node tools/features.js 2000",
+    "render": "node tools/render.js",
+    "film": "node tools/film.js",
+    "relics": "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python tools/blender/relics.py -- tools/blender/out && python3 tools/blender/pack_relics.py",
+    "serve": "python3 -m http.server 8317",
+    "page": "node tools/page.js",
+    "standalone": "node tools/standalone.js",
+    "handoff": "node tools/handoff.js",
+    "docs": "node tools/docs.js && node tools/features.js 3000",
+    "hype": "node tools/hype.js",
+    "hype:vertical": "node tools/hype.js --w 1080 --h 1920 --out renders/hype-vertical",
+    "reel": "node reel/render.js",
+    "proposal:assets": "sh tools/proposal-assets.sh",
+    "proposal:serve": "python3 -m http.server 8318 --directory proposal-site",
+    "package": "node tools/package.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "terser": "^5.51.2",
+    "three": "0.124.0"
+  }
+}

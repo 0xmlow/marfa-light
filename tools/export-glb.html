@@ -1,0 +1,94 @@
+<!doctype html><meta charset="utf-8"><title>Marfa Light GLB export</title>
+<style>body{font:14px/1.5 Menlo,monospace;background:#0d0d0d;color:#f0f4f8;padding:24px}input,select,button{font:inherit;padding:6px 10px}</style>
+<h1 style="font-family:Georgia,serif">Export a token as GLB</h1>
+<p>Builds the token's world at a chosen Marfa minute (April 17, 2027) and saves it as binary glTF for Blender, Cinema 4D, a viewer or AR. The sky, stars and moon are shaders and are left out; the sun comes along as a directional light and the hero view as a camera. Instanced plants, rocks and flowers are merged into ordinary meshes. <b>Clock only</b> keeps just the clock, standing at the origin.</p>
+<p><label>Hash <input id="hash" size="70" value="0x7cbcf81d83681e9cfc7c4443d9b7ba2c452a9141bbfba012dcb48223bd21765c"></label></p>
+<p><label>Marfa hour <input id="hour" size="5" value="19.5"></label>
+<select id="mode"><option value="scene">Whole scene</option><option value="clock">Clock only</option></select>
+<button id="go">Export GLB</button></p>
+<pre id="log"></pre>
+<script src="../node_modules/three/build/three.min.js"></script>
+<script src="../node_modules/three/examples/js/exporters/GLTFExporter.js"></script>
+<script src="../node_modules/three/examples/js/utils/BufferGeometryUtils.js"></script>
+<script>window.MARFA_LIGHT_GALLERY = true;</script><script src="../marfa-light.js"></script>
+<script>
+function log(s) { document.getElementById('log').textContent += s + '\n'; }
+var Q = new URLSearchParams(location.search);
+if (Q.get('hash')) document.getElementById('hash').value = Q.get('hash');
+if (Q.get('hour')) document.getElementById('hour').value = Q.get('hour');
+if (Q.get('mode')) document.getElementById('mode').value = Q.get('mode');
+
+function shown(o) { for (var p = o; p; p = p.parent) if (!p.visible) return false; return true; }
+// an instanced mesh becomes one merged mesh, instance colours baked into vertex colours
+function mergeInstanced(o, cap) {
+  var n = Math.min(o.count, cap), parts = [], m = new THREE.Matrix4(), w = new THREE.Matrix4(), col = new THREE.Color();
+  for (var i = 0; i < n; i++) {
+    o.getMatrixAt(i, m); w.multiplyMatrices(o.matrixWorld, m);
+    var g = o.geometry.clone(); g.applyMatrix4(w);
+    if (o.instanceColor) {
+      col.fromArray(o.instanceColor.array, i * 3);
+      var c = new Float32Array(g.attributes.position.count * 3);
+      for (var k = 0; k < c.length; k += 3) { c[k] = col.r; c[k + 1] = col.g; c[k + 2] = col.b; }
+      g.setAttribute('color', new THREE.BufferAttribute(c, 3));
+    }
+    parts.push(g);
+  }
+  var merged = parts.length ? THREE.BufferGeometryUtils.mergeBufferGeometries(parts, false) : null;
+  if (!merged) return null;
+  var mat = [].concat(o.material)[0].clone(); if (o.instanceColor) mat.vertexColors = true;
+  var mesh = new THREE.Mesh(merged, mat); mesh.name = o.name || 'instanced'; return mesh;
+}
+function collect(roots, out, origin) {
+  roots.forEach(function (r) {
+    r.traverse(function (o) {
+      if (!shown(o)) return;
+      if (o.material && [].concat(o.material).some(function (m) { return m.isShaderMaterial; })) return;
+      if (o.isInstancedMesh) { var mm = mergeInstanced(o, 6000); if (mm) { if (origin) mm.geometry.applyMatrix4(origin); out.add(mm); } return; }
+      if (o.isMesh || o.isLine) {
+        var copy = o.clone(false); copy.matrixAutoUpdate = false;
+        copy.matrix.copy(o.matrixWorld); if (origin) copy.matrix.premultiply(origin);
+        out.add(copy);
+      }
+    });
+  });
+}
+window.__exportInfo = null;
+function run() {
+  var hash = document.getElementById('hash').value.trim(), h = +document.getElementById('hour').value, mode = document.getElementById('mode').value;
+  var c = document.createElement('canvas'); c.width = 64; c.height = 64;
+  var utc = marfaLight.marfaUtc(2027, 4, 17, Math.floor(h), Math.round((h % 1) * 60));
+  var ctl = marfaLight.create(c, hash, { mode: 'still', utc: utc, interactive: false, overlay: false, keys: false });
+  ctl.renderOnce(0);
+  var W = ctl.world, out = new THREE.Scene(), sun = marfaLight.sunPos(utc), cam = W.camera;
+  out.name = 'Marfa Light ' + hash.slice(0, 10) + (mode === 'clock' ? ' clock' : '');
+  W.root.updateMatrixWorld(true);
+  if (mode === 'clock') {
+    // the clock is its group plus anything its builder added straight to the world
+    collect((W.heroParts || []).concat([W.hero.group]), out, null);
+  } else {
+    collect([W.root], out, null);
+    var d = new THREE.Vector3(Math.cos(sun.el * Math.PI / 180) * Math.sin(sun.az * Math.PI / 180), Math.sin(sun.el * Math.PI / 180), -Math.cos(sun.el * Math.PI / 180) * Math.cos(sun.az * Math.PI / 180));
+    var light = new THREE.DirectionalLight(0xfff1dc, sun.el > 0 ? 3 : 0.2); light.name = 'Sun';
+    light.position.copy(d).multiplyScalar(100); light.target.position.set(0, 0, 0); out.add(light); out.add(light.target);
+    var hc = new THREE.PerspectiveCamera(cam.fov, 1.5, 0.3, 9500); hc.name = 'Hero Camera';
+    hc.position.copy(cam.position); hc.quaternion.copy(cam.quaternion); out.add(hc);
+  }
+  var info = { hash: hash, mode: mode, features: ctl.features, time: ctl.getTime(), sun: sun, moon: marfaLight.moonPos(utc),
+    camera: { pos: cam.position.toArray(), target: [0, W.cam.lookY, 0], quaternion: cam.quaternion.toArray(), fov: cam.fov }, units: 'metres, +y up, -z north' };
+  out.userData = { hash: hash, features: ctl.features, marfaTime: info.time.h + ':' + (info.time.m < 10 ? '0' : '') + info.time.m + ' ' + info.time.zone + ' 17 Apr 2027' };
+  window.__exportInfo = info;
+  new THREE.GLTFExporter().parse(out, function (glb) {
+    ctl.dispose();
+    if (Q.get('auto')) {
+      var u8 = new Uint8Array(glb), bin = '', CH = 0x8000;
+      for (var i = 0; i < u8.length; i += CH) bin += String.fromCharCode.apply(null, u8.subarray(i, i + CH));
+      window.__glb = btoa(bin); return;
+    }
+    var blob = new Blob([glb], { type: 'model/gltf-binary' }), a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'marfa-light-' + hash.slice(2, 10) + (mode === 'clock' ? '-clock' : '') + '.glb'; a.click();
+    log('saved ' + a.download + ' (' + Math.round(blob.size / 1024) + ' KB)');
+  }, { binary: true, maxTextureSize: 1024, onlyVisible: true });
+}
+document.getElementById('go').onclick = run;
+if (Q.get('auto')) setTimeout(run, 50);
+</script>

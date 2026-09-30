@@ -1,0 +1,82 @@
+<!doctype html><meta charset="utf-8"><title>hype</title>
+<style>
+  html,body{margin:0;background:#000;overflow:hidden;width:100vw;height:100vh}
+  canvas{display:block;position:absolute;inset:0}
+  .ov{position:absolute;pointer-events:none;color:#F0F4F8;text-shadow:0 2px 12px rgba(0,0,0,.55)}
+  #lab{left:5.2vw;bottom:7.5vh}
+  #lab .name{font:700 5.2vh/1 Georgia,"Times New Roman",serif;letter-spacing:-.01em}
+  #lab .sub{margin-top:1.4vh;font:400 1.75vh/1.4 Menlo,Consolas,monospace;letter-spacing:.18em;text-transform:uppercase;color:#DDE6F0}
+  #lab .bar{width:6vh;height:.45vh;background:#FF6B00;margin-bottom:1.8vh}
+  #time{right:5.2vw;top:6vh;font:400 1.75vh Menlo,Consolas,monospace;letter-spacing:.18em;text-align:right}
+  #time b{display:block;font:700 3.2vh Menlo,Consolas,monospace;letter-spacing:.06em;margin-top:.6vh}
+  #card{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#0D0D0D}
+  #card .big{font:700 9vh/1 Georgia,"Times New Roman",serif;letter-spacing:-.01em}
+  #card .small{margin-top:3vh;font:400 2vh/1.5 Menlo,Consolas,monospace;letter-spacing:.22em;text-transform:uppercase;color:#9BB3FF}
+  #card img{height:5vh;margin-bottom:4vh}
+  #title{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  #title .big{font:700 15vh/0.95 Georgia,"Times New Roman",serif;letter-spacing:-.02em}
+  #title .small{margin-top:3.5vh;font:400 2.1vh/1.5 Menlo,Consolas,monospace;letter-spacing:.24em;text-transform:uppercase}
+  #flash{inset:0;background:#fff}
+</style>
+<body>
+<div id="lab" class="ov"></div><div id="time" class="ov"></div><div id="title" class="ov"></div><div id="card" class="ov"></div><div id="flash" class="ov"></div>
+<script src="../node_modules/three/build/three.min.js"></script>
+<script>window.MARFA_LIGHT_GALLERY = true;</script>
+<script src="../marfa-light.js"></script>
+<script>
+// Driven by tools/hype.js over the DevTools protocol. __shot() sets a shot up,
+// __frame() draws one frame with its overlays.
+var ctl = null, canvas = null, S = null, $ = function (id) { return document.getElementById(id); };
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function ease(t) { return t < 0 ? 0 : t > 1 ? 1 : t * t * (3 - 2 * t); }
+window.__shot = function (s) {
+  S = s;
+  if (ctl) { ctl.dispose(); ctl = null; }
+  if (canvas) { canvas.remove(); canvas = null; }
+  $('lab').innerHTML = ''; $('time').innerHTML = ''; $('title').innerHTML = ''; $('card').innerHTML = '';
+  $('card').style.opacity = 0; $('title').style.opacity = 0; $('flash').style.opacity = 0;
+  if (s.card) {
+    $('card').innerHTML = (s.logo ? '<img src="../site/img/logo_white.png">' : '') + '<div class="big">' + s.card + '</div>' + (s.cardSub ? '<div class="small">' + s.cardSub + '</div>' : '');
+    $('card').style.opacity = 1;
+    return '{}';
+  }
+  canvas = document.createElement('canvas');
+  canvas.style.cssText = 'width:100vw;height:100vh';
+  document.body.insertBefore(canvas, document.body.firstChild);
+  ctl = marfaLight.create(canvas, s.hash, { mode: 'still', interactive: false, overlay: false, keys: false, maxPixelRatio: 1 });
+  if (s.film) ctl.setFilm(s.film);
+  var F = ctl.features;
+  if (s.label !== false) $('lab').innerHTML = '<div class="bar"></div><div class="name">' + (s.name || F.Clock) + '</div><div class="sub">' + (s.sub || ('Keeps time by ' + F['Keeps Time By'] + '  ·  ' + F.Place)) + '</div>';
+  if (s.title) $('title').innerHTML = '<div class="big">' + s.title + '</div><div class="small">' + (s.titleSub || '') + '</div>';
+  return JSON.stringify(F);
+};
+// t: 0..1 through the shot; utc: the Marfa minute; k: frame index
+window.__frame = function (t, utc, dt, k) {
+  var s = S;
+  if (s.card) {
+    $('card').style.opacity = s.fade ? Math.min(1, t * 4) : 1;
+    return 1;
+  }
+  var W = ctl.world, c = W.cam, base = Math.atan2(c.pos.x, -c.pos.z);
+  // a tall frame is narrow: widen the lens (never step back, walls are behind)
+  var asp = innerWidth / innerHeight;
+  if (asp < 1) {
+    if (!S.fov0) S.fov0 = W.camera.fov;
+    var f = Math.min(78, S.fov0 * Math.pow(1 / asp, 0.75));
+    if (W.camera.fov !== f) { W.camera.fov = f; W.camera.updateProjectionMatrix(); }
+  }
+  var a = base + (s.orbit || 0) * (t - 0.5), push = 1 - (s.push || 0) * t, lift = (s.lift || 0) * t;
+  var pos = new THREE.Vector3(Math.sin(a) * c.dist * push, c.h + lift, -Math.cos(a) * c.dist * push);
+  ctl.setCamera(pos, new THREE.Vector3(0, c.lookY + (s.lookUp || 0) * t, 0));
+  ctl.setClock(utc, k === 0);
+  ctl.renderOnce(dt);
+  var T = ctl.getTime();
+  $('time').innerHTML = 'Marfa, Texas<b>' + pad(T.h) + ':' + pad(T.m) + ':' + pad(T.s) + ' ' + T.zone + '</b>';
+  $('time').style.opacity = s.hideTime ? 0 : 1;
+  $('lab').style.opacity = ease((t - 0.04) / 0.12) * (s.labelOut ? 1 - ease((t - 0.85) / 0.15) : 1);
+  $('lab').style.transform = 'translateY(' + (1 - ease((t - 0.04) / 0.12)) * 2 + 'vh)';
+  if (s.title) $('title').style.opacity = ease((t - (s.titleIn || 0.25)) / 0.2);
+  $('flash').style.opacity = s.flash ? Math.max(0, 0.85 - t * 7) : 0;
+  return 1;
+};
+</script>

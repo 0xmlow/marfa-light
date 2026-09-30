@@ -1,0 +1,18 @@
+# Allow-list: only what is named below is published.
+/*
+!/.gitignore
+!/README.md
+!/LICENSE
+!/package.json
+!/package-lock.json
+!/build.sh
+!/marfa-light.js
+!/src/
+!/tools/
+!/docs/
+!/site/
+!/proposal-site/
+!/dist/
+.DS_Store
+*.log
+tools/blender/out/

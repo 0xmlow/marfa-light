@@ -1,0 +1,11 @@
+<!doctype html><meta charset="utf-8"><title>still</title>
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style><body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
+<script>window.MARFA_LIGHT_GALLERY = true; document.write('<script src="' + (new URLSearchParams(location.search).get('src') || '../marfa-light.js') + '"><\/script>');</script>
+<script>
+var q = new URLSearchParams(location.search), hash = q.get('hash'), P = marfaLight.plan(hash), utc = P.stillUtc;
+if (q.get('hour') != null) { var h = +q.get('hour'), hh = Math.floor(h), mm = Math.round((h - hh) * 60); utc = marfaLight.marfaUtc(2027, 4, 17, hh, mm); }
+if (q.get('utc')) utc = +q.get('utc');
+var s = marfaLight.snapshot(hash, utc, +q.get('w'), +q.get('h'), { film: q.get('film') || null, view: q.get('view') || null });
+document.body.appendChild(s.canvas);
+</script>

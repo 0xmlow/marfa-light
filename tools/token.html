@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marfa Light token</title></head>
+<body>
+<!-- One token full screen, the way Art Blocks presents it. ?hash=0x... or a random one. -->
+<script>
+var q = new URLSearchParams(location.search), h = q.get('hash');
+if (!h) { var a = new Uint8Array(32); crypto.getRandomValues(a); h = '0x' + Array.prototype.map.call(a, function (b) { return (b < 16 ? '0' : '') + b.toString(16); }).join(''); }
+window.tokenData = { hash: h, tokenId: '0' };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
+<script src="../marfa-light.js"></script>
+</body></html>
