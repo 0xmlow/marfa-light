@@ -10,6 +10,8 @@
     var r = hashRng(hash, 1);
     var clock = pickW(r, weighted(CLOCK_DEFS)), cd = CLOCK_DEFS[clock];
     var place = pickW(r, weighted(PLACE_DEFS, function (p) { return !p.accepts || p.accepts(clock, cd); }));
+    var observatory = obsPlan(hash, clock, place);
+    place = observatory.place;
     var pd = PLACE_DEFS[place];
     var material = pick(r, cd.mats);
     var sky = pickW(r, pd.skies || SKIES), wind = pickW(r, WINDS), film = pickW(r, FILM_WEIGHTS), tag = pick(r, TAGS);
@@ -43,12 +45,16 @@
     // never moves the draws above
     var gen = typeof genPlan === 'function' ? genPlan(hash, clock, cd, place, PLACE_DEFS[place], sky) : { features: {} };
     for (var gk in gen.features) features[gk] = gen.features[gk];
+    if (observatory.place === 'Meridian Cloister' || observatory.place === 'Aeolian Court' || observatory.place === 'Contour Passage') {
+      features['Architecture'] = observatory.place; features['Bays'] = observatory.bays; features['Architectural Finish'] = observatory.finish; features['Water Study'] = observatory.water;
+      if (observatory.place === 'Aeolian Court') features['Aperture'] = observatory.aperture;
+    }
     features['Easter Eggs'] = eggs.join(' · ');
     features['Egg Count'] = eggs.length;
     if (eggs.indexOf('First Eye Flower') >= 0) features['Witness Bloom'] = 'Solar-responsive / six bone petals';
     if (eggs.indexOf('Chromie Squiggle') >= 0) { var sq = OBS_SQUIGGLES[Math.floor(hashRng(hash, 710)() * OBS_SQUIGGLES.length)]; features['Chromie Reference Token'] = '#' + sq.id; features['Chromie Reference Type'] = sq.type; features['Reference Display'] = 'Artist-hosted original / viewer only'; }
     return {
-      gen: gen,
+      gen: gen, observatory: observatory,
       hash: hash, seed: seed, clock: clock, place: place, material: material, sky: sky, wind: wind, film: film, tag: tag,
       eggs: eggs, clockTraits: ct, camAz: camAz, camK: camK, camHk: camHk, windAz: r() * 360,
       stillUtc: marfaUtc(2027, 4, day, hh, mi), stillLabel: 'APR ' + day + ' 2027 ' + pad2(hh) + ':' + pad2(mi),

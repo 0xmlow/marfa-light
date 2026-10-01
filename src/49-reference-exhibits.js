@@ -1,13 +1,3 @@
-  // Shared helpers from the Observatory study (v0.5): bevelled blocks and a lime finish.
-  function obsBevel(w,h,d,m,b) {
-    b=Math.min(b || .035,w*.12,h*.12,d*.12);
-    var s=new THREE.Shape(),x=-w/2,y=-h/2;
-    s.moveTo(x+b,y);s.lineTo(-x-b,y);s.quadraticCurveTo(-x,y,-x,y+b);s.lineTo(-x,-y-b);s.quadraticCurveTo(-x,-y,-x-b,-y);s.lineTo(x+b,-y);s.quadraticCurveTo(x,-y,x,-y-b);s.lineTo(x,y+b);s.quadraticCurveTo(x,y,x+b,y);
-    var geo=new THREE.ExtrudeBufferGeometry(s,{depth:d-2*b,bevelEnabled:true,bevelSize:b,bevelThickness:b,bevelSegments:2,curveSegments:3});geo.translate(0,0,-d/2+b);
-    var o=new THREE.Mesh(geo,m);o.castShadow=o.receiveShadow=true;return o;
-  }
-  DETAIL_KINDS.obs_lime=function(u,v){var a=pfbm(u,v,3,317,4),b=pfbm(u,v,32,318,2),p=1-sstep(.12,.23,pfbm(u,v,64,319,1));return [.55+(a-.4)*.16+(b-.4)*.07-p*.05,.7+p*.12,.5+(a-.4)*.1+(b-.4)*.18-p*.2];};
-
   // Faithful references: the viewer can attach the artist's own live renderer.
   // No copy of Snowfro's script, no sine-wave surrogate, no claim of a new Squiggle.
   var OBS_SQUIGGLES=[{id:0,type:'Normal'},{id:5,type:'Slinky'},{id:7,type:'Fuzzy'},{id:10,type:'Ribbed'},{id:20,type:'Bold'},{id:74,type:'Pipe'}];
