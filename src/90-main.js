@@ -56,7 +56,8 @@
     features['Easter Eggs'] = eggs.join(' · ');
     features['Egg Count'] = eggs.length;
     if (eggs.indexOf('First Eye Flower') >= 0) features['Witness Bloom'] = 'Solar-responsive / six bone petals';
-    if (eggs.indexOf('Chromie Squiggle') >= 0) { var sq = OBS_SQUIGGLES[Math.floor(hashRng(hash, 710)() * OBS_SQUIGGLES.length)]; features['Chromie Reference Token'] = '#' + sq.id; features['Chromie Reference Type'] = sq.type; features['Reference Display'] = 'Artist-hosted original / viewer only'; }
+    if (eggs.indexOf('Chromie Squiggle') >= 0) { var sq = sqgPick(hash); features['Chromie Squiggle'] = '#' + sq.id; features['Squiggle Type'] = sq.type; if (sq.spectrum !== 'Normal') features['Squiggle Spectrum'] = sq.spectrum; }
+    if (eggs.indexOf('Friendship Bracelets') >= 0) { var fb = brcPick(hash); features['Friendship Bracelet'] = '#' + fb.id; features['Bracelet Palette'] = fb.palette; }
     return {
       gen: gen, observatory: observatory, align: align,
       hash: hash, seed: seed, clock: clock, place: place, material: material, sky: sky, wind: wind, film: film, tag: tag,
@@ -277,6 +278,7 @@
     });
     if (W.envRT) W.envRT.dispose();
     W.pmrem.dispose();
+    (W.disposers || []).forEach(function (f) { try { f(); } catch (e) { } });
   }
 
   function setupRenderer(renderer) {
@@ -384,6 +386,7 @@
       if (drag.moved < 6) {
         var hit = ui.click(e.clientX, e.clientY, cam);
         if (hit && hit.obj.userData.reference && opts.onReference) opts.onReference(hit.obj.userData.reference);
+        if (hit && hit.obj.userData.onClick) hit.obj.userData.onClick();
         if (hit && hit.obj === W.hero.group) { view = VIEWS[view] === 'Close' ? 0 : 1; viewTarget(view); }
       }
     }
@@ -530,8 +533,10 @@
   // EXPORTS, and the token itself
   // =====================================================================
   root.marfaLight = {
-    version: '0.5', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
+    version: '0.6', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
     clocks: CLOCK_DEFS, places: PLACE_DEFS, eggs: EGG_DEFS,
+    // the Art Blocks exhibits: draw a real Squiggle by token hash onto any canvas
+    exhibits: { squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },
     marfaTime: marfaTime, marfaUtc: marfaUtc, sunPos: sunPos, moonPos: moonPos, sunEvents: sunEvents, moonEvents: moonEvents
   };
   root.calculateFeatures = function (tokenData) { return plan(tokenData.hash).features; };

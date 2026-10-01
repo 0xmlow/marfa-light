@@ -2,7 +2,7 @@
 
 **A long-form generative series by MLow.** Every token is a working clock for Marfa, Texas (30.3095° N, 104.0206° W), standing somewhere around town, keeping live Marfa time. The hash decides the clock, how it is made, where it stands, the weather, the wind, the film it is shot on, the label it wears, and what is hidden around it. The sun, the moon and the stars are computed for Marfa and for the minute you are looking.
 
-Working title. Prototype v0.5, October 2026. **Live site: https://0xmlow.github.io/marfa-light/** Made for the Art Blocks x OpenSea Artist Residency in Marfa.
+Working title. Prototype v0.6, October 2026. **Live site: https://0xmlow.github.io/marfa-light/** Made for the Art Blocks x OpenSea Artist Residency in Marfa.
 
 ![Marfa Light](proposal-site/img/clock-01-horizontal-sundial.jpg)
 
@@ -13,6 +13,7 @@ Working title. Prototype v0.5, October 2026. **Live site: https://0xmlow.github.
 | **Clocks** | 29 kinds. Nine read the sky: sundials of every major type (horizontal, analemmatic, armillary, wall, bow, heliochronometer, meridian obelisk, noon cannon) and a nocturnal that reads the stars. The rest keep time by flaps, water, sand, words, pins, gears, fire, bulbs, strokes, wind, neon, and the turning of the Earth under a Foucault pendulum. Each has two or three variation traits of its own. |
 | **Places** | 19 places around Marfa and the Big Bend, plus three rare courts of original architecture (Meridian Cloister, Aeolian Court, Contour Passage, about 3% each), each with the real mountain skyline on the horizon. Roofed places refuse clocks that need the sun or the open air. |
 | **Easter eggs** | 30 of them, two to seven per token: Marfa, Art Blocks homages, and MLow's own collections. Click one to read about it. |
+| **Art Blocks exhibits** | With the artists' written permission, two homages run their own algorithms on real minted tokens. **Chromie Squiggle** (Snowfro): the p5.js script ported line for line to a 2D canvas, 18 real Squiggles across all six types and three rare spectrums; click to loop. **Friendship Bracelets** (Alexis André): his onchain script run unmodified in a sandbox with its own canvases, 14 real bracelets, the Marfa Sunset palette weighted triple; click for the tying instructions. Ringers, Fidenza, Archetype and Meridian stay credited markers. See `src/49-reference-exhibits.js`. |
 | **Generative layer** | Nine traits every token carries, from their own stream of the hash: Lens, Framing, Condition, Ground Bloom, Visitors, Light Work, Birds, Sky Event, and a rare Anomaly. Sky events obey the real sky: a rainbow needs a monsoon and a low sun behind you, sun dogs sit 22° from the sun, meteors wait for full dark. |
 | **Solar alignment** | Every token keeps one day and one minute of the year: a solstice, an equinox, or its own residency day, at a low sun after rising or before setting, found from the same sun model the dials read. Most tokens build a limestone gate (an oculus, a slot, or two stones) on the line from a bronze marker to the sun at that minute. At the minute, real shadow mapping lets the light through and onto the marker, and the marker glows. Live, it happens once a year. **A** jumps to it. |
 | **Ground work** | Land art on the caliche: a stone line laid toward the token's alignment (after Richard Long), a stone circle, raked rings, or cairns. |
@@ -67,7 +68,7 @@ Open `tools/token.html?hash=0x...` for one token full screen, the way Art Blocks
 - **Input:** `tokenData.hash`. Every feature comes from the hash alone. `calculateFeatures(tokenData)` returns them.
 - **Clock:** live mode reads the wall clock on purpose. It is a clock.
 - **Network:** none. Textures are computed, text is drawn on canvas, relics are packed into the script.
-- **Size:** about 1.11 MB as written, about 674 KB minified (`dist/marfa-light.min.js`). The two relics account for about 65 KB of it. This is large for onchain storage; cutting it down (or splitting the catalogue) is a week-three job with Art Blocks engineering.
+- **Size:** about 1.16 MB as written, about 720 KB minified (`dist/marfa-light.min.js`). The two relics account for about 65 KB of it. This is large for onchain storage; cutting it down (or splitting the catalogue) is a week-three job with Art Blocks engineering.
 - **Traits:** about 24 per token, 94 trait names across the series (measured on 6,000 hashes). `calculateFeatures` returns them.
 
 ## ABX and owner settings
