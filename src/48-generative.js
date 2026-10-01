@@ -302,7 +302,7 @@
     S.cast = gen_caster(S);
     var gc = W.groundColor ? W.groundColor.clone() : C('#B39A64');
     S.dust = gc.multiplyScalar(1.3); S.dust.r = Math.min(S.dust.r, 0.9); S.dust.g = Math.min(S.dust.g, 0.85); S.dust.b = Math.min(S.dust.b, 0.75);
-    var steps = [gen_frame, gen_condition, gen_anomaly, gen_bloom, gen_visitors, gen_lightWork, gen_birds, gen_skyEvent, pal_bloom, sky_write];
+    var steps = [gen_frame, gen_condition, gen_anomaly, gen_bloom, gen_visitors, gen_lightWork, gen_birds, gen_skyEvent, pal_bloom, sky_write, cal_fireworks, cal_holidays];
     for (var i = 0; i < steps.length; i++) {
       try { steps[i](S); } catch (e) {
         if (root.MARFA_GEN_STRICT) throw e;

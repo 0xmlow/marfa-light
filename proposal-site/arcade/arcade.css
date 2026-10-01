@@ -1,8 +1,8 @@
 :root {
   color-scheme: dark;
-  --bg: #0E1220; --bg2: #141A2C; --ink: #ECE5D8; --muted: #9097A9;
-  --line: rgba(236,229,216,.15); --line2: rgba(236,229,216,.07);
-  --accent: #F2B45A; --on-accent: #0E1220; --screen: #06070B;
+  --bg: #0D0D0D; --bg2: #141820; --ink: #F0F4F8; --muted: #7EB8FF;
+  --line: rgba(240,244,248,.15); --line2: rgba(240,244,248,.07);
+  --accent: #00E5FF; --on-accent: #0D0D0D; --screen: #06070B;
   --display: "Big Shoulders Display", "Oswald", "Arial Narrow", Impact, sans-serif;
   --body: "Spectral", Georgia, "Times New Roman", serif;
   --mono: "IBM Plex Mono", Menlo, Consolas, monospace;
@@ -63,7 +63,7 @@ body.touch .hint .touch { display: inline; }
 body.touch .hint { text-align: right; padding-left: 150px; font-size: 10px; text-transform: none; letter-spacing: .02em; }
 
 .stick { position: fixed; left: 22px; bottom: calc(26px + env(safe-area-inset-bottom, 0px)); width: 116px; height: 116px; border-radius: 50%; z-index: 12;
-  border: 1px solid rgba(236,229,216,.35); background: rgba(14,18,32,.35); display: none; touch-action: none; }
+  border: 1px solid rgba(240,244,248,.35); background: rgba(13,13,13,.35); display: none; touch-action: none; }
 body.touch .stick { display: block; }
 .stick .knob { position: absolute; left: 50%; top: 50%; width: 48px; height: 48px; margin: -24px 0 0 -24px; border-radius: 50%; background: rgba(242,180,90,.85); box-shadow: 0 0 16px rgba(242,180,90,.5); }
 
@@ -88,7 +88,7 @@ body.listing .room { display: none; }
 dialog#play { width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
   background: rgba(8,10,18,.97); color: var(--ink); display: none; flex-direction: column; overflow: auto; }
 dialog#play[open] { display: flex; }
-dialog#play::backdrop { background: rgba(8,10,18,.85); }
+dialog#play::backdrop { background: rgba(13,13,13,.88); }
 .play-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 10px; }
 .play-id { min-width: 0; }
 .play-head h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(30px, 4.5vw, 52px); line-height: .92; margin: 4px 0 4px; overflow-wrap: anywhere; }

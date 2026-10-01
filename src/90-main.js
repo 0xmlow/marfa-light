@@ -423,6 +423,9 @@
       else if (k === 't') api.setMode(mode === 'lapse' ? 'live' : 'lapse');
       else if (k === 's') api.setMode('still');
       else if (k === 'a' && P.align && P.align.utc) api.setTime(P.align.utc);
+      else if (k === 'j') { api.setTime(calNext(utc, 'Fourth of July')); ui.say('Calendar', 'Fourth of July, Marfa'); }
+      else if (k === 'n') { api.setTime(calNext(utc, 'New Year')); ui.say('Calendar', 'New Year, Marfa'); }
+      else if (k === 'k') { var nx = hol_next(utc, P); if (nx) { api.setTime(nx.utc); ui.say('Calendar', nx.names.join(' · ')); } }
       else if (k === '[' || k === ']') api.setTime(utc + (k === ']' ? 3600 : -3600));
       else if (k === ',' || k === '.') api.setTime(utc + (k === '.' ? 86400 : -86400));
       else if (k === ' ') { frozen = !frozen; e.preventDefault(); }
@@ -455,6 +458,11 @@
       getMode: function () { return mode; },
       getTime: function () { return marfaTime(utc); },
       sun: function () { return sunPos(utc); },
+      // the calendar (57-calendar.js): what day the clock is keeping, and a jump to it
+      celebrating: function () { var n = (W.holidays || []).slice(); if (W.celebrating) n.unshift(W.celebrating); return n.length ? n.join(' · ') : null; },
+      // jump to the next time a day is on (any day, when no name is given)
+      celebrate: function (which) { var nx = hol_next(utc, P, which); if (nx) api.setTime(nx.utc); return nx; },
+      holidays: CAL_DAYS,
       cycleView: function () { view = (view + 1) % VIEWS.length; viewTarget(view); ui.say('View', VIEWS[view]); return VIEWS[view]; },
       // hold the camera somewhere specific (films, close-ups); null releases it
       setCamera: function (pos, target) { override = pos ? { pos: pos.clone(), target: target.clone() } : null; return api; },
@@ -555,7 +563,7 @@
   // EXPORTS, and the token itself
   // =====================================================================
   root.marfaLight = {
-    version: '0.9', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
+    version: '0.10', holidays: CAL_DAYS, plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
     clocks: CLOCK_DEFS, places: PLACE_DEFS, eggs: EGG_DEFS,
     // the Art Blocks exhibits: draw a real Squiggle by token hash onto any canvas
     exhibits: { reference: resReference, squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, labelTie: function (palette, group, y) { return labelTie({ P: { palette: palette } }, group, y); }, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },

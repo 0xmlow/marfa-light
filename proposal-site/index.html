@@ -10,15 +10,17 @@
      from the sun's elevation at this minute; the resting state is night. */
   :root {
     color-scheme: dark;
-    --bg: #0E1220; --bg2: #141A2C; --ink: #ECE5D8; --muted: #9097A9; --line: rgba(236,229,216,.15); --line2: rgba(236,229,216,.07);
-    --accent: #F2B45A; --on-accent: #0E1220; --logo: none; --screen: #06070B;
+    /* MLow / Blossom palette: Ink Black, Dark Card, Cloud, Evil Eye Blue, Cyan,
+       Light Blue, Shock Pink. Night is the resting state. */
+    --bg: #0D0D0D; --bg2: #141820; --ink: #F0F4F8; --muted: #7EB8FF; --line: rgba(240,244,248,.15); --line2: rgba(240,244,248,.06);
+    --accent: #00E5FF; --on-accent: #0D0D0D; --logo: none; --screen: #06070B;
     --display: "Big Shoulders Display", "Oswald", "Arial Narrow", Impact, sans-serif;
     --body: "Spectral", Georgia, "Times New Roman", serif;
     --mono: "IBM Plex Mono", Menlo, Consolas, monospace;
   }
-  :root[data-sky="twilight"] { color-scheme: dark; --bg: #2A2236; --bg2: #33293F; --ink: #F3E7DA; --muted: #BAA9B5; --line: rgba(243,231,218,.17); --line2: rgba(243,231,218,.08); --accent: #FF9E62; --on-accent: #2A2236; --logo: none; }
-  :root[data-sky="golden"] { color-scheme: light; --bg: #EACBA2; --bg2: #E3BE92; --ink: #23170F; --muted: #6A503E; --line: rgba(35,23,15,.2); --line2: rgba(35,23,15,.08); --accent: #9A3517; --on-accent: #FBEBD6; --logo: invert(1); }
-  :root[data-sky="day"] { color-scheme: light; --bg: #D6E1E9; --bg2: #CAD7E1; --ink: #111820; --muted: #4E5C69; --line: rgba(17,24,32,.18); --line2: rgba(17,24,32,.07); --accent: #A74A16; --on-accent: #F4F7F9; --logo: invert(1); }
+  :root[data-sky="twilight"] { color-scheme: dark; --bg: #141820; --bg2: #1B2232; --ink: #F0F4F8; --muted: #7EB8FF; --line: rgba(240,244,248,.17); --line2: rgba(240,244,248,.07); --accent: #FF2E63; --on-accent: #0D0D0D; --logo: none; }
+  :root[data-sky="golden"] { color-scheme: light; --bg: #F0F4F8; --bg2: #E2E8F0; --ink: #0D0D0D; --muted: #4F5D6E; --line: rgba(13,13,13,.18); --line2: rgba(13,13,13,.06); --accent: #2962FF; --on-accent: #FFFFFF; --logo: invert(1); }
+  :root[data-sky="day"] { color-scheme: light; --bg: #FFFFFF; --bg2: #F0F4F8; --ink: #0D0D0D; --muted: #4F5D6E; --line: rgba(13,13,13,.16); --line2: rgba(13,13,13,.05); --accent: #2962FF; --on-accent: #FFFFFF; --logo: invert(1); }
 
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -75,13 +77,15 @@
   .screen canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
   .screen canvas:active { cursor: grabbing; }
   .screen .poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .hud { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; gap: 6px 18px; flex-wrap: wrap; padding: 44px 16px 12px; background: linear-gradient(transparent, rgba(0,0,0,.6)); color: #F3EEE4; pointer-events: none; z-index: 3; }
+  .hud { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; gap: 6px 18px; flex-wrap: wrap; padding: 44px 16px 12px; background: linear-gradient(transparent, rgba(0,0,0,.6)); color: #F0F4F8; pointer-events: none; z-index: 3; }
   .hud span { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; }
-  .corner { position: absolute; top: 12px; left: 14px; z-index: 3; pointer-events: none; font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #F3EEE4; display: flex; gap: 8px; align-items: center; text-shadow: 0 1px 3px rgba(0,0,0,.7); }
-  .corner i { width: 8px; height: 8px; border-radius: 50%; background: #E5484D; box-shadow: 0 0 0 3px rgba(229,72,77,.25); }
-  .corner i.off { background: #9097A9; box-shadow: none; }
+  .corner { position: absolute; top: 12px; left: 14px; z-index: 3; pointer-events: none; font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #F0F4F8; display: flex; gap: 8px; align-items: center; text-shadow: 0 1px 3px rgba(0,0,0,.7); }
+  .corner i { width: 8px; height: 8px; border-radius: 50%; background: #FF2E63; box-shadow: 0 0 0 3px rgba(255,46,99,.28); }
+  .corner i.off { background: #8899AA; box-shadow: none; }
   .deck { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); border-top: 1px solid var(--line); }
   .cell { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .cal-lab { display: block; margin-top: 14px; } #pickDay { width: 100%; }
+  .cal-list li span:first-child { white-space: nowrap; }
   .c-mode { grid-column: span 4; } .c-hour { grid-column: span 5; } .c-date { grid-column: span 3; border-right: 0; }
   .c-clock { grid-column: span 3; } .c-film { grid-column: span 3; } .c-view { grid-column: span 3; } .c-draw { grid-column: span 3; border-right: 0; }
   .c-hash { grid-column: span 7; } .c-save { grid-column: span 5; border-right: 0; }
@@ -182,7 +186,7 @@
   .thumb { appearance: none; border: 0; padding: 0; background: var(--screen); cursor: pointer; display: block; aspect-ratio: 3 / 2; width: 100%; max-width: 100%; position: relative; overflow: hidden; }
   .thumb canvas { display: block; width: 100%; height: 100%; }
   .thumb span { position: absolute; left: 7px; right: 7px; bottom: 6px; font-family: var(--mono); font-size: 9.5px; letter-spacing: .06em; text-transform: uppercase; color: #fff; text-shadow: 0 1px 2px #000; text-align: left; }
-  .thumb .wait { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; color: #6d7385; text-transform: uppercase; }
+  .thumb .wait { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; color: #8899AA; text-transform: uppercase; }
   .films { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
   .films figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
   .films figcaption { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
@@ -261,6 +265,8 @@
   .facts span { font-size: 15px; color: var(--muted); }
   .works { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border-top: 1px solid var(--ink); }
   .works li { display: grid; grid-template-columns: 4.5em minmax(0, 1fr); gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
+  .lists { display: flex; flex-direction: column; min-width: 0; }
+  .list-head { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .12em; color: var(--accent); margin: 32px 0 10px; line-height: 1.2; }
   .works li span:first-child { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 4px; }
 
   footer { margin-top: clamp(72px, 10vw, 140px); border-top: 1px solid var(--line); padding-block: 28px 48px; }
@@ -326,7 +332,7 @@
   <div class="wrap">
     <div class="left"><img src="img/logo_white.png" alt="MLOW"><span class="mono muted" id="barSky">Marfa sky</span></div>
     <nav aria-label="Sections">
-      <a href="#token">Token</a><a href="#sky">Sky</a><a href="#idea">Idea</a><a href="#day">A day</a><a href="#clocks">Clocks</a><a href="#draws">Draws</a><a href="#film">Film</a><a href="#residency">Residency</a><a href="#artist">Artist</a><a href="arcade/">Arcade</a>
+      <a href="#token">Token</a><a href="#sky">Sky</a><a href="#idea">Idea</a><a href="#day">A day</a><a href="#clocks">Clocks</a><a href="#draws">Draws</a><a href="#film">Film</a><a href="#calendar">Calendar</a><a href="#residency">Residency</a><a href="#artist">Artist</a><a href="arcade/">Arcade</a>
     </nav>
   </div>
 </header>
@@ -373,7 +379,7 @@
         <div class="cell c-hour"><label class="lab" for="scrub">Hour of the day</label>
           <div class="row"><input id="scrub" type="range" min="0" max="23.98" step="0.02" value="12"><span class="val" id="scrubVal">12:00</span></div>
         </div>
-        <div class="cell c-date"><label class="lab" for="pickDate">Date in Marfa</label><input id="pickDate" type="date" min="2026-01-01" max="2030-12-31"></div>
+        <div class="cell c-date"><label class="lab" for="pickDate">Date in Marfa</label><input id="pickDate" type="date" min="2026-01-01" max="2030-12-31"><label class="lab cal-lab" for="pickDay">Or a day on the calendar</label><select id="pickDay"><option value="">Choose a day</option></select></div>
         <div class="cell c-clock"><label class="lab" for="pickClock">Clock</label><select id="pickClock"></select></div>
         <div class="cell c-film"><label class="lab" for="pickFilm">Film stock</label><select id="pickFilm"></select></div>
         <div class="cell c-view"><label class="lab" for="pickView">Camera</label><select id="pickView"></select></div>
@@ -523,6 +529,27 @@
     <div class="eggs" id="eggList"></div>
   </section>
 
+  <section id="calendar" class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow"><b>Twenty-one days</b> a year</span>
+      <h2>The calendar</h2>
+      <p>The clock knows what day it is in Marfa. On these days every token marks the occasion its own way, drawn from its own seed. Jewish days begin at sundown, worked out from the Hebrew calendar inside the script, with no network. Choose one under <i>Or a day on the calendar</i> above, or press K in the live scene.</p>
+    </div>
+    <ul class="works cal-list">
+      <li><span>Jul 4</span><span>Fireworks from dusk to midnight. Shells burst as real Chromie Squiggles, stars, rings and an evil eye. On the hour, the token’s own Squiggle.</span></li>
+      <li><span>Jun 19</span><span>Juneteenth fireworks in the flag’s red, white and blue, with its star and nova.</span></li>
+      <li><span>Jan 1</span><span>Midnight: the token’s own Squiggle, then a finale in gold and silver.</span></li>
+      <li><span>Tishri</span><span>Rosh Hashanah, rings of gold in the shofar’s calls. Yom Kippur, memorial candles. Sukkot, a sukkah by the clock. Simchat Torah, seven circles of light dancing round it.</span></li>
+      <li><span>Kislev</span><span>Hanukkah. A menorah, one more candle each night from sundown, and a dreidel that spins and falls.</span></li>
+      <li><span>Spring</span><span>Tu BiShvat almond blossom, Purim confetti, the sea parting at night for Passover, Lag BaOmer bonfires, Shavuot greenery and petals.</span></li>
+      <li><span>Oct 31</span><span>Halloween. Jack-o’-lanterns, and bats at dusk.</span></li>
+      <li><span>Nov 1–2</span><span>Día de los Muertos. A marigold path to the clock, papel picado, candles at night.</span></li>
+      <li><span>Sun</span><span>Solstices and equinoxes. Lines of light to where the sun rises and sets that day.</span></li>
+      <li><span>April</span><span>Residency Day, each token’s own: the date of its still. A blossom of light turns over the clock and brightens at its minute.</span></li>
+      <li><span>Labor Day</span><span>Marfa Lights Festival weekend. The mystery lights on the horizon, which also turn up, rarely, on any night.</span></li>
+    </ul>
+  </section>
+
   <section id="memories" class="wrap">
     <div class="sec-head">
       <span class="eyebrow"><b>Memories</b> · 612 deterministic renderers in 87 families</span>
@@ -571,7 +598,7 @@
           <li>The casita, a desk, and reliable internet. I bring my own machines, a camera, a gray card, and a plumb line.</li>
           <li>The casita's exact coordinates, and permission to set a temporary gnomon and shoot time-lapse on the lot.</li>
           <li>The gallery's displays for the closing session.</li>
-          <li>One conversation with Art Blocks engineering in week one on Studio script limits and the three.js r124 dependency. The script is about 745 KB minified in v0.9.</li>
+          <li>One conversation with Art Blocks engineering in week one on Studio script limits and the three.js r124 dependency. The script is about 777 KB minified in v0.10.</li>
         </ul>
       </div>
     </div>
@@ -590,15 +617,33 @@
         <div><b>5,000+</b><span>NYC taxis carrying the work</span></div>
         <div><b>7,541</b><span>painted characters in NEW YORKERS</span></div>
       </div>
-      <ul class="works">
+      <div class="lists">
+      <ul class="works" aria-label="Selected work">
         <li><span>2026</span><span><a href="https://thesoftconspiracy.com">The Soft Conspiracy</a>, with Andrés Del Vecchio. 5,299 pieces curated from a 12,020-image pool.</span></li>
         <li><span>2026</span><span>Memories. Open source onchain renderer system, 612 directions in 87 families.</span></li>
         <li><span>Ongoing</span><span><a href="https://mlow.nyc">The Salon</a>. A walkable 3D gallery of 22+ rooms, built in three.js.</span></li>
         <li><span>Ongoing</span><span><a href="https://n3wyorkers.com">NEW YORKERS</a>. A painted census of New York and a walkable museum of 136 rooms.</span></li>
+        <li><span>2024</span><span>Squiggles mobile game at MONA, made with Art Blocks, Snowfro and Tom Sachs Rocket Factory.</span></li>
         <li><span>2025</span><span><a href="https://gamma.io/ordinals/collections/unchained/items">Unchained</a>. Inscribed on Bitcoin.</span></li>
         <li><span>2023</span><span><a href="https://stacks.transientlabs.xyz/featured/nervous-breakdown">Nervous Breakdown</a>. Twelve artists, one dynamic token.</span></li>
-        <li><span>2024</span><span>Winner, Optimism We Love The Art, AI category.</span></li>
       </ul>
+      <h3 class="list-head">Recognition</h3>
+      <ul class="works">
+        <li><span>2024</span><span>Winner, Optimism We Love The Art, AI category.</span></li>
+        <li><span>2023</span><span>Finalist, Claire Silver AI Art Competition.</span></li>
+        <li><span>Finalist</span><span>Sam Spratt, Mask of Luci competition.</span></li>
+        <li><span>Solver</span><span>Pindar Van Arman, First Sparks onchain puzzle.</span></li>
+        <li><span>Featured</span><span>Beeple’s Gallery Showcase, three times. Exhibited during Art Basel.</span></li>
+        <li><span>Partner</span><span>Adobe Firefly Creative Partner Ambassador. Creative partner to Flora, Dreamina and Wide World AI.</span></li>
+        <li><span>Host</span><span>The MLow Show, conversations with AI and onchain artists, on the Rug Radio network.</span></li>
+        <li><span>Giving</span><span>Part of a campaign that raised $250K for St. Jude.</span></li>
+      </ul>
+      <h3 class="list-head">Education</h3>
+      <ul class="works">
+        <li><span>2026</span><span>New York University, Wagner. Master of Public Administration, Public and Nonprofit Management.</span></li>
+        <li><span>2021</span><span>New York University. BA, Environmental Studies and Public Policy, magna cum laude.</span></li>
+      </ul>
+      </div>
     </div>
   </section>
 </main>
@@ -609,14 +654,14 @@
     <span><a href="https://mlow.xyz">mlow.xyz</a> · <a href="https://mlow.nyc">mlow.nyc</a> · <a href="https://n3wyorkers.com">n3wyorkers.com</a> · <a href="https://superrare.com/Degens">SuperRare</a></span>
   </div>
   <div class="wrap end">Marfa <span id="endTime">time</span></div>
-  <div class="wrap"><span class="mono muted">Marfa Light is a working title. Prototype v0.9, October 2026. No supply, chain, or price has been set.</span></div>
+  <div class="wrap"><span class="mono muted">Marfa Light is a working title. Prototype v0.10, October 2026. No supply, chain, or price has been set.</span></div>
 </footer>
 
 <dialog id="referenceDialog" aria-labelledby="referenceTitle"><div class="ref-head"><h3 id="referenceTitle">Art Blocks reference</h3><button class="btn" id="referenceClose">Close</button></div><iframe id="referenceFrame" title="Original Art Blocks artwork" allow="autoplay; fullscreen"></iframe><p id="referenceCredit"></p><p><a id="referenceDirect" target="_blank" rel="noopener">Open the player directly</a> · <a id="referenceToken" target="_blank" rel="noopener">View on Art Blocks</a> · <button class="btn" id="referenceRetry">Restart piece</button></p><p>Some pieces need time or a click to begin. While the artwork has keyboard focus, use the Close button to return.</p></dialog>
 <script src="studies/three-r124.min.js"></script>
 <script>window.MARFA_LIGHT_GALLERY = true;</script>
-<script src="marfa-light.js?v=0.9"></script>
-<script src="reference-viewer.js?v=0.9"></script>
+<script src="marfa-light.js?v=0.10"></script>
+<script src="reference-viewer.js?v=0.10"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
@@ -722,7 +767,7 @@
       var e = L.sunPos(base + (x / W) * 86400).el, rgb = PHASE_RGB[skyPhase(e)];
       g.fillStyle = 'rgb(' + rgb.join(',') + ')'; g.fillRect(x, 0, 2, H);
     }
-    var ink = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#ECE5D8';
+    var ink = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#F0F4F8';
     g.fillStyle = ink; for (var h = 0; h <= 24; h++) g.fillRect(Math.min(W - 1, h / 24 * W), h % 6 ? H - 6 : H - 12, 1, h % 6 ? 6 : 12);
     var nx = t.hours / 24 * W; g.fillRect(nx - 1.5, 0, 3, H);
   }
@@ -869,6 +914,17 @@
   $('pickDate').addEventListener('change', function () { if (!this.value || !ctl) return; mode = 'held'; setPressed(); ctl.setTime(heldUtc()); });
   $('pickClock').onchange = function () { var h = findClock(this.value); if (h) load(h); };
   $('pickFilm').onchange = function () { if (ctl) ctl.setFilm(this.value); };
+  // the calendar: jump to the next time a day comes round in Marfa
+  (L.holidays || []).forEach(function (n) { var o = el('option', null, n); o.value = n; $('pickDay').appendChild(o); });
+  $('pickDay').onchange = function () {
+    if (!this.value || !ctl) return;
+    var nx = ctl.celebrate(this.value);
+    if (!nx) { $('alignmentNote').textContent = 'This day is not on the calendar in the next two years'; return; }
+    mode = 'held'; setPressed(); ctl.setCamera(null);
+    var t = L.marfaTime(nx.utc), mm = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    $('pickDate').value = t.y + '-' + pad(t.mo) + '-' + pad(t.d);
+    $('alignmentNote').textContent = nx.names.join(' · ') + ' · ' + mm[t.mo - 1] + ' ' + t.d + ' ' + t.y + ', ' + pad(t.h) + ':' + pad(t.m) + ' in Marfa';
+  };
   $('pickView').onchange = function () { if (ctl) { ctl.setCamera(null); ctl.setView(this.value); } };
   $('rand').onclick = function () { load(randomHash()); };
   function goHash() { var v = $('hashIn').value.trim().toLowerCase(); if (/^0x[0-9a-f]{64}$/.test(v)) load(v); else $('sMsg').textContent = 'A token hash is 0x and 64 hex digits'; }
