@@ -49,15 +49,19 @@
       features['Architecture'] = observatory.place; features['Bays'] = observatory.bays; features['Architectural Finish'] = observatory.finish; features['Water Study'] = observatory.water;
       if (observatory.place === 'Aeolian Court') features['Aperture'] = observatory.aperture;
     }
+    // solar alignment and ground work (52-alignment.js), from their own streams
+    var stillUtc = marfaUtc(2027, 4, day, hh, mi);
+    var align = typeof alnPlan === 'function' ? alnPlan(hash, place, stillUtc) : null;
+    if (align) for (var ak in align.features) features[ak] = align.features[ak];
     features['Easter Eggs'] = eggs.join(' · ');
     features['Egg Count'] = eggs.length;
     if (eggs.indexOf('First Eye Flower') >= 0) features['Witness Bloom'] = 'Solar-responsive / six bone petals';
     if (eggs.indexOf('Chromie Squiggle') >= 0) { var sq = OBS_SQUIGGLES[Math.floor(hashRng(hash, 710)() * OBS_SQUIGGLES.length)]; features['Chromie Reference Token'] = '#' + sq.id; features['Chromie Reference Type'] = sq.type; features['Reference Display'] = 'Artist-hosted original / viewer only'; }
     return {
-      gen: gen, observatory: observatory,
+      gen: gen, observatory: observatory, align: align,
       hash: hash, seed: seed, clock: clock, place: place, material: material, sky: sky, wind: wind, film: film, tag: tag,
       eggs: eggs, clockTraits: ct, camAz: camAz, camK: camK, camHk: camHk, windAz: r() * 360,
-      stillUtc: marfaUtc(2027, 4, day, hh, mi), stillLabel: 'APR ' + day + ' 2027 ' + pad2(hh) + ':' + pad2(mi),
+      stillUtc: stillUtc, stillLabel: 'APR ' + day + ' 2027 ' + pad2(hh) + ':' + pad2(mi),
       features: features
     };
   }
@@ -120,6 +124,9 @@
       }
     });
     if (typeof genBuild === 'function') genBuild(W, hero);
+    if (typeof alnBuild === 'function') alnBuild(W, hero);
+    // surface wear follows the token's condition
+    W.wear = { Pristine: 0.35, Weathered: 1, Dusted: 0.85, Overgrown: 0.8, Calcified: 0.7 }[P.gen && P.gen.condition] || 0.6;
     addLife(W);
     // the sky
     W.sky = makeSky(); scene.add(W.sky);
@@ -160,6 +167,7 @@
   };
   var _dustCol = null, _nortCol = null;
   function updateWorld(W, renderer, ctx) {
+    TP_WEAR.value = W.wear == null ? 0.6 : W.wear;
     var sun = ctx.sun, moon = ctx.moon, L = lightAt(sun.el), cam = W.camera, tune = SKY_TUNE[W.P.sky] || SKY_TUNE.Clear;
     if (!_dustCol) { _dustCol = C('#C8A27A'); _nortCol = C('#1B3F8A'); }
     var cloudF = tune.cloud;
@@ -289,6 +297,9 @@
     var renderer = setupRenderer(opts.renderer || new THREE.WebGLRenderer({ canvas: canvas, antialias: false, preserveDrawingBuffer: !!opts.preserve }));
     var pr = Math.min(root.devicePixelRatio || 1, opts.maxPixelRatio || 2);
     var P = plan(hash), mode = opts.mode || 'live';
+    // ABX PostParams: the owner's kept minute and label (see keptFrom below)
+    if (opts.keptUtc) { P.stillUtc = opts.keptUtc; var kt = marfaTime(opts.keptUtc); P.stillLabel = MONTHS[kt.mo - 1] + ' ' + kt.d + ' ' + kt.y + ' ' + pad2(kt.h) + ':' + pad2(kt.m); P.kept = true; }
+    if (opts.label) P.tag = '"' + opts.label + '"';
     var utc = opts.utc != null ? opts.utc : mode === 'still' ? P.stillUtc : Date.now() / 1000;
     var W = buildWorld(P, renderer, utc), cam = W.camera, post = new Post(renderer);
     var film = P.film; post.setFilm(film);
@@ -386,6 +397,7 @@
       if (k === 'l') api.setMode('live');
       else if (k === 't') api.setMode(mode === 'lapse' ? 'live' : 'lapse');
       else if (k === 's') api.setMode('still');
+      else if (k === 'a' && P.align && P.align.utc) api.setTime(P.align.utc);
       else if (k === '[' || k === ']') api.setTime(utc + (k === ']' ? 3600 : -3600));
       else if (k === ',' || k === '.') api.setTime(utc + (k === '.' ? 86400 : -86400));
       else if (k === ' ') { frozen = !frozen; e.preventDefault(); }
@@ -518,12 +530,28 @@
   // EXPORTS, and the token itself
   // =====================================================================
   root.marfaLight = {
-    version: '0.4.1', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
+    version: '0.5', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
     clocks: CLOCK_DEFS, places: PLACE_DEFS, eggs: EGG_DEFS,
     marfaTime: marfaTime, marfaUtc: marfaUtc, sunPos: sunPos, moonPos: moonPos, sunEvents: sunEvents, moonEvents: moonEvents
   };
   root.calculateFeatures = function (tokenData) { return plan(tokenData.hash).features; };
 
+  // ABX PostParams, set by the owner after mint and read from token data:
+  //   kept   unix seconds: the minute the clock keeps for its still and the S key
+  //   label  up to 24 characters for the museum label, in place of the tag
+  // Anything malformed is ignored, so the hash alone always makes a valid token.
+  // (No quote characters in this function: ABX inspect scans the source as text.)
+  function keptFrom(d) {
+    var out = { utc: null, label: null };
+    if (!d) return out;
+    var u = Number(d.kept);
+    if (isFinite(u) && u > 0 && u < 4102444800) out.utc = Math.floor(u / 60) * 60;
+    if (typeof d.label === 'string') {
+      var l = d.label.replace(/[^A-Za-z0-9 .,\x27!?&:\-]/g, '').replace(/\s+/g, ' ').trim().toUpperCase().slice(0, 24);
+      if (l) out.label = l;
+    }
+    return out;
+  }
   // Two hosts, one hash: Art Blocks injects tokenData.hash; ABX serves a bytes32 seed
   // through abx.tokenData (abx.js). Either is a 0x + 64 hex string, so plan() reads both.
   var abxData = root.abx && root.abx.tokenData;
@@ -533,11 +561,17 @@
     document.body.style.cssText = 'margin:0;background:#0d0d0d;overflow:hidden;height:100vh;position:relative';
     cv.style.cssText = 'display:block;width:100vw;height:100vh;touch-action:none';
     document.body.appendChild(cv);
-    var tok = create(cv, tokenHash, { mode: 'live', freeWheel: true, overlayHost: document.body }).start();
+    // read as abx.tokenData.<key>, the shape ABX inspect recognizes as a PostParam
+    var kept = keptFrom(abxData ? { kept: root.abx.tokenData.kept, label: root.abx.tokenData.label } : null);
+    var tok = create(cv, tokenHash, { mode: 'live', freeWheel: true, overlayHost: document.body, keptUtc: kept.utc, label: kept.label }).start();
     root.addEventListener('resize', tok.resize);
     // ABX captures marketplace traits from abx.traits() and the still at abx.done().
     if (root.abx && typeof root.abx.traits === 'function') {
-      root.abx.traits(plan(tokenHash).features);
+      var tf = plan(tokenHash).features, tt = {};
+      for (var fk in tf) tt[fk] = tf[fk];
+      if (kept.utc) { var km = marfaTime(kept.utc); tt['Kept Minute'] = MONTHS[km.mo - 1] + ' ' + km.d + ' ' + km.y + ' ' + pad2(km.h) + ':' + pad2(km.m); }
+      if (kept.label) tt['Owner Label'] = kept.label;
+      root.abx.traits(tt);
       var frames = 0;
       (function wait() { if (++frames < 3) root.requestAnimationFrame(wait); else if (root.abx.done) root.abx.done(); })();
     }

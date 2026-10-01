@@ -105,6 +105,25 @@
   }
 
   // one compile function for every detailed material, so they share a program
+  // Weathering, in world space so it follows how things stand, not how they were modelled:
+  //   dust settles on faces that look up, rain streaks the faces that stand,
+  //   grime gathers where things meet the ground, and edges wear bright.
+  // All of it scales with tpWear (the token's Condition) and fades with distance.
+  var TP_WEATHER = [
+    'vec3 tpWn = normalize(vTpN);',
+    'float tpDustUp = smoothstep(0.55, 0.95, tpWn.y) * tpWear * (0.45 + 0.55 * tpS.r);',
+    'diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.56, 0.45, 0.31), tpDustUp * 0.2);',
+    'float tpVert = 1.0 - abs(tpWn.y);',
+    'float tpStreak = texture2D(tpMap, vec2((vTpW.x + vTpW.z) * tpScale * 2.6, vTpW.y * tpScale * 0.12)).r;',
+    'diffuseColor.rgb *= 1.0 - tpVert * smoothstep(0.42, 0.72, tpStreak) * 0.16 * tpWear * tpFade;',
+    'float tpGrime = (1.0 - smoothstep(0.02, 0.6, vTpW.y)) * step(-0.4, vTpW.y);',
+    'diffuseColor.rgb *= 1.0 - tpGrime * 0.2 * tpWear;',
+    'float tpCurv = length(fwidth(tpWn)) / (length(fwidth(vTpW)) + 1e-4);',
+    'float tpEdge = smoothstep(6.0, 22.0, tpCurv) * tpNear * tpWear;',
+    'diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * 1.22 + 0.025, tpEdge * 0.4);'
+  ].join('\n');
+  // surface wear, shared by every detailed material and set per frame from the token's condition
+  var TP_WEAR = { value: 0.6 };
   function TRIPLANAR(shader) {
     var d = this.userData.tp;
     shader.uniforms.tpMap = { value: d.map };
@@ -112,6 +131,7 @@
     shader.uniforms.tpAmt = { value: d.albedo };
     shader.uniforms.tpRough = { value: d.rough };
     shader.uniforms.tpBump = { value: d.bump };
+    shader.uniforms.tpWear = TP_WEAR;
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', '#include <common>\nvarying vec3 vTpW;\nvarying vec3 vTpN;')
       .replace('#include <worldpos_vertex>', [
@@ -128,7 +148,7 @@
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', [
         '#include <common>',
-        'uniform sampler2D tpMap; uniform float tpScale; uniform float tpAmt; uniform float tpRough; uniform float tpBump;',
+        'uniform sampler2D tpMap; uniform float tpScale; uniform float tpAmt; uniform float tpRough; uniform float tpBump; uniform float tpWear;',
         'varying vec3 vTpW; varying vec3 vTpN;',
         'vec4 tpSample() {',
         '  vec3 n = abs(normalize(vTpN)); n = n * n * n * n; n /= (n.x + n.y + n.z + 1e-5);',
@@ -143,8 +163,8 @@
         '  return normalize(abs(det) * n - g);',
         '}'
       ].join('\n'))
-      .replace('#include <map_fragment>', '#include <map_fragment>\nvec4 tpS = tpSample();\nfloat tpDist = length(vViewPosition); float tpFade = 1.0 - smoothstep(6.0, 45.0, tpDist); float tpNear = 1.0 - smoothstep(2.5, 14.0, tpDist);\ndiffuseColor.rgb *= mix(1.0, tpS.r * 2.0, tpAmt * (0.35 + 0.65 * tpFade));')
-      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = clamp(roughnessFactor * mix(1.0, tpS.g * 2.0, tpRough * tpFade), 0.03, 1.0);')
+      .replace('#include <map_fragment>', '#include <map_fragment>\nvec4 tpS = tpSample();\nfloat tpDist = length(vViewPosition); float tpFade = 1.0 - smoothstep(6.0, 45.0, tpDist); float tpNear = 1.0 - smoothstep(2.5, 14.0, tpDist);\ndiffuseColor.rgb *= mix(1.0, tpS.r * 2.0, tpAmt * (0.35 + 0.65 * tpFade));\n' + TP_WEATHER)
+      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = clamp(roughnessFactor * mix(1.0, tpS.g * 2.0, tpRough * tpFade), 0.03, 1.0);\nroughnessFactor = mix(roughnessFactor, 0.95, tpDustUp * 0.45);')
       .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>\nif (tpBump > 0.0 && tpNear > 0.0) { vec2 dH = vec2(dFdx(tpS.b), dFdy(tpS.b)) * tpBump * tpNear; normal = tpPerturb(-vViewPosition, normal, dH); }');
   }
   function detail(mat, kind, o) {
@@ -155,7 +175,7 @@
       albedo: o.albedo == null ? 0.22 : o.albedo, rough: o.rough == null ? 0.45 : o.rough, bump: (o.bump == null ? 0.25 : o.bump) * 0.1
     };
     mat.onBeforeCompile = TRIPLANAR;
-    mat.customProgramCacheKey = function () { return 'triplanar-2'; };
+    mat.customProgramCacheKey = function () { return 'triplanar-3'; };
     mat.extensions = { derivatives: true };
     return mat;
   }
