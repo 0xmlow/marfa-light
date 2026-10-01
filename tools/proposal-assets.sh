@@ -1,6 +1,8 @@
 #!/bin/sh
 # Rebuild the images, film and engine the proposal site (proposal-site/) serves.
 # Needs macOS sips and ffmpeg. Run from marfa-light/:  sh tools/proposal-assets.sh
+# Sources: renders/$V (stills + gifs/) and renders/hype-$V/cuts (the film), V=v0.9 by default.
+V="${V:-v0.9}"; DATE="${DATE:-2026-10-01}"
 set -e
 OUT=proposal-site/img
 mkdir -p "$OUT" renders/web
@@ -9,12 +11,12 @@ mkdir -p "$OUT" renders/web
 cp dist/marfa-light.min.js proposal-site/marfa-light.js
 
 # a still of every clock and every new place, 1400 px JPEG
-for f in renders/v0.4/clock-*.png renders/v0.4/place-*.png; do
+for f in renders/$V/clock-*.png renders/$V/place-*.png; do
   sips -s format jpeg -s formatOptions 72 --resampleWidth 1400 "$f" --out "$OUT/$(basename "$f" .png).jpg" >/dev/null
 done
 
 # four GIF loops and the logo
-cp renders/v0.4/gifs/noon-cannon-at-noon.gif renders/v0.4/gifs/station-clock.gif renders/v0.4/gifs/windmill-clock.gif renders/v0.4/gifs/pumpjack.gif "$OUT/"
+cp renders/$V/gifs/noon-cannon-at-noon.gif renders/$V/gifs/station-clock.gif renders/$V/gifs/windmill-clock.gif renders/$V/gifs/pumpjack.gif "$OUT/"
 cp site/img/logo_white.png "$OUT/"
 
 # twelve Memories renderers, 640 px
@@ -23,13 +25,13 @@ for f in terminator_globe azimuthal_range compass_rose contour_stack antipode si
 done
 
 # the hype film at web size (about 12 MB, under the 15 MB artifact limit) and a poster
-ffmpeg -v error -y -i renders/hype/cuts/marfa_light_hype_cuts_16x9-web_2026-09-27.mp4 -vf "scale=1280:-2,fps=24" \
+ffmpeg -v error -y -i renders/hype-$V/cuts/marfa_light_hype_cuts_16x9_$DATE.mp4 -vf "scale=1280:-2,fps=24" \
   -c:v libx264 -preset slow -crf 30 -pix_fmt yuv420p -c:a aac -b:a 96k -movflags +faststart "$OUT/film.mp4"
 ffmpeg -v error -y -ss 20 -i "$OUT/film.mp4" -frames:v 1 -q:v 4 "$OUT/film-poster.jpg"
 
 # web cuts for the handoff: the film, the vertical film, the motion reel
 cp "$OUT/film.mp4" renders/web/marfa-light-film-web.mp4
-ffmpeg -v error -y -i renders/hype/cuts/marfa_light_hype_cuts_9x16_2026-09-27.mp4 -vf "scale=720:-2,fps=24" \
+ffmpeg -v error -y -i renders/hype-$V/cuts/marfa_light_hype_cuts_9x16_$DATE.mp4 -vf "scale=720:-2,fps=24" \
   -c:v libx264 -preset slow -crf 30 -pix_fmt yuv420p -c:a aac -b:a 96k -movflags +faststart renders/web/marfa-light-film-vertical-web.mp4
 if [ -f reel/out/mlow-motion-reel.mp4 ]; then
   ffmpeg -v error -y -i reel/out/mlow-motion-reel.mp4 -vf "scale=1280:-2" \
