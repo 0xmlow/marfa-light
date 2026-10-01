@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Marfa Light Arcade</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A walkable arcade for onchain art. Play Snowfro's onchain experiments and visit The Nim Room for Bryan Brinkman's NimBuds and NimTeens.">
+<meta name="theme-color" content="#0E1220">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300;500;700;800&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+<link rel="stylesheet" href="arcade.css?v=4">
+</head>
+<body>
+
+<canvas id="scene" tabindex="0" role="img" aria-label="Walkable 3D arcade hall with arcade cabinets for Snowfro's onchain projects and a side room for Bryan Brinkman's NimBuds and NimTeens. Use List view for a keyboard friendly list of every piece."></canvas>
+
+<div id="loading" class="loading" aria-live="polite"><span>Opening the hall</span></div>
+
+<header class="hud-top">
+  <a class="wordmark" href="../" aria-label="Back to Marfa Light">
+    <span>MLOW</span><i>/</i><span>MARFA LIGHT</span><i>/</i><b>ARCADE</b>
+  </a>
+  <div class="hud-right">
+    <span class="room" id="room" aria-live="polite">Entrance</span>
+    <button type="button" class="btn" id="listToggle" aria-pressed="false" aria-controls="list">List view</button>
+  </div>
+</header>
+
+<button type="button" id="prompt" class="prompt" hidden>
+  <span class="lab">Play</span>
+  <span class="ptitle" id="promptTitle"></span>
+  <kbd>E</kbd>
+</button>
+
+<p class="hint" id="hint">
+  <span class="desk"><kbd>W A S D</kbd> walk <kbd>Arrows</kbd> turn <kbd>Drag</kbd> look <kbd>E</kbd> play <kbd>L</kbd> lock mouse</span>
+  <span class="touch">Stick to walk. Drag to look. Tap the floor to walk there. Tap a cabinet to play.</span>
+</p>
+
+<div id="stick" class="stick" aria-hidden="true"><div class="knob"></div></div>
+
+<section id="list" class="list" hidden aria-labelledby="listTitle">
+  <div class="list-inner">
+    <p class="eyebrow" id="listNote">Marfa Light Arcade</p>
+    <h1 id="listTitle">Play the pieces</h1>
+    <p class="lede">Every piece runs its original onchain script live through the Art Blocks generator. Choose one to play a real minted token.</p>
+    <div id="cards"></div>
+  </div>
+</section>
+
+<dialog id="play" aria-labelledby="playTitle" aria-describedby="playCredit">
+  <div class="play-head">
+    <div class="play-id">
+      <p class="eyebrow" id="playArtist"></p>
+      <h2 id="playTitle"></h2>
+      <p class="tok" id="playToken" aria-live="polite"></p>
+    </div>
+    <button type="button" class="btn close" id="playClose" aria-label="Close and return to the arcade">Close <kbd>Esc</kbd></button>
+  </div>
+  <div class="frame" id="frameWrap">
+    <iframe id="playFrame" title="Live artwork" allow="fullscreen; autoplay; accelerometer; gyroscope; xr-spatial-tracking" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <span class="frame-msg" id="frameMsg">Running the script</span>
+  </div>
+  <div class="play-foot">
+    <div class="row">
+      <button type="button" class="btn" id="tokPrev">Previous</button>
+      <button type="button" class="btn" id="tokNext">Next</button>
+      <button type="button" class="btn solid" id="tokRand">Random token</button>
+      <a class="btn ghost" id="tokLink" href="https://www.artblocks.io/" target="_blank" rel="noopener">View on Art Blocks</a>
+    </div>
+    <p class="credit" id="playCredit">Shown with the artist's permission. Runs the original onchain script through Art Blocks' generator.</p>
+    <p class="lab howto">The piece has the keyboard while you play. Press Close, or click outside the piece, to return to the hall.</p>
+  </div>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
+<script src="arcade.js?v=4"></script>
+</body>
+</html>
