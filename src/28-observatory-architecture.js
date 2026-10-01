@@ -89,7 +89,7 @@
       var sh=new THREE.Shape();sh.moveTo(-w,0);sh.lineTo(w,0);sh.lineTo(w,h);sh.quadraticCurveTo(0,h+2.6,-w,h);sh.closePath();
       var hole=new THREE.Path(),hw=w-.65;hole.moveTo(-hw,.02);hole.lineTo(-hw,h-1);hole.quadraticCurveTo(0,h+1.3,hw,h-1);hole.lineTo(hw,.02);hole.closePath();sh.holes.push(hole);
       var geo=new THREE.ExtrudeBufferGeometry(sh,{depth:.38,bevelEnabled:true,bevelThickness:.04,bevelSize:.04,bevelSegments:2,curveSegments:20}),rib=new THREE.Mesh(geo,M.wall);rib.position.z=z;shade(rib);F.g.add(rib);F.claim(-w,z,1);F.claim(w,z,1);
-      var line=new THREE.Mesh(new THREE.TubeBufferGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(-hw,.1,z+.43),new THREE.Vector3(-hw,h-1,z+.43),new THREE.Vector3(0,h+.3,z+.43),new THREE.Vector3(hw,h-1,z+.43),new THREE.Vector3(hw,.1,z+.43)]),48,.018,5),W.glow(glowMat('#76C8CB',0),0,.7));F.g.add(line);
+      var line=new THREE.Mesh(new THREE.TubeBufferGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(-hw,.1,z+.43),new THREE.Vector3(-hw,h-1,z+.43),new THREE.Vector3(0,h+.3,z+.43),new THREE.Vector3(hw,h-1,z+.43),new THREE.Vector3(hw,.1,z+.43)]),48,.018,5),W.glow(glowMat(palColor(W,i,N,true)||'#76C8CB',0),0,.7));F.g.add(line);
     }
     obsRill(W,F,M,R+1,-R-7,R*2);
     W.pick(F.g,'Contour Passage','Original MLow architecture: a sequence of carved limestone thresholds. Seeded section heights make a contour field in depth; restrained cyan inlays emerge after sunset.');

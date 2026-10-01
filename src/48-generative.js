@@ -976,6 +976,14 @@
     o.bagC = pick(r, ['#E9E2D3', '#3E4A5C', '#8C3B2E', '#556045', '#C9B48E']);
     o.accent = r() < 0.2 ? pick(r, [BRAND.blue, '#FF6B00', '#D1495B', '#EDAE49', BRAND.cyan]) : null;
     o.scale = rf(r, 0.93, 1.08);
+    // a borrowed palette dresses some of the visitors, from its own stream
+    if (S && S.W && pal_on(S.W)) {
+      S.palK = (S.palK || 0) + 1;
+      var pr = seedRng(((S.W.P.palette.seed ^ 0x9E37) + S.palK * 7919) >>> 0), pn = 5;
+      if (pr() < 0.6) o.top = palColor(S.W, Math.floor(pr() * pn), pn, false);
+      o.accent = palColor(S.W, Math.floor(pr() * pn), pn, false);
+      if (pr() < 0.5) o.bagC = palColor(S.W, Math.floor(pr() * pn), pn, false);
+    }
     return o;
   }
   function gen_visitors(S) {
@@ -1114,6 +1122,8 @@
   function gen_flavin(S) {
     var W = S.W, r = S.r, R = S.R, c = W.cam, line = GEN_LIGHT_LINE['Fluorescent Barrier'];
     var pair = pick(r, [['#FF4FA0', '#52F08A'], ['#FFE14D', '#4D7BFF'], ['#FF4FA0', '#FFE14D'], ['#52F08A', '#4D7BFF']]);
+    var pal = pal_on(W);   // a borrowed palette recolours the tubes; the draw above still happens
+    if (pal) pair = [palColor(W, 0, 2, true), palColor(W, pal.spectrum ? 1 : 1, 2, true)];
     var n = ri(r, 12, 18), gap = 0.62, len = (n - 1) * gap, side = S.shift > 0 ? 1 : S.shift < 0 ? -1 : (r() < 0.5 ? -1 : 1), best = null;
     // a straight run across the frame beside the clock, on the open side
     for (var i = 0; i < 160 && !best; i++) {
@@ -1139,6 +1149,16 @@
       tb.setMatrixAt(i, m4.makeTranslation(x, 0.63, -0.06));
     }
     grp.add(pan); grp.add(ta); grp.add(tb);
+    // Chromie Spectrum: every tube its own colour along the Squiggle's run, reversed on the far side
+    if (pal && pal.spectrum) {
+      ta.visible = tb.visible = false;
+      for (i = 0; i < n; i++) {
+        [[palColor(W, i, n, true), 0.06], [palColor(W, n - 1 - i, n, true), -0.06]].forEach(function (q) {
+          var mm = W.glow(glowMat(q[0], 0.9), 0.9, 3.4); mm.color = C(q[0]).lerp(C('#FFFFFF'), 0.6);
+          var tm = new THREE.Mesh(tg, mm); tm.position.set(-len / 2 + i * gap, 0.63, q[1]); grp.add(tm);
+        });
+      }
+    }
     // light spilled on the ground, one colour each side
     var spill = function (hex, z) {
       var m = new THREE.MeshBasicMaterial({ map: gen_dotTex(), color: C(hex), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 });
@@ -1173,7 +1193,10 @@
       [new THREE.BoxBufferGeometry(0.158, 0.035, 0.108).translate(0, 0.205, 0), '#CDA676'],
       [new THREE.PlaneBufferGeometry(0.142, 0.092).rotateX(-Math.PI / 2).translate(0, 0.19, 0), '#3A2614']]);
     mat.vertexColors = true; mat.color = new THREE.Color(1, 1, 1);
+    var lpal = pal_on(W);   // coloured paper bags, the candle still warm inside
+    if (lpal) mat.emissive = C(palColor(W, 0, 1, true)).lerp(C('#F08A2E'), 0.45);
     var im = gen_inst(bag, mat, pts.length, true), m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler();
+    if (lpal) for (var li = 0; li < pts.length; li++) im.setColorAt(li, C(palColor(W, li, pts.length, false)).lerp(new THREE.Color(1, 1, 1), 0.3));
     pts.forEach(function (p, i) {
       var s = rf(r, 0.9, 1.1);
       im.setMatrixAt(i, m4.compose(new THREE.Vector3(p[0], gen_gy(S, p[0], p[1]), p[1]), q.setFromEuler(e.set(0, r() * 6.28, rf(r, -0.05, 0.05))), new THREE.Vector3(s, s * rf(r, 0.92, 1.08), s)));

@@ -53,13 +53,16 @@
     var stillUtc = marfaUtc(2027, 4, day, hh, mi);
     var align = typeof alnPlan === 'function' ? alnPlan(hash, place, stillUtc) : null;
     if (align) for (var ak in align.features) features[ak] = align.features[ak];
+    // borrowed palettes (53-palettes.js), from their own stream
+    var palette = typeof palPlan === 'function' ? palPlan(hash) : null;
+    if (palette) for (var pk in palette.features) features[pk] = palette.features[pk];
     features['Easter Eggs'] = eggs.join(' · ');
     features['Egg Count'] = eggs.length;
     if (eggs.indexOf('First Eye Flower') >= 0) features['Witness Bloom'] = 'Solar-responsive / six bone petals';
     if (eggs.indexOf('Chromie Squiggle') >= 0) { var sq = sqgPick(hash); features['Chromie Squiggle'] = '#' + sq.id; features['Squiggle Type'] = sq.type; if (sq.spectrum !== 'Normal') features['Squiggle Spectrum'] = sq.spectrum; }
     if (eggs.indexOf('Friendship Bracelets') >= 0) { var fb = brcPick(hash); features['Friendship Bracelet'] = '#' + fb.id; features['Bracelet Palette'] = fb.palette; }
     return {
-      gen: gen, observatory: observatory, align: align,
+      gen: gen, observatory: observatory, align: align, palette: palette,
       hash: hash, seed: seed, clock: clock, place: place, material: material, sky: sky, wind: wind, film: film, tag: tag,
       eggs: eggs, clockTraits: ct, camAz: camAz, camK: camK, camHk: camHk, windAz: r() * 360,
       stillUtc: stillUtc, stillLabel: 'APR ' + day + ' 2027 ' + pad2(hh) + ':' + pad2(mi),
@@ -533,7 +536,7 @@
   // EXPORTS, and the token itself
   // =====================================================================
   root.marfaLight = {
-    version: '0.6', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
+    version: '0.7', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
     clocks: CLOCK_DEFS, places: PLACE_DEFS, eggs: EGG_DEFS,
     // the Art Blocks exhibits: draw a real Squiggle by token hash onto any canvas
     exhibits: { squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },

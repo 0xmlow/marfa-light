@@ -4331,7 +4331,7 @@
       var sh=new THREE.Shape();sh.moveTo(-w,0);sh.lineTo(w,0);sh.lineTo(w,h);sh.quadraticCurveTo(0,h+2.6,-w,h);sh.closePath();
       var hole=new THREE.Path(),hw=w-.65;hole.moveTo(-hw,.02);hole.lineTo(-hw,h-1);hole.quadraticCurveTo(0,h+1.3,hw,h-1);hole.lineTo(hw,.02);hole.closePath();sh.holes.push(hole);
       var geo=new THREE.ExtrudeBufferGeometry(sh,{depth:.38,bevelEnabled:true,bevelThickness:.04,bevelSize:.04,bevelSegments:2,curveSegments:20}),rib=new THREE.Mesh(geo,M.wall);rib.position.z=z;shade(rib);F.g.add(rib);F.claim(-w,z,1);F.claim(w,z,1);
-      var line=new THREE.Mesh(new THREE.TubeBufferGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(-hw,.1,z+.43),new THREE.Vector3(-hw,h-1,z+.43),new THREE.Vector3(0,h+.3,z+.43),new THREE.Vector3(hw,h-1,z+.43),new THREE.Vector3(hw,.1,z+.43)]),48,.018,5),W.glow(glowMat('#76C8CB',0),0,.7));F.g.add(line);
+      var line=new THREE.Mesh(new THREE.TubeBufferGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(-hw,.1,z+.43),new THREE.Vector3(-hw,h-1,z+.43),new THREE.Vector3(0,h+.3,z+.43),new THREE.Vector3(hw,h-1,z+.43),new THREE.Vector3(hw,.1,z+.43)]),48,.018,5),W.glow(glowMat(palColor(W,i,N,true)||'#76C8CB',0),0,.7));F.g.add(line);
     }
     obsRill(W,F,M,R+1,-R-7,R*2);
     W.pick(F.g,'Contour Passage','Original MLow architecture: a sequence of carved limestone thresholds. Seeded section heights make a contour field in depth; restrained cyan inlays emerge after sunset.');
@@ -13339,6 +13339,14 @@
     o.bagC = pick(r, ['#E9E2D3', '#3E4A5C', '#8C3B2E', '#556045', '#C9B48E']);
     o.accent = r() < 0.2 ? pick(r, [BRAND.blue, '#FF6B00', '#D1495B', '#EDAE49', BRAND.cyan]) : null;
     o.scale = rf(r, 0.93, 1.08);
+    // a borrowed palette dresses some of the visitors, from its own stream
+    if (S && S.W && pal_on(S.W)) {
+      S.palK = (S.palK || 0) + 1;
+      var pr = seedRng(((S.W.P.palette.seed ^ 0x9E37) + S.palK * 7919) >>> 0), pn = 5;
+      if (pr() < 0.6) o.top = palColor(S.W, Math.floor(pr() * pn), pn, false);
+      o.accent = palColor(S.W, Math.floor(pr() * pn), pn, false);
+      if (pr() < 0.5) o.bagC = palColor(S.W, Math.floor(pr() * pn), pn, false);
+    }
     return o;
   }
   function gen_visitors(S) {
@@ -13477,6 +13485,8 @@
   function gen_flavin(S) {
     var W = S.W, r = S.r, R = S.R, c = W.cam, line = GEN_LIGHT_LINE['Fluorescent Barrier'];
     var pair = pick(r, [['#FF4FA0', '#52F08A'], ['#FFE14D', '#4D7BFF'], ['#FF4FA0', '#FFE14D'], ['#52F08A', '#4D7BFF']]);
+    var pal = pal_on(W);   // a borrowed palette recolours the tubes; the draw above still happens
+    if (pal) pair = [palColor(W, 0, 2, true), palColor(W, pal.spectrum ? 1 : 1, 2, true)];
     var n = ri(r, 12, 18), gap = 0.62, len = (n - 1) * gap, side = S.shift > 0 ? 1 : S.shift < 0 ? -1 : (r() < 0.5 ? -1 : 1), best = null;
     // a straight run across the frame beside the clock, on the open side
     for (var i = 0; i < 160 && !best; i++) {
@@ -13502,6 +13512,16 @@
       tb.setMatrixAt(i, m4.makeTranslation(x, 0.63, -0.06));
     }
     grp.add(pan); grp.add(ta); grp.add(tb);
+    // Chromie Spectrum: every tube its own colour along the Squiggle's run, reversed on the far side
+    if (pal && pal.spectrum) {
+      ta.visible = tb.visible = false;
+      for (i = 0; i < n; i++) {
+        [[palColor(W, i, n, true), 0.06], [palColor(W, n - 1 - i, n, true), -0.06]].forEach(function (q) {
+          var mm = W.glow(glowMat(q[0], 0.9), 0.9, 3.4); mm.color = C(q[0]).lerp(C('#FFFFFF'), 0.6);
+          var tm = new THREE.Mesh(tg, mm); tm.position.set(-len / 2 + i * gap, 0.63, q[1]); grp.add(tm);
+        });
+      }
+    }
     // light spilled on the ground, one colour each side
     var spill = function (hex, z) {
       var m = new THREE.MeshBasicMaterial({ map: gen_dotTex(), color: C(hex), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 });
@@ -13536,7 +13556,10 @@
       [new THREE.BoxBufferGeometry(0.158, 0.035, 0.108).translate(0, 0.205, 0), '#CDA676'],
       [new THREE.PlaneBufferGeometry(0.142, 0.092).rotateX(-Math.PI / 2).translate(0, 0.19, 0), '#3A2614']]);
     mat.vertexColors = true; mat.color = new THREE.Color(1, 1, 1);
+    var lpal = pal_on(W);   // coloured paper bags, the candle still warm inside
+    if (lpal) mat.emissive = C(palColor(W, 0, 1, true)).lerp(C('#F08A2E'), 0.45);
     var im = gen_inst(bag, mat, pts.length, true), m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler();
+    if (lpal) for (var li = 0; li < pts.length; li++) im.setColorAt(li, C(palColor(W, li, pts.length, false)).lerp(new THREE.Color(1, 1, 1), 0.3));
     pts.forEach(function (p, i) {
       var s = rf(r, 0.9, 1.1);
       im.setMatrixAt(i, m4.compose(new THREE.Vector3(p[0], gen_gy(S, p[0], p[1]), p[1]), q.setFromEuler(e.set(0, r() * 6.28, rf(r, -0.05, 0.05))), new THREE.Vector3(s, s * rf(r, 0.92, 1.08), s)));
@@ -14585,6 +14608,66 @@
   }
 
   // =====================================================================
+  // BORROWED PALETTES
+  // Most tokens keep Marfa's own colours. The rest borrow a palette from a
+  // collection this work honours, with the artists' permission, and use it
+  // for the light and the people in the scene: the fluorescent barrier and
+  // its spill, the visitors' clothes, the luminaria bags, the courts' inlays.
+  // The sky, the stone and the clock keep their own colours.
+  //   Chromie Spectrum   the hue run of a real Squiggle, from Snowfro's own
+  //                      colour maths (start colour, spread, direction)
+  //   Friendship Bracelets palettes, by Alexis André's names, the colours
+  //                      sampled from Art Blocks' renders of those tokens
+  //   NimBuds, NimTeens  hex colours from Bryan Brinkman's scripts
+  // Draws only from hashRng(hash, 7301). Prefix pal_.
+  // =====================================================================
+
+  var PAL_SETS = {
+    'Marfa Sunset':     { by: 'Friendship Bracelets, Alexis André', colors: ['#C44B1B', '#8F1308', '#E68945', '#F2B880'] },
+    'PURP':             { by: 'Friendship Bracelets, Alexis André', colors: ['#5A1B65', '#995AA5', '#BC80C7', '#72337C'] },
+    'Twinkle in Pink':  { by: 'Friendship Bracelets, Alexis André', colors: ['#D36990', '#961F34', '#BB4E76', '#E299AD'] },
+    'In the Mountains': { by: 'Friendship Bracelets, Alexis André', colors: ['#4B3113', '#445841', '#67735B', '#A4AF9D'] },
+    'MGoBlue!':         { by: 'Friendship Bracelets, Alexis André', colors: ['#D9D473', '#586397', '#151E4E', '#383E63'] },
+    'Neon Lit Diner':   { by: 'Friendship Bracelets, Alexis André', colors: ['#6F160E', '#A64C33', '#CA7753', '#8D6E54'] },
+    'NimBuds':          { by: 'NimBuds, Bryan Brinkman', colors: ['#23C7D9', '#48D9A4', '#F2668B', '#F2BF27', '#F2F1DF'] },
+    'NimTeens':         { by: 'NimTeens, Bryan Brinkman', colors: ['#126374', '#247452', '#813345', '#F2668B', '#F2BF27'] }
+  };
+  var PAL_WEIGHTS = [['Marfa', 45], ['Chromie Spectrum', 12], ['Marfa Sunset', 9], ['NimBuds', 8], ['NimTeens', 4],
+    ['PURP', 4], ['Twinkle in Pink', 4], ['In the Mountains', 4], ['MGoBlue!', 3], ['Neon Lit Diner', 3]];
+
+  function palPlan(hash) {
+    var r = hashRng(hash, 7301), name = pickW(r, PAL_WEIGHTS), seed = Math.floor(r() * 4294967296) >>> 0;
+    var P = { name: name, seed: seed, features: { 'Palette': name } };
+    if (name === 'Chromie Spectrum') {
+      // the token's own Squiggle when it has one on display, so the two agree
+      var tok = sqgPick(hash), S = sqgState(tok.hash);
+      P.spectrum = { start: S.startColor, spread: S.spread, reverse: S.reverse, n: Math.round((S.segments - 2) * (S.slinky ? 50 : S.fuzzy ? 1000 : 200)) };
+      P.features['Palette Source'] = 'Chromie Squiggle #' + tok.id;
+    } else if (name !== 'Marfa') {
+      P.colors = PAL_SETS[name].colors;
+      P.features['Palette Source'] = PAL_SETS[name].by;
+    }
+    return P;
+  }
+  function pal_on(W) { var p = W.P.palette; return p && p.name !== 'Marfa' ? p : null; }
+  // the Squiggle's colour at t (0..1) along its run, as Snowfro computes it
+  function pal_hue(p, t) {
+    var sp = p.spectrum, color = t * sp.n;
+    var hue = sp.reverse ? 255 - (((color / sp.spread) + sp.start) % 255) : ((color / sp.spread) + sp.start) % 255;
+    return '#' + new THREE.Color().setHSL(hue / 255, 1, 0.5).getHexString();
+  }
+  // the i-th of n colours; glowing things are lifted so a dark palette still reads as light
+  function palColor(W, i, n, glow) {
+    var p = pal_on(W); if (!p) return null;
+    var hex = p.spectrum ? pal_hue(p, n > 1 ? i / (n - 1) : 0) : p.colors[i % p.colors.length];
+    if (!glow) return hex;
+    var c = new THREE.Color(hex), hsl = {}; c.getHSL(hsl);   // sRGB, not C(): the lift is a display decision
+    if (hsl.l < 0.55) c.setHSL(hsl.h, Math.max(hsl.s, 0.55), 0.55);
+    return '#' + c.getHexString();
+  }
+  function palRng(W, salt) { var p = pal_on(W); return p ? seedRng((p.seed ^ salt) >>> 0) : null; }
+
+  // =====================================================================
   // INTERACT: click anything with a story, camera views, keys, captions
   // =====================================================================
   var HELP = [
@@ -14884,13 +14967,16 @@
     var stillUtc = marfaUtc(2027, 4, day, hh, mi);
     var align = typeof alnPlan === 'function' ? alnPlan(hash, place, stillUtc) : null;
     if (align) for (var ak in align.features) features[ak] = align.features[ak];
+    // borrowed palettes (53-palettes.js), from their own stream
+    var palette = typeof palPlan === 'function' ? palPlan(hash) : null;
+    if (palette) for (var pk in palette.features) features[pk] = palette.features[pk];
     features['Easter Eggs'] = eggs.join(' · ');
     features['Egg Count'] = eggs.length;
     if (eggs.indexOf('First Eye Flower') >= 0) features['Witness Bloom'] = 'Solar-responsive / six bone petals';
     if (eggs.indexOf('Chromie Squiggle') >= 0) { var sq = sqgPick(hash); features['Chromie Squiggle'] = '#' + sq.id; features['Squiggle Type'] = sq.type; if (sq.spectrum !== 'Normal') features['Squiggle Spectrum'] = sq.spectrum; }
     if (eggs.indexOf('Friendship Bracelets') >= 0) { var fb = brcPick(hash); features['Friendship Bracelet'] = '#' + fb.id; features['Bracelet Palette'] = fb.palette; }
     return {
-      gen: gen, observatory: observatory, align: align,
+      gen: gen, observatory: observatory, align: align, palette: palette,
       hash: hash, seed: seed, clock: clock, place: place, material: material, sky: sky, wind: wind, film: film, tag: tag,
       eggs: eggs, clockTraits: ct, camAz: camAz, camK: camK, camHk: camHk, windAz: r() * 360,
       stillUtc: stillUtc, stillLabel: 'APR ' + day + ' 2027 ' + pad2(hh) + ':' + pad2(mi),
@@ -15364,7 +15450,7 @@
   // EXPORTS, and the token itself
   // =====================================================================
   root.marfaLight = {
-    version: '0.6', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
+    version: '0.7', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
     clocks: CLOCK_DEFS, places: PLACE_DEFS, eggs: EGG_DEFS,
     // the Art Blocks exhibits: draw a real Squiggle by token hash onto any canvas
     exhibits: { squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },
