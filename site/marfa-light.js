@@ -12665,7 +12665,7 @@
     S.cast = gen_caster(S);
     var gc = W.groundColor ? W.groundColor.clone() : C('#B39A64');
     S.dust = gc.multiplyScalar(1.3); S.dust.r = Math.min(S.dust.r, 0.9); S.dust.g = Math.min(S.dust.g, 0.85); S.dust.b = Math.min(S.dust.b, 0.75);
-    var steps = [gen_frame, gen_condition, gen_anomaly, gen_bloom, gen_visitors, gen_lightWork, gen_birds, gen_skyEvent];
+    var steps = [gen_frame, gen_condition, gen_anomaly, gen_bloom, gen_visitors, gen_lightWork, gen_birds, gen_skyEvent, pal_bloom, sky_write];
     for (var i = 0; i < steps.length; i++) {
       try { steps[i](S); } catch (e) {
         if (root.MARFA_GEN_STRICT) throw e;
@@ -13487,40 +13487,66 @@
     var pair = pick(r, [['#FF4FA0', '#52F08A'], ['#FFE14D', '#4D7BFF'], ['#FF4FA0', '#FFE14D'], ['#52F08A', '#4D7BFF']]);
     var pal = pal_on(W);   // a borrowed palette recolours the tubes; the draw above still happens
     if (pal) pair = [palColor(W, 0, 2, true), palColor(W, pal.spectrum ? 1 : 1, 2, true)];
-    var n = ri(r, 12, 18), gap = 0.62, len = (n - 1) * gap, side = S.shift > 0 ? 1 : S.shift < 0 ? -1 : (r() < 0.5 ? -1 : 1), best = null;
+    var n = ri(r, 12, 18), gap = 0.62;
+    // a curved form needs more, closer tubes to trace its Squiggle (the draw above still happens)
+    if (W.P.forms && /Squiggle|Slinky/.test(W.P.forms.barrier) && W.P.gen.light === 'Fluorescent Barrier') { n = W.P.forms.barrier === 'Slinky' ? 22 : 30; gap = W.P.forms.barrier === 'Slinky' ? 0.5 : 0.4; }
+    var len = (n - 1) * gap, side = S.shift > 0 ? 1 : S.shift < 0 ? -1 : (r() < 0.5 ? -1 : 1), best = null;
     // a straight run across the frame beside the clock, on the open side
-    for (var i = 0; i < 160 && !best; i++) {
-      var sd = i % 3 < 2 ? side : -side, back = rf(r, -R - 3, R + 8), lat = sd * (R + 1.2 + len * 0.5 + rf(r, 0, 3) + Math.floor(i / 20) * 0.8 - len * rf(r, 0, 0.45));
+    var curvy = W.P.forms && /Squiggle|Slinky/.test(W.P.forms.barrier) && W.P.gen.light === 'Fluorescent Barrier' ? sqgPathFn(W.P.forms.path) : null;
+    // three passes, each looser: tight to the frame, wider, then anywhere the camera can see it
+    for (var i = 0; i < 480 && !best; i++) {
+      var pass = i < 160 ? 0 : i < 320 ? 1 : 2, far = pass === 2 ? 2.2 : pass === 1 ? 1.5 : 1;
+      var sd = i % 3 < 2 ? side : -side, back = rf(r, -R - 3, (R + 8) * far), lat = sd * (R + 1.2 + len * 0.5 + rf(r, 0, 3 * far) + Math.floor((i % 160) / 20) * 0.8 - len * rf(r, 0, 0.45));
       var cx = c.dir.x * back + c.right.x * lat, cz = c.dir.z * back + c.right.z * lat, ok = true;
-      for (var k = -2; k <= 2 && ok; k++) { var t = k / 2 * len / 2, xx = cx + c.right.x * t, zz = cz + c.right.z * t; ok = W.free(xx, zz, 0.45) && gen_inside(S, xx, zz, 0.6) && xx * xx + zz * zz > (R + 0.8) * (R + 0.8); }
+      // test where the tubes will actually stand: the row turns to face the camera from (cx, cz)
+      var tdx = c.pos.x - cx, tdz = c.pos.z - cz, tl = Math.sqrt(tdx * tdx + tdz * tdz) || 1; tdx /= tl; tdz /= tl;
+      for (var k = 0; k < n && ok; k += curvy ? 2 : Math.max(1, Math.floor(n / 4))) {
+        var lx = -len / 2 + k * gap, lz = curvy ? 1.7 * curvy(n > 1 ? k / (n - 1) : 0) : 0;
+        var xx = cx + tdz * lx + tdx * lz, zz = cz - tdx * lx + tdz * lz;
+        ok = W.free(xx, zz, pass === 2 ? 0.32 : 0.45) && gen_inside(S, xx, zz, 0.6) && xx * xx + zz * zz > (R + 0.8) * (R + 0.8);
+      }
       var nd = ok && gen_ndc(S, cx, 0.6 + gen_gy(S, cx, cz), cz);
-      if (ok && nd.dep > 2 && Math.abs(nd.x) < (i < 110 ? 0.6 : 0.85) && nd.y > -0.95) best = [cx, cz];
+      if (ok && nd.dep > 2 && Math.abs(nd.x) < (i < 110 ? 0.6 : pass < 2 ? 0.85 : 0.97) && nd.y > -0.95 && nd.y < 0.9) best = [cx, cz];
     }
+    if (W.P.forms) W.P.forms.built = !!best;
     if (!best) return;
-    for (k = -2; k <= 2; k++) { var t2 = k / 2 * len / 2; W.claim(best[0] + c.right.x * t2, best[1] + c.right.z * t2, 0.5); }
+    for (k = -2; k <= 2; k++) { var t2 = k / 2 * len / 2; W.claim(best[0] + c.right.x * t2, best[1] + c.right.z * t2, curvy ? 1.9 : 0.5); }
     var grp = new THREE.Group(); grp.position.set(best[0], gen_gy(S, best[0], best[1]), best[1]);
     grp.rotation.y = Math.atan2(c.pos.x - best[0], c.pos.z - best[1]);   // local +z to the camera, x along the row
-    var pan = gen_inst(new THREE.BoxBufferGeometry(0.1, 1.22, 0.08), std('#E9E9E6', 0.5, 0.3), n, true);
-    var tg = new THREE.CylinderBufferGeometry(0.019, 0.019, 1.17, 8);
-    var mA = W.glow(glowMat(pair[0], 0.9), 0.9, 3.4), mB = W.glow(glowMat(pair[1], 0.9), 0.9, 3.4);
-    mA.color = C(pair[0]).lerp(C('#FFFFFF'), 0.6); mB.color = C(pair[1]).lerp(C('#FFFFFF'), 0.6);
-    var ta = gen_inst(tg, mA, n, false), tb = gen_inst(tg, mB, n, false), m4 = new THREE.Matrix4();
+    // Barrier Form (54-squiggle-forms.js): Straight is Flavin's row; Squiggle lays the row along a
+    // real Squiggle's curve, so from above the barrier draws it; Slinky turns tubes into hoops along
+    // that curve; Bold doubles the tube; Ribbed darkens every third bay, as Ribbed Squiggles do
+    var form = (W.P.forms && W.P.forms.barrier) || 'Straight', curved = form === 'Squiggle' || form === 'Slinky';
+    var yAt = curved ? sqgPathFn(W.P.forms.path) : function () { return 0; }, A = curved ? 1.7 : 0, lay = [];
     for (i = 0; i < n; i++) {
-      var x = -len / 2 + i * gap;
-      pan.setMatrixAt(i, m4.makeTranslation(x, 0.63, 0));
-      ta.setMatrixAt(i, m4.makeTranslation(x, 0.63, 0.06));
-      tb.setMatrixAt(i, m4.makeTranslation(x, 0.63, -0.06));
+      var u = n > 1 ? i / (n - 1) : 0, du = 0.5 / Math.max(1, n - 1);
+      var dz = A * (yAt(Math.min(1, u + du)) - yAt(Math.max(0, u - du)));
+      lay.push([-len / 2 + i * gap, A * yAt(u), Math.atan2(-dz, gap)]);
     }
-    grp.add(pan); grp.add(ta); grp.add(tb);
-    // Chromie Spectrum: every tube its own colour along the Squiggle's run, reversed on the far side
-    if (pal && pal.spectrum) {
-      ta.visible = tb.visible = false;
+    var tr = form === 'Bold' ? 0.042 : 0.019, m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e4 = new THREE.Euler(), v4 = new THREE.Vector3(), one = new THREE.Vector3(1, 1, 1);
+    var tg = new THREE.CylinderBufferGeometry(tr, tr, 1.17, 8);
+    function at(L, off, y) { var th = L[2]; return m4.compose(v4.set(L[0] + Math.sin(th) * off, y, L[1] + Math.cos(th) * off), q4.setFromEuler(e4.set(0, th, 0)), one); }
+    function glowFor(hex) { var mm = W.glow(glowMat(hex, 0.9), 0.9, 3.4); mm.color = C(hex).lerp(C('#FFFFFF'), 0.6); return mm; }
+    var colorAt = function (i2, sideB) { return pal && pal.spectrum ? palColor(W, sideB ? n - 1 - i2 : i2, n, true) : pair[sideB ? 1 : 0]; };
+    if (form === 'Slinky') {
+      // glowing hoops standing across the path, like the circles of a Slinky Squiggle
+      var hoop = new THREE.TorusBufferGeometry(0.5, tr * 1.2, 8, 48);
       for (i = 0; i < n; i++) {
-        [[palColor(W, i, n, true), 0.06], [palColor(W, n - 1 - i, n, true), -0.06]].forEach(function (q) {
-          var mm = W.glow(glowMat(q[0], 0.9), 0.9, 3.4); mm.color = C(q[0]).lerp(C('#FFFFFF'), 0.6);
-          var tm = new THREE.Mesh(tg, mm); tm.position.set(-len / 2 + i * gap, 0.63, q[1]); grp.add(tm);
+        var hm = new THREE.Mesh(hoop, glowFor(colorAt(i, i % 2 === 1 && !(pal && pal.spectrum))));
+        hm.position.set(lay[i][0], 0.6, lay[i][1]); hm.rotation.y = lay[i][2] + Math.PI / 2; grp.add(hm);
+      }
+    } else {
+      var pan = gen_inst(new THREE.BoxBufferGeometry(form === 'Bold' ? 0.16 : 0.1, 1.22, form === 'Bold' ? 0.14 : 0.08), std('#E9E9E6', 0.5, 0.3), n, true);
+      var dark = std('#26282B', 0.6, 0.4), off = form === 'Bold' ? 0.09 : 0.06;
+      for (i = 0; i < n; i++) {
+        pan.setMatrixAt(i, at(lay[i], 0, 0.63));
+        var ribbed = form === 'Ribbed' && i % 3 === 2;
+        [0, 1].forEach(function (sb) {
+          var tm = new THREE.Mesh(tg, ribbed ? dark : glowFor(colorAt(i, sb === 1)));
+          tm.applyMatrix4(at(lay[i], sb ? -off : off, 0.63)); grp.add(tm);
         });
       }
+      grp.add(pan);
     }
     // light spilled on the ground, one colour each side
     var spill = function (hex, z) {
@@ -14668,6 +14694,132 @@
   function palRng(W, salt) { var p = pal_on(W); return p ? seedRng((p.seed ^ salt) >>> 0) : null; }
 
   // =====================================================================
+  // SQUIGGLE FORMS, the woven tie, painted bloom, skywriting
+  // Ideas taken from the works this series honours, with permission, and
+  // made into Marfa things:
+  //   Barrier Form  Squiggle types for the fluorescent barrier. Straight is
+  //                 Flavin's row. Squiggle lays the row on a real Squiggle's
+  //                 curve, so seen from above the barrier draws it. Slinky
+  //                 makes hoops of light along that curve. Bold doubles the
+  //                 tubes. Ribbed darkens every third bay.
+  //   Label Tie     the safety orange zip tie, or with a borrowed palette a
+  //                 friendship bracelet woven round the label post.
+  //   Bloom Tint    with a borrowed palette, some of the wildflowers take it.
+  //   Skywriting    rare: every hour, on the hour, a plane writes the token's
+  //                 own Squiggle across the sky; the smoke spreads and is gone
+  //                 by the next hour. Daylight only.
+  // Draws only from hashRng(hash, 7401); builds from their own seeds.
+  // =====================================================================
+
+  function formsPlan(hash, gen, place, palette) {
+    var r = hashRng(hash, 7401), indoor = !!GEN_INDOOR[place];
+    var barrier = pickW(r, [['Straight', 40], ['Squiggle', 25], ['Slinky', 15], ['Bold', 10], ['Ribbed', 10]]);
+    var sky = pickW(r, indoor || ALN_NOGATE[place] ? [['None', 1]] : [['None', 92], ['Squiggle', 8]]);
+    var seed = Math.floor(r() * 4294967296) >>> 0;
+    var tok = sqgPick(hash), pal = palette && palette.name !== 'Marfa' ? palette.name : null;
+    var F = {};
+    if (gen && gen.light === 'Fluorescent Barrier') F['Barrier Form'] = barrier;
+    F['Label Tie'] = pal ? 'Woven, ' + pal : 'Safety Orange';
+    if (pal && gen && gen.bloom !== 'None' && gen.bloom !== 'Cholla in Bloom') F['Bloom Tint'] = pal;
+    if (sky !== 'None') F['Skywriting'] = 'Chromie Squiggle #' + tok.id;
+    return { barrier: barrier, sky: sky, seed: seed, path: tok.hash, squiggle: tok.id, features: F };
+  }
+
+  // a real Squiggle's curve as y(t) in -1..1 over t 0..1: Snowfro's points and
+  // Catmull-Rom basis, without his height scaling
+  function sqgPathFn(hash) {
+    var S = sqgState(hash), dp = S.dp, J = Math.max(1, Math.floor(S.segments) - 3);
+    return function (t) {
+      var f = clamp(t, 0, 1) * J, j = Math.min(J - 1, Math.floor(f)), lt = f - j;
+      var y = sqg_curve(sqg_map(dp[j], 0, 255, -1, 1), sqg_map(dp[j + 1], 0, 255, -1, 1), sqg_map(dp[j + 2], 0, 255, -1, 1), sqg_map(dp[j + 3], 0, 255, -1, 1), lt);
+      return clamp(y, -1, 1);
+    };
+  }
+
+  // ------------------------------------------------------------ the label tie
+  // returns true when it made a woven tie, so the plaque skips the zip tie
+  function labelTie(W, g, y) {
+    var p = pal_on(W); if (!p) return false;
+    var strands = 3, rr = seedRng(p.seed ^ 0x51ED);
+    for (var s = 0; s < strands; s++) {
+      var pts = [];
+      for (var k = 0; k <= 64; k++) {
+        var a = k / 64 * Math.PI * 2, w = Math.sin(a * 6 + s * Math.PI * 2 / strands);
+        pts.push(new THREE.Vector3(Math.cos(a) * (0.046 + w * 0.004), y + w * 0.009, Math.sin(a) * (0.046 + w * 0.004)));
+      }
+      var hex = palColor(W, s, strands, false), mat = std(hex, 0.85);
+      var tube = new THREE.Mesh(new THREE.TubeBufferGeometry(new THREE.CatmullRomCurve3(pts, true), 96, 0.0062, 5, true), mat);
+      g.add(tube);
+      // the knotted ends hang down
+      var tail = new THREE.Mesh(new THREE.TubeBufferGeometry(new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0.046, y, 0.004 * s), new THREE.Vector3(0.06, y - 0.03, 0.006 * s + 0.004), new THREE.Vector3(0.056 + rr() * 0.01, y - 0.075 - s * 0.006, 0.01 * s)]), 12, 0.005, 5, false), mat);
+      g.add(tail);
+    }
+    return true;
+  }
+
+  // ------------------------------------------------------------ painted bloom
+  function pal_bloom(S) {
+    var W = S.W, p = pal_on(W), g = S.g;
+    if (!p || g.bloom === 'None' || g.bloom === 'Cholla in Bloom') return;
+    var r = seedRng(p.seed ^ 0xB100), c = W.cam, sd = g.seed % 991, pts = [];
+    for (var i = 0; i < 6000 && pts.length < 420; i++) {
+      var q = W.inView(rf(r, -34, 34), rf(r, 2, c.dist + 30)), x = q.x, z = q.z;
+      var near = 1 - sstep(S.R, S.R + 16, Math.sqrt(x * x + z * z)), dens = fbm(x / 8, z / 8, sd, 3) + near * 0.18;
+      if (dens < 0.52 || !gen_open(S, x, z, 0.08) || !gen_inside(S, x, z, 0.6) || gen_onFloor(S, x, z)) continue;
+      pts.push([x, gen_gy(S, x, z), z, rf(r, 0.26, 0.44), r() * 6.28]);
+    }
+    if (!pts.length) return;
+    var stem = gen_inst(new THREE.CylinderBufferGeometry(0.006, 0.008, 1, 4).translate(0, 0.5, 0), std('#5E7A3A', 0.8), pts.length, false);
+    var headGeo = new THREE.IcosahedronBufferGeometry(0.045, 0); headGeo.scale(1, 0.42, 1);
+    var head = gen_inst(headGeo, std('#FFFFFF', 0.7), pts.length, false), m4 = new THREE.Matrix4(), qq = new THREE.Quaternion(), e = new THREE.Euler(), v = new THREE.Vector3(), sc = new THREE.Vector3();
+    pts.forEach(function (t, j) {
+      stem.setMatrixAt(j, m4.compose(v.set(t[0], t[1], t[2]), qq.setFromEuler(e.set(0, t[4], 0)), sc.set(1, t[3], 1)));
+      head.setMatrixAt(j, m4.compose(v.set(t[0], t[1] + t[3], t[2]), qq, sc.set(1, 1, 1)));
+      // a spectrum runs across the field from left to right; a palette is scattered
+      var k = p.spectrum ? gen_ndc(S, t[0], t[1], t[2]).x * 0.5 + 0.5 : j;
+      head.setColorAt(j, C(p.spectrum ? palColor(W, Math.round(clamp(k, 0, 1) * 20), 21, false) : palColor(W, k, 99, false)));
+    });
+    S.box.add(stem); S.box.add(head);
+    W.pick(head, 'Bloom Tint', 'Some of the flowers have taken the token’s borrowed palette: ' + p.name + '.');
+  }
+
+  // ------------------------------------------------------------ skywriting
+  function sky_write(S) {
+    var W = S.W, F = W.P.forms;
+    if (!F || F.sky !== 'Squiggle') return;
+    var yAt = sqgPathFn(F.path), p = pal_on(W), N = 260, D = 300;
+    var center = W.cam.pos.clone().addScaledVector(gen_dir(S, 0, 0.62), D);
+    var right = S.rt.clone(), up = new THREE.Vector3(0, 1, 0), width = 2 * 0.5 * S.th * D;
+    var base = [], im = gen_inst(new THREE.IcosahedronBufferGeometry(1, 1), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, depthWrite: false, opacity: 0, fog: false }), N, false);
+    im.renderOrder = 1;
+    for (var i = 0; i < N; i++) {
+      var u = i / (N - 1);
+      base.push(center.clone().addScaledVector(right, (u - 0.5) * width).addScaledVector(up, yAt(u) * width * 0.16));
+      im.setColorAt(i, p && p.spectrum ? C(palColor(W, i, N, true)) : new THREE.Color(1, 1, 1));
+    }
+    var plane = new THREE.Mesh(new THREE.BoxBufferGeometry(2.4, 0.5, 2.8), std('#2A2C30', 0.5, 0.4));
+    S.box.add(im); S.box.add(plane);
+    var m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), drift = new THREE.Vector3();
+    var wind = dirAzEl(W.P.windAz || 0, 0);
+    W.onUpdate(function (ctx) {
+      var phase = (((ctx.utc % 3600) + 3600) % 3600) / 3600, write = clamp(phase / 0.12, 0, 1);
+      var day = sstep(-2, 8, ctx.sun.el), fade = Math.pow(1 - phase, 1.4);
+      im.material.opacity = 0.75 * day * fade;
+      im.visible = plane.visible = day > 0.01;
+      for (var i2 = 0; i2 < N; i2++) {
+        var u2 = i2 / (N - 1), age = phase - u2 * 0.12, s2 = u2 <= write ? 1.6 + 14 * clamp(age, 0, 1) : 0;
+        drift.copy(wind).multiplyScalar(60 * clamp(age, 0, 1));
+        im.setMatrixAt(i2, m4.compose(drift.add(base[i2]), q, sc.set(s2, s2, s2)));
+      }
+      im.instanceMatrix.needsUpdate = true;
+      var h = Math.min(N - 1, Math.floor(write * (N - 1)));
+      plane.position.copy(base[h]); plane.visible = plane.visible && write < 1;
+    });
+    W.pick(im, 'Skywriting', 'Every hour, on the hour, a plane writes Chromie Squiggle #' + F.squiggle + ' across the sky over Marfa. The smoke spreads on the wind and is gone by the next hour.');
+  }
+
+  // =====================================================================
   // INTERACT: click anything with a story, camera views, keys, captions
   // =====================================================================
   var HELP = [
@@ -14970,13 +15122,16 @@
     // borrowed palettes (53-palettes.js), from their own stream
     var palette = typeof palPlan === 'function' ? palPlan(hash) : null;
     if (palette) for (var pk in palette.features) features[pk] = palette.features[pk];
+    // Squiggle forms, the woven tie, painted bloom, skywriting (54-squiggle-forms.js)
+    var forms = typeof formsPlan === 'function' ? formsPlan(hash, gen, place, palette) : null;
+    if (forms) for (var fk in forms.features) features[fk] = forms.features[fk];
     features['Easter Eggs'] = eggs.join(' · ');
     features['Egg Count'] = eggs.length;
     if (eggs.indexOf('First Eye Flower') >= 0) features['Witness Bloom'] = 'Solar-responsive / six bone petals';
     if (eggs.indexOf('Chromie Squiggle') >= 0) { var sq = sqgPick(hash); features['Chromie Squiggle'] = '#' + sq.id; features['Squiggle Type'] = sq.type; if (sq.spectrum !== 'Normal') features['Squiggle Spectrum'] = sq.spectrum; }
     if (eggs.indexOf('Friendship Bracelets') >= 0) { var fb = brcPick(hash); features['Friendship Bracelet'] = '#' + fb.id; features['Bracelet Palette'] = fb.palette; }
     return {
-      gen: gen, observatory: observatory, align: align, palette: palette,
+      gen: gen, observatory: observatory, align: align, palette: palette, forms: forms,
       hash: hash, seed: seed, clock: clock, place: place, material: material, sky: sky, wind: wind, film: film, tag: tag,
       eggs: eggs, clockTraits: ct, camAz: camAz, camK: camK, camHk: camHk, windAz: r() * 360,
       stillUtc: stillUtc, stillLabel: 'APR ' + day + ' 2027 ' + pad2(hh) + ':' + pad2(mi),
@@ -14996,9 +15151,12 @@
     face.position.set(0, 1.02, 0.02); face.rotation.x = -0.35; g.add(face);
     var back = box(face.userData.w + 0.02, 0.38, 0.02, mtl('#2A2C30', 'brushed', 0.4, 0.8, 0.5)); back.position.set(0, 1.02, 0); back.rotation.x = -0.35; g.add(back);
     // one safety orange strap, zip-tied round the post
-    var strap = new THREE.Mesh(new THREE.TorusBufferGeometry(0.045, 0.012, 6, 16), std('#FF6B00', 0.6));
-    strap.rotation.x = Math.PI / 2; strap.position.y = 0.62; g.add(strap);
-    var tail = box(0.012, 0.09, 0.02, std('#FF6B00', 0.6)); tail.position.set(0.05, 0.58, 0); tail.rotation.z = 0.3; g.add(tail);
+    // (or, with a borrowed palette, a friendship bracelet woven round it)
+    if (!(typeof labelTie === 'function' && labelTie(W, g, 0.62))) {
+      var strap = new THREE.Mesh(new THREE.TorusBufferGeometry(0.045, 0.012, 6, 16), std('#FF6B00', 0.6));
+      strap.rotation.x = Math.PI / 2; strap.position.y = 0.62; g.add(strap);
+      var tail = box(0.012, 0.09, 0.02, std('#FF6B00', 0.6)); tail.position.set(0.05, 0.58, 0); tail.rotation.z = 0.3; g.add(tail);
+    }
     var d = W.cam.dir, R = hero.R + 0.6;
     var side = (W.P.seed % 2 ? 1 : -1);
     g.position.set(-d.x * R + W.cam.right.x * side * R * 0.45, 0, -d.z * R + W.cam.right.z * side * R * 0.45);
@@ -15450,10 +15608,10 @@
   // EXPORTS, and the token itself
   // =====================================================================
   root.marfaLight = {
-    version: '0.7', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
+    version: '0.8', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
     clocks: CLOCK_DEFS, places: PLACE_DEFS, eggs: EGG_DEFS,
     // the Art Blocks exhibits: draw a real Squiggle by token hash onto any canvas
-    exhibits: { squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },
+    exhibits: { squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, labelTie: function (palette, group, y) { return labelTie({ P: { palette: palette } }, group, y); }, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },
     marfaTime: marfaTime, marfaUtc: marfaUtc, sunPos: sunPos, moonPos: moonPos, sunEvents: sunEvents, moonEvents: moonEvents
   };
   root.calculateFeatures = function (tokenData) { return plan(tokenData.hash).features; };

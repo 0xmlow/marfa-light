@@ -302,7 +302,7 @@
     S.cast = gen_caster(S);
     var gc = W.groundColor ? W.groundColor.clone() : C('#B39A64');
     S.dust = gc.multiplyScalar(1.3); S.dust.r = Math.min(S.dust.r, 0.9); S.dust.g = Math.min(S.dust.g, 0.85); S.dust.b = Math.min(S.dust.b, 0.75);
-    var steps = [gen_frame, gen_condition, gen_anomaly, gen_bloom, gen_visitors, gen_lightWork, gen_birds, gen_skyEvent];
+    var steps = [gen_frame, gen_condition, gen_anomaly, gen_bloom, gen_visitors, gen_lightWork, gen_birds, gen_skyEvent, pal_bloom, sky_write];
     for (var i = 0; i < steps.length; i++) {
       try { steps[i](S); } catch (e) {
         if (root.MARFA_GEN_STRICT) throw e;
@@ -1124,40 +1124,66 @@
     var pair = pick(r, [['#FF4FA0', '#52F08A'], ['#FFE14D', '#4D7BFF'], ['#FF4FA0', '#FFE14D'], ['#52F08A', '#4D7BFF']]);
     var pal = pal_on(W);   // a borrowed palette recolours the tubes; the draw above still happens
     if (pal) pair = [palColor(W, 0, 2, true), palColor(W, pal.spectrum ? 1 : 1, 2, true)];
-    var n = ri(r, 12, 18), gap = 0.62, len = (n - 1) * gap, side = S.shift > 0 ? 1 : S.shift < 0 ? -1 : (r() < 0.5 ? -1 : 1), best = null;
+    var n = ri(r, 12, 18), gap = 0.62;
+    // a curved form needs more, closer tubes to trace its Squiggle (the draw above still happens)
+    if (W.P.forms && /Squiggle|Slinky/.test(W.P.forms.barrier) && W.P.gen.light === 'Fluorescent Barrier') { n = W.P.forms.barrier === 'Slinky' ? 22 : 30; gap = W.P.forms.barrier === 'Slinky' ? 0.5 : 0.4; }
+    var len = (n - 1) * gap, side = S.shift > 0 ? 1 : S.shift < 0 ? -1 : (r() < 0.5 ? -1 : 1), best = null;
     // a straight run across the frame beside the clock, on the open side
-    for (var i = 0; i < 160 && !best; i++) {
-      var sd = i % 3 < 2 ? side : -side, back = rf(r, -R - 3, R + 8), lat = sd * (R + 1.2 + len * 0.5 + rf(r, 0, 3) + Math.floor(i / 20) * 0.8 - len * rf(r, 0, 0.45));
+    var curvy = W.P.forms && /Squiggle|Slinky/.test(W.P.forms.barrier) && W.P.gen.light === 'Fluorescent Barrier' ? sqgPathFn(W.P.forms.path) : null;
+    // three passes, each looser: tight to the frame, wider, then anywhere the camera can see it
+    for (var i = 0; i < 480 && !best; i++) {
+      var pass = i < 160 ? 0 : i < 320 ? 1 : 2, far = pass === 2 ? 2.2 : pass === 1 ? 1.5 : 1;
+      var sd = i % 3 < 2 ? side : -side, back = rf(r, -R - 3, (R + 8) * far), lat = sd * (R + 1.2 + len * 0.5 + rf(r, 0, 3 * far) + Math.floor((i % 160) / 20) * 0.8 - len * rf(r, 0, 0.45));
       var cx = c.dir.x * back + c.right.x * lat, cz = c.dir.z * back + c.right.z * lat, ok = true;
-      for (var k = -2; k <= 2 && ok; k++) { var t = k / 2 * len / 2, xx = cx + c.right.x * t, zz = cz + c.right.z * t; ok = W.free(xx, zz, 0.45) && gen_inside(S, xx, zz, 0.6) && xx * xx + zz * zz > (R + 0.8) * (R + 0.8); }
+      // test where the tubes will actually stand: the row turns to face the camera from (cx, cz)
+      var tdx = c.pos.x - cx, tdz = c.pos.z - cz, tl = Math.sqrt(tdx * tdx + tdz * tdz) || 1; tdx /= tl; tdz /= tl;
+      for (var k = 0; k < n && ok; k += curvy ? 2 : Math.max(1, Math.floor(n / 4))) {
+        var lx = -len / 2 + k * gap, lz = curvy ? 1.7 * curvy(n > 1 ? k / (n - 1) : 0) : 0;
+        var xx = cx + tdz * lx + tdx * lz, zz = cz - tdx * lx + tdz * lz;
+        ok = W.free(xx, zz, pass === 2 ? 0.32 : 0.45) && gen_inside(S, xx, zz, 0.6) && xx * xx + zz * zz > (R + 0.8) * (R + 0.8);
+      }
       var nd = ok && gen_ndc(S, cx, 0.6 + gen_gy(S, cx, cz), cz);
-      if (ok && nd.dep > 2 && Math.abs(nd.x) < (i < 110 ? 0.6 : 0.85) && nd.y > -0.95) best = [cx, cz];
+      if (ok && nd.dep > 2 && Math.abs(nd.x) < (i < 110 ? 0.6 : pass < 2 ? 0.85 : 0.97) && nd.y > -0.95 && nd.y < 0.9) best = [cx, cz];
     }
+    if (W.P.forms) W.P.forms.built = !!best;
     if (!best) return;
-    for (k = -2; k <= 2; k++) { var t2 = k / 2 * len / 2; W.claim(best[0] + c.right.x * t2, best[1] + c.right.z * t2, 0.5); }
+    for (k = -2; k <= 2; k++) { var t2 = k / 2 * len / 2; W.claim(best[0] + c.right.x * t2, best[1] + c.right.z * t2, curvy ? 1.9 : 0.5); }
     var grp = new THREE.Group(); grp.position.set(best[0], gen_gy(S, best[0], best[1]), best[1]);
     grp.rotation.y = Math.atan2(c.pos.x - best[0], c.pos.z - best[1]);   // local +z to the camera, x along the row
-    var pan = gen_inst(new THREE.BoxBufferGeometry(0.1, 1.22, 0.08), std('#E9E9E6', 0.5, 0.3), n, true);
-    var tg = new THREE.CylinderBufferGeometry(0.019, 0.019, 1.17, 8);
-    var mA = W.glow(glowMat(pair[0], 0.9), 0.9, 3.4), mB = W.glow(glowMat(pair[1], 0.9), 0.9, 3.4);
-    mA.color = C(pair[0]).lerp(C('#FFFFFF'), 0.6); mB.color = C(pair[1]).lerp(C('#FFFFFF'), 0.6);
-    var ta = gen_inst(tg, mA, n, false), tb = gen_inst(tg, mB, n, false), m4 = new THREE.Matrix4();
+    // Barrier Form (54-squiggle-forms.js): Straight is Flavin's row; Squiggle lays the row along a
+    // real Squiggle's curve, so from above the barrier draws it; Slinky turns tubes into hoops along
+    // that curve; Bold doubles the tube; Ribbed darkens every third bay, as Ribbed Squiggles do
+    var form = (W.P.forms && W.P.forms.barrier) || 'Straight', curved = form === 'Squiggle' || form === 'Slinky';
+    var yAt = curved ? sqgPathFn(W.P.forms.path) : function () { return 0; }, A = curved ? 1.7 : 0, lay = [];
     for (i = 0; i < n; i++) {
-      var x = -len / 2 + i * gap;
-      pan.setMatrixAt(i, m4.makeTranslation(x, 0.63, 0));
-      ta.setMatrixAt(i, m4.makeTranslation(x, 0.63, 0.06));
-      tb.setMatrixAt(i, m4.makeTranslation(x, 0.63, -0.06));
+      var u = n > 1 ? i / (n - 1) : 0, du = 0.5 / Math.max(1, n - 1);
+      var dz = A * (yAt(Math.min(1, u + du)) - yAt(Math.max(0, u - du)));
+      lay.push([-len / 2 + i * gap, A * yAt(u), Math.atan2(-dz, gap)]);
     }
-    grp.add(pan); grp.add(ta); grp.add(tb);
-    // Chromie Spectrum: every tube its own colour along the Squiggle's run, reversed on the far side
-    if (pal && pal.spectrum) {
-      ta.visible = tb.visible = false;
+    var tr = form === 'Bold' ? 0.042 : 0.019, m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e4 = new THREE.Euler(), v4 = new THREE.Vector3(), one = new THREE.Vector3(1, 1, 1);
+    var tg = new THREE.CylinderBufferGeometry(tr, tr, 1.17, 8);
+    function at(L, off, y) { var th = L[2]; return m4.compose(v4.set(L[0] + Math.sin(th) * off, y, L[1] + Math.cos(th) * off), q4.setFromEuler(e4.set(0, th, 0)), one); }
+    function glowFor(hex) { var mm = W.glow(glowMat(hex, 0.9), 0.9, 3.4); mm.color = C(hex).lerp(C('#FFFFFF'), 0.6); return mm; }
+    var colorAt = function (i2, sideB) { return pal && pal.spectrum ? palColor(W, sideB ? n - 1 - i2 : i2, n, true) : pair[sideB ? 1 : 0]; };
+    if (form === 'Slinky') {
+      // glowing hoops standing across the path, like the circles of a Slinky Squiggle
+      var hoop = new THREE.TorusBufferGeometry(0.5, tr * 1.2, 8, 48);
       for (i = 0; i < n; i++) {
-        [[palColor(W, i, n, true), 0.06], [palColor(W, n - 1 - i, n, true), -0.06]].forEach(function (q) {
-          var mm = W.glow(glowMat(q[0], 0.9), 0.9, 3.4); mm.color = C(q[0]).lerp(C('#FFFFFF'), 0.6);
-          var tm = new THREE.Mesh(tg, mm); tm.position.set(-len / 2 + i * gap, 0.63, q[1]); grp.add(tm);
+        var hm = new THREE.Mesh(hoop, glowFor(colorAt(i, i % 2 === 1 && !(pal && pal.spectrum))));
+        hm.position.set(lay[i][0], 0.6, lay[i][1]); hm.rotation.y = lay[i][2] + Math.PI / 2; grp.add(hm);
+      }
+    } else {
+      var pan = gen_inst(new THREE.BoxBufferGeometry(form === 'Bold' ? 0.16 : 0.1, 1.22, form === 'Bold' ? 0.14 : 0.08), std('#E9E9E6', 0.5, 0.3), n, true);
+      var dark = std('#26282B', 0.6, 0.4), off = form === 'Bold' ? 0.09 : 0.06;
+      for (i = 0; i < n; i++) {
+        pan.setMatrixAt(i, at(lay[i], 0, 0.63));
+        var ribbed = form === 'Ribbed' && i % 3 === 2;
+        [0, 1].forEach(function (sb) {
+          var tm = new THREE.Mesh(tg, ribbed ? dark : glowFor(colorAt(i, sb === 1)));
+          tm.applyMatrix4(at(lay[i], sb ? -off : off, 0.63)); grp.add(tm);
         });
       }
+      grp.add(pan);
     }
     // light spilled on the ground, one colour each side
     var spill = function (hex, z) {

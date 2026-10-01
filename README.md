@@ -2,7 +2,7 @@
 
 **A long-form generative series by MLow.** Every token is a working clock for Marfa, Texas (30.3095° N, 104.0206° W), standing somewhere around town, keeping live Marfa time. The hash decides the clock, how it is made, where it stands, the weather, the wind, the film it is shot on, the label it wears, and what is hidden around it. The sun, the moon and the stars are computed for Marfa and for the minute you are looking.
 
-Working title. Prototype v0.7, October 2026. **Live site: https://0xmlow.github.io/marfa-light/** Made for the Art Blocks x OpenSea Artist Residency in Marfa.
+Working title. Prototype v0.8, October 2026. **Live site: https://0xmlow.github.io/marfa-light/** Made for the Art Blocks x OpenSea Artist Residency in Marfa.
 
 ![Marfa Light](proposal-site/img/clock-01-horizontal-sundial.jpg)
 
@@ -19,6 +19,7 @@ Working title. Prototype v0.7, October 2026. **Live site: https://0xmlow.github.
 | **Ground work** | Land art on the caliche: a stone line laid toward the token's alignment (after Richard Long), a stone circle, raked rings, or cairns. |
 | **Weathering** | Every detailed surface carries dust on the faces that look up, rain streaks on the faces that stand, grime where it meets the ground, and worn edges, all in world space and scaled by the token's Condition. |
 | **Palette** | About 47% of tokens keep Marfa's own colours. The rest borrow a palette from a collection this work honours, with the artists' permission, for the light and the people in the scene (the fluorescent barrier and its spill, visitors' clothes, luminaria bags, the courts' inlays): **Chromie Spectrum** (12%), the hue run of a real Squiggle from Snowfro's own colour maths, one colour per tube along the barrier; Friendship Bracelets palettes by Alexis André's names (**Marfa Sunset** 9%, PURP, Twinkle in Pink, In the Mountains, MGoBlue!, Neon Lit Diner), sampled from Art Blocks' renders; **NimBuds** (9%) and **NimTeens** (4%), hex colours from Bryan Brinkman's scripts. The sky, stone and clock keep their own colours. See `src/53-palettes.js`. |
+| **Squiggle forms** | Ideas from the honoured works, made into Marfa things. **Barrier Form** (with a fluorescent barrier): Straight (Flavin's row), Squiggle (the row laid on a real Squiggle's curve, so from above it traces it), Slinky (hoops of light along that curve), Bold, Ribbed (every third bay dark). **Label Tie**: the safety orange zip tie, or with a borrowed palette a friendship bracelet woven round the label post. **Bloom Tint**: some wildflowers take the palette. **Skywriting** (8%, daylight): every hour on the hour a plane writes the token's own Squiggle across the sky; the smoke spreads on the wind and is gone by the next hour. See `src/54-squiggle-forms.js`. |
 | **Sky** | Clear, Scattered, Monsoon (lightning at night), Dust, Blue Norther. The sun, moon phase and stars are real. |
 | **Film** | Seven stocks: Clean, Kodachrome, Ektachrome, Velvia, Cinestill (halation), Polaroid, Tri-X (black and white). |
 | **Label** | Every clock wears a museum label in quotation marks with one safety orange zip tie. |

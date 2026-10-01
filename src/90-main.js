@@ -56,13 +56,16 @@
     // borrowed palettes (53-palettes.js), from their own stream
     var palette = typeof palPlan === 'function' ? palPlan(hash) : null;
     if (palette) for (var pk in palette.features) features[pk] = palette.features[pk];
+    // Squiggle forms, the woven tie, painted bloom, skywriting (54-squiggle-forms.js)
+    var forms = typeof formsPlan === 'function' ? formsPlan(hash, gen, place, palette) : null;
+    if (forms) for (var fk in forms.features) features[fk] = forms.features[fk];
     features['Easter Eggs'] = eggs.join(' · ');
     features['Egg Count'] = eggs.length;
     if (eggs.indexOf('First Eye Flower') >= 0) features['Witness Bloom'] = 'Solar-responsive / six bone petals';
     if (eggs.indexOf('Chromie Squiggle') >= 0) { var sq = sqgPick(hash); features['Chromie Squiggle'] = '#' + sq.id; features['Squiggle Type'] = sq.type; if (sq.spectrum !== 'Normal') features['Squiggle Spectrum'] = sq.spectrum; }
     if (eggs.indexOf('Friendship Bracelets') >= 0) { var fb = brcPick(hash); features['Friendship Bracelet'] = '#' + fb.id; features['Bracelet Palette'] = fb.palette; }
     return {
-      gen: gen, observatory: observatory, align: align, palette: palette,
+      gen: gen, observatory: observatory, align: align, palette: palette, forms: forms,
       hash: hash, seed: seed, clock: clock, place: place, material: material, sky: sky, wind: wind, film: film, tag: tag,
       eggs: eggs, clockTraits: ct, camAz: camAz, camK: camK, camHk: camHk, windAz: r() * 360,
       stillUtc: stillUtc, stillLabel: 'APR ' + day + ' 2027 ' + pad2(hh) + ':' + pad2(mi),
@@ -82,9 +85,12 @@
     face.position.set(0, 1.02, 0.02); face.rotation.x = -0.35; g.add(face);
     var back = box(face.userData.w + 0.02, 0.38, 0.02, mtl('#2A2C30', 'brushed', 0.4, 0.8, 0.5)); back.position.set(0, 1.02, 0); back.rotation.x = -0.35; g.add(back);
     // one safety orange strap, zip-tied round the post
-    var strap = new THREE.Mesh(new THREE.TorusBufferGeometry(0.045, 0.012, 6, 16), std('#FF6B00', 0.6));
-    strap.rotation.x = Math.PI / 2; strap.position.y = 0.62; g.add(strap);
-    var tail = box(0.012, 0.09, 0.02, std('#FF6B00', 0.6)); tail.position.set(0.05, 0.58, 0); tail.rotation.z = 0.3; g.add(tail);
+    // (or, with a borrowed palette, a friendship bracelet woven round it)
+    if (!(typeof labelTie === 'function' && labelTie(W, g, 0.62))) {
+      var strap = new THREE.Mesh(new THREE.TorusBufferGeometry(0.045, 0.012, 6, 16), std('#FF6B00', 0.6));
+      strap.rotation.x = Math.PI / 2; strap.position.y = 0.62; g.add(strap);
+      var tail = box(0.012, 0.09, 0.02, std('#FF6B00', 0.6)); tail.position.set(0.05, 0.58, 0); tail.rotation.z = 0.3; g.add(tail);
+    }
     var d = W.cam.dir, R = hero.R + 0.6;
     var side = (W.P.seed % 2 ? 1 : -1);
     g.position.set(-d.x * R + W.cam.right.x * side * R * 0.45, 0, -d.z * R + W.cam.right.z * side * R * 0.45);
@@ -536,10 +542,10 @@
   // EXPORTS, and the token itself
   // =====================================================================
   root.marfaLight = {
-    version: '0.7', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
+    version: '0.8', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
     clocks: CLOCK_DEFS, places: PLACE_DEFS, eggs: EGG_DEFS,
     // the Art Blocks exhibits: draw a real Squiggle by token hash onto any canvas
-    exhibits: { squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },
+    exhibits: { squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, labelTie: function (palette, group, y) { return labelTie({ P: { palette: palette } }, group, y); }, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },
     marfaTime: marfaTime, marfaUtc: marfaUtc, sunPos: sunPos, moonPos: moonPos, sunEvents: sunEvents, moonEvents: moonEvents
   };
   root.calculateFeatures = function (tokenData) { return plan(tokenData.hash).features; };
