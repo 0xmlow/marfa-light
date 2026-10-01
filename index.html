@@ -312,6 +312,14 @@
     .facts { grid-template-columns: minmax(0, 1fr); }
     .facts div:nth-child(even) { padding-left: 0; border-left: 0; }
   }
+  .reference-panel {padding:24px;border-top:1px solid var(--line)}
+  .reference-panel p{max-width:850px}.reference-panel h3{margin:12px 0}
+  #referenceButtons{display:flex;flex-wrap:wrap;gap:10px}
+  #referenceDialog{background:var(--bg);color:var(--ink);border:1px solid var(--line);width:min(96vw,1000px);max-height:96dvh;padding:18px}
+  #referenceDialog::backdrop{background:rgba(0,0,0,.82)}
+  #referenceDialog .ref-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+  #referenceDialog iframe{display:block;width:100%;height:65dvh;background:#111;border:0;margin:12px 0}
+  #referenceDialog p{font:12px/1.6 var(--mono)}
 </style>
 
 <header class="bar">
@@ -359,6 +367,7 @@
             <button type="button" id="mLive" aria-pressed="true">Live</button>
             <button type="button" id="mLapse" aria-pressed="false">Time-lapse</button>
             <button type="button" id="mRes" aria-pressed="false">Residency</button>
+            <button type="button" id="mAlign" aria-pressed="false">Alignment</button>
           </div>
         </div>
         <div class="cell c-hour"><label class="lab" for="scrub">Hour of the day</label>
@@ -378,6 +387,7 @@
         </div>
       </div>
       <div class="tray" id="tray" hidden></div>
+      <div class="reference-panel"><p id="alignmentNote" class="lab">Every token keeps one annual appointment with the sun. Choose Alignment to see it.</p><p><a href="studies/">Compare the submitted and developed work</a> · <a href="arcade/">Enter the arcade</a></p><h3>In dialogue with Art Blocks</h3><p>The landscape scores and paint are MLow’s original systems. On this website, the four reference displays show official artwork previews; choose a work to run its original Art Blocks player. The standalone token retains credited MLow studies.</p><div id="referenceButtons"></div><p id="referenceStatus" class="lab" aria-live="polite"></p></div>
       <div class="label">
         <div class="id">
           <span class="lab">Wall label</span>
@@ -561,7 +571,7 @@
           <li>The casita, a desk, and reliable internet. I bring my own machines, a camera, a gray card, and a plumb line.</li>
           <li>The casita's exact coordinates, and permission to set a temporary gnomon and shoot time-lapse on the lot.</li>
           <li>The gallery's displays for the closing session.</li>
-          <li>One conversation with Art Blocks engineering in week one on Studio script limits and the three.js r124 dependency. The script is about 635 KB minified today.</li>
+          <li>One conversation with Art Blocks engineering in week one on Studio script limits and the three.js r124 dependency. The script is about 745 KB minified in v0.9.</li>
         </ul>
       </div>
     </div>
@@ -599,12 +609,14 @@
     <span><a href="https://mlow.xyz">mlow.xyz</a> · <a href="https://mlow.nyc">mlow.nyc</a> · <a href="https://n3wyorkers.com">n3wyorkers.com</a> · <a href="https://superrare.com/Degens">SuperRare</a></span>
   </div>
   <div class="wrap end">Marfa <span id="endTime">time</span></div>
-  <div class="wrap"><span class="mono muted">Marfa Light is a working title. Prototype v0.8, October 2026. No supply, chain, or price has been set.</span></div>
+  <div class="wrap"><span class="mono muted">Marfa Light is a working title. Prototype v0.9, October 2026. No supply, chain, or price has been set.</span></div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
+<dialog id="referenceDialog" aria-labelledby="referenceTitle"><div class="ref-head"><h3 id="referenceTitle">Art Blocks reference</h3><button class="btn" id="referenceClose">Close</button></div><iframe id="referenceFrame" title="Original Art Blocks artwork" allow="autoplay; fullscreen"></iframe><p id="referenceCredit"></p><p><a id="referenceDirect" target="_blank" rel="noopener">Open the player directly</a> · <a id="referenceToken" target="_blank" rel="noopener">View on Art Blocks</a> · <button class="btn" id="referenceRetry">Restart piece</button></p><p>Some pieces need time or a click to begin. While the artwork has keyboard focus, use the Close button to return.</p></dialog>
+<script src="studies/three-r124.min.js"></script>
 <script>window.MARFA_LIGHT_GALLERY = true;</script>
-<script src="marfa-light.js"></script>
+<script src="marfa-light.js?v=0.9"></script>
+<script src="reference-viewer.js?v=0.9"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
@@ -805,7 +817,7 @@
   Object.keys(L.clocks).forEach(function (k) { var o = el('option', null, k); o.value = k; $('pickClock').appendChild(o); });
   Object.keys(L.films).forEach(function (k) { var o = el('option', null, k); o.value = k; $('pickFilm').appendChild(o); });
   L.views.forEach(function (k) { var o = el('option', null, k); o.value = k; $('pickView').appendChild(o); });
-  function setPressed() { [['mLive','live'],['mLapse','lapse'],['mRes','still']].forEach(function (q) { $(q[0]).setAttribute('aria-pressed', mode === q[1] ? 'true' : 'false'); }); }
+  function setPressed() { [['mLive','live'],['mLapse','lapse'],['mRes','still'],['mAlign','alignment']].forEach(function (q) { $(q[0]).setAttribute('aria-pressed', mode === q[1] ? 'true' : 'false'); }); }
   function label() {
     var F = ctl.features, spec = $('spec'); spec.textContent = '';
     $('lClock').textContent = F.Clock;
@@ -829,7 +841,7 @@
     try {
       ctl = L.create(hero, h, { mode: mode === 'held' ? 'still' : mode, overlayHost: $('screen'), onSave: function (r, kind) { keep(r, kind); } });
       if (mode === 'held') ctl.setTime(heldUtc());
-      ctl.start(); label(); $('poster').hidden = true; tick();
+      ctl.start(); if (window.MarfaReferences) window.MarfaReferences.attach(ctl); label(); $('poster').hidden = true; tick();
       try { history.replaceState(null, '', '#' + h); } catch (e) { }
     } catch (e) { $('hud1').textContent = 'This browser could not start WebGL'; ctl = null; }
   }
@@ -839,15 +851,25 @@
     var d = ($('pickDate').value || '').split('-'), t = L.marfaTime(ctl ? ctl.getTime().utc : now());
     return L.marfaUtc(+d[0] || t.y, +d[1] || t.mo, +d[2] || t.d, hh, mm);
   }
-  $('mLive').onclick = function () { mode = 'live'; setPressed(); if (ctl) ctl.setMode('live'); };
+  $('mAlign').onclick = function () {
+    if (!ctl || !ctl.plan.align) return;
+    var a = ctl.plan.align; mode = 'alignment'; setPressed(); ctl.setTime(a.utc);
+    if (a.at) {
+      var m = new THREE.Vector3().fromArray(a.at.M), g = new THREE.Vector3().fromArray(a.at.G), mid = m.clone().lerp(g,0.5), delta = g.clone().sub(m), d = Math.max(7,delta.length()*1.4);
+      var side = new THREE.Vector3(-delta.z,0,delta.x).normalize();
+      ctl.setCamera(mid.clone().addScaledVector(side,d).add(new THREE.Vector3(0,d*0.55,0)),mid);
+    }
+    $('alignmentNote').textContent = a.event + ' · ' + a.when + ' · ' + (a.at ? 'The gate and its minute register' : 'This token keeps the date without a built gate');
+  };
+  $('mLive').onclick = function () { mode = 'live'; setPressed(); if (ctl) { ctl.setCamera(null); ctl.setMode('live'); } };
   $('mLapse').onclick = function () { mode = 'lapse'; setPressed(); if (ctl) ctl.setMode('lapse'); };
-  $('mRes').onclick = function () { mode = 'still'; setPressed(); if (ctl) ctl.setMode('still'); };
+  $('mRes').onclick = function () { mode = 'still'; setPressed(); if (ctl) { ctl.setCamera(null); ctl.setMode('still'); } };
   $('scrub').addEventListener('input', function () { scrubbing = true; mode = 'held'; setPressed(); $('scrubVal').textContent = hm(+this.value); if (ctl) ctl.setClock(heldUtc(), false); });
   $('scrub').addEventListener('change', function () { scrubbing = false; });
   $('pickDate').addEventListener('change', function () { if (!this.value || !ctl) return; mode = 'held'; setPressed(); ctl.setTime(heldUtc()); });
   $('pickClock').onchange = function () { var h = findClock(this.value); if (h) load(h); };
   $('pickFilm').onchange = function () { if (ctl) ctl.setFilm(this.value); };
-  $('pickView').onchange = function () { if (ctl) ctl.setView(this.value); };
+  $('pickView').onchange = function () { if (ctl) { ctl.setCamera(null); ctl.setView(this.value); } };
   $('rand').onclick = function () { load(randomHash()); };
   function goHash() { var v = $('hashIn').value.trim().toLowerCase(); if (/^0x[0-9a-f]{64}$/.test(v)) load(v); else $('sMsg').textContent = 'A token hash is 0x and 64 hex digits'; }
   $('hashGo').onclick = goHash;

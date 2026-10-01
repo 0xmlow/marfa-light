@@ -8,6 +8,10 @@
 
   /* Where each project lives in the building. Names must match projects.json keys. */
   var LAYOUT = [
+    { name: 'Ringers', artist: 'Dmitri Cherniak', room: 'studies', x: -6.94, z: 9.6, face: 'east', frame: true },
+    { name: 'Fidenza', artist: 'Tyler Hobbs', room: 'studies', x: -6.94, z: -10.3, face: 'east', frame: true },
+    { name: 'Archetype', artist: 'Kjetil Golid', room: 'studies', x: 6.94, z: -10.3, face: 'west', frame: true },
+    { name: 'Meridian', artist: 'Matt DesLauriers', room: 'studies', x: 4.5, z: -13.94, face: 'south', frame: true },
     { name: 'Chromie Squiggle',      artist: 'Snowfro', room: 'snowfro', x: -6.52, z: 6,   face: 'east' },
     { name: '///',                   artist: 'Snowfro', room: 'snowfro', x: 6.52,  z: 6,   face: 'west' },
     { name: 'LIFT (a self portrait)', artist: 'Snowfro', room: 'snowfro', x: -6.52, z: 0,   face: 'east' },
@@ -19,6 +23,7 @@
     { name: 'Friendship Bracelets',  artist: 'Alexis André', room: 'entrance', x: 6.94, z: 9.6, face: 'west', frame: true }
   ];
   var ROOMS = {
+    studies: { title: 'The reference collection', blurb: 'Original minted Ringers, Fidenza, Archetype and Meridian, played through Art Blocks. These are the works in dialogue with the landscape scores.' },
     snowfro: { title: 'Snowfro Arcade', blurb: 'Onchain experiments by Erick Calderon, played on the cabinets of the main hall.' },
     nim: { title: 'The Nim Room', blurb: 'Bryan Brinkman’s NimBuds and NimTeens, through the doorway at the end of the hall.' },
     entrance: { title: 'At the entrance', blurb: 'A single screen by the door.' }
@@ -34,7 +39,7 @@
     var s = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     return s || 'slashes';
   }
-  function thumb(item) { return 'img/' + slug(item.name) + '.jpg'; }
+  function thumb(item) { return item.p.image || 'img/' + slug(item.name) + '.jpg'; }
 
   /* ---------- modal ---------- */
   var dlg = $('play'), frame = $('playFrame'), frameWrap = $('frameWrap'), frameMsg = $('frameMsg');
@@ -57,6 +62,8 @@
     frameMsg.hidden = false;
     frame.title = it.name + ', token ' + t.n + ', live';
     frame.src = url;
+    $('directPlay').href = url;
+    $('playCredit').textContent = p.permission || "Shown with the artist's permission. Runs the original onchain script through Art Blocks' generator.";
     $('playToken').textContent = 'Token #' + t.n + '  ·  ' + (state.idx + 1) + ' of ' + p.tokens.length + (p.chain === 42161 ? '  ·  Arbitrum' : '');
     $('tokLink').href = TOKEN_PAGE + p.chain + '/' + p.contract + '/' + t.id;
     $('tokLink').setAttribute('aria-label', 'View ' + it.name + ' token ' + t.n + ' on Art Blocks (opens in a new tab)');
@@ -91,7 +98,7 @@
   frame.addEventListener('load', function () {
     if (!state.open || frame.src === 'about:blank') return;
     frameMsg.hidden = true;
-    try { frame.focus(); } catch (e) {}
+    // Keep keyboard focus on the controls until the visitor activates the artwork.
   });
   dlg.addEventListener('close', function () {
     state.open = false;
@@ -104,6 +111,7 @@
   $('playClose').addEventListener('click', closePlay);
   $('tokPrev').addEventListener('click', function () { step(-1); });
   $('tokNext').addEventListener('click', function () { step(1); });
+  $('tokRetry').addEventListener('click', function () { showToken(); });
   $('tokRand').addEventListener('click', randomToken);
   window.addEventListener('resize', sizeFrame);
 
@@ -111,7 +119,7 @@
   var lastCardBtn = null;
   function buildList() {
     var root = $('cards');
-    ['snowfro', 'nim', 'entrance'].forEach(function (room) {
+    ['snowfro', 'nim', 'studies', 'entrance'].forEach(function (room) {
       var group = items.filter(function (i) { return i.room === room; });
       if (!group.length) return;
       var h = document.createElement('h2'); h.textContent = ROOMS[room].title; root.appendChild(h);
