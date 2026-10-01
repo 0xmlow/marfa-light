@@ -1,6 +1,6 @@
 {
   "name": "marfa-light",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "A long-form generative series by MLow. Every token is a working clock for Marfa, Texas, in 3D on three.js r124.",
   "private": true,
   "license": "SEE LICENSE IN LICENSE",

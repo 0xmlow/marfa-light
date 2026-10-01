@@ -59,13 +59,20 @@
     // Squiggle forms, the woven tie, painted bloom, skywriting (54-squiggle-forms.js)
     var forms = typeof formsPlan === 'function' ? formsPlan(hash, gen, place, palette) : null;
     if (forms) for (var fk in forms.features) features[fk] = forms.features[fk];
+    var resonance = resPlan(hash, gen, place, align, palette);
+    for (var rk in resonance.features) features[rk] = resonance.features[rk];
+    if (resonance.paintPalette) {
+      features['Label Tie'] = 'Woven, ' + resonance.paintPalette.name;
+      if (gen.bloom !== 'None' && gen.bloom !== 'Cholla in Bloom') features['Bloom Tint'] = resonance.paintPalette.name;
+    }
+    eggs.forEach(function (key) { if (RES_EXHIBITS[key]) { var ref = resReference(hash, RES_EXHIBITS[key][0]); features[ref.name + ' Reference'] = '#' + ref.n; } });
     features['Easter Eggs'] = eggs.join(' · ');
     features['Egg Count'] = eggs.length;
     if (eggs.indexOf('First Eye Flower') >= 0) features['Witness Bloom'] = 'Solar-responsive / six bone petals';
     if (eggs.indexOf('Chromie Squiggle') >= 0) { var sq = sqgPick(hash); features['Chromie Squiggle'] = '#' + sq.id; features['Squiggle Type'] = sq.type; if (sq.spectrum !== 'Normal') features['Squiggle Spectrum'] = sq.spectrum; }
     if (eggs.indexOf('Friendship Bracelets') >= 0) { var fb = brcPick(hash); features['Friendship Bracelet'] = '#' + fb.id; features['Bracelet Palette'] = fb.palette; }
     return {
-      gen: gen, observatory: observatory, align: align, palette: palette, forms: forms,
+      resonance: resonance, gen: gen, observatory: observatory, align: align, palette: palette, forms: forms,
       hash: hash, seed: seed, clock: clock, place: place, material: material, sky: sky, wind: wind, film: film, tag: tag,
       eggs: eggs, clockTraits: ct, camAz: camAz, camK: camK, camHk: camHk, windAz: r() * 360,
       stillUtc: stillUtc, stillLabel: 'APR ' + day + ' 2027 ' + pad2(hh) + ':' + pad2(mi),
@@ -135,6 +142,7 @@
     });
     if (typeof genBuild === 'function') genBuild(W, hero);
     if (typeof alnBuild === 'function') alnBuild(W, hero);
+    resBuild(W, hero);
     // surface wear follows the token's condition
     W.wear = { Pristine: 0.35, Weathered: 1, Dusted: 0.85, Overgrown: 0.8, Calcified: 0.7 }[P.gen && P.gen.condition] || 0.6;
     addLife(W);
@@ -227,8 +235,13 @@
       cm.color.copy(L.hor).lerp(L.sun, 0.25 * (1 - night)).lerp(C('#FFFFFF'), 0.45 * (1 - night));
       cm.emissive.copy(L.hor).multiplyScalar(0.35 * (1 - night)).add(L.zen.clone().multiplyScalar(1.1 * night));
     }
-    W.scene.fog.color.copy(u.hor.value).lerp(u.zen.value, 0.15);
     W.scene.fog.density = tune.fog;
+    W.scene.fog.color.copy(u.hor.value).lerp(u.zen.value, 0.15);
+    if (W.P.resonance) {
+      var air = W.P.resonance.air, low = 1 - sstep(2, 18, sun.el);
+      W.scene.fog.density *= air === 'Pearl Haze' ? 1.35 : air === 'Copper Veil' ? 1.2 : air === 'Blue Distance' ? 0.85 : 1;
+      W.scene.fog.color.lerp(C(air === 'Copper Veil' ? '#BF9878' : air === 'Blue Distance' ? '#7187AA' : '#DBD1C2'), (air === 'High Desert' ? 0 : 0.09) * low * (1 - night));
+    }
     W.glows.forEach(function (g) { g[0].emissiveIntensity = lerp(g[1], g[2], night); });
     W.lamps.forEach(function (l) { l.intensity = l.userData.full * night; });
     var level = L.ambient + L.direct * Math.max(Math.sin(Math.max(sun.el, 0) * D2R), 0.3) * cloudF;
@@ -542,10 +555,10 @@
   // EXPORTS, and the token itself
   // =====================================================================
   root.marfaLight = {
-    version: '0.8', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
+    version: '0.9', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
     clocks: CLOCK_DEFS, places: PLACE_DEFS, eggs: EGG_DEFS,
     // the Art Blocks exhibits: draw a real Squiggle by token hash onto any canvas
-    exhibits: { squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, labelTie: function (palette, group, y) { return labelTie({ P: { palette: palette } }, group, y); }, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },
+    exhibits: { reference: resReference, squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, labelTie: function (palette, group, y) { return labelTie({ P: { palette: palette } }, group, y); }, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },
     marfaTime: marfaTime, marfaUtc: marfaUtc, sunPos: sunPos, moonPos: moonPos, sunEvents: sunEvents, moonEvents: moonEvents
   };
   root.calculateFeatures = function (tokenData) { return plan(tokenData.hash).features; };

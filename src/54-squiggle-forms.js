@@ -45,11 +45,12 @@
   // returns true when it made a woven tie, so the plaque skips the zip tie
   function labelTie(W, g, y) {
     var p = pal_on(W); if (!p) return false;
-    var strands = 3, rr = seedRng(p.seed ^ 0x51ED);
+    var weave = W.P.resonance && W.P.resonance.weave, strands = weave === 'Double Twist' ? 6 : 3, rr = seedRng(p.seed ^ 0x51ED);
     for (var s = 0; s < strands; s++) {
       var pts = [];
       for (var k = 0; k <= 64; k++) {
-        var a = k / 64 * Math.PI * 2, w = Math.sin(a * 6 + s * Math.PI * 2 / strands);
+        var a = k / 64 * Math.PI * 2, w = Math.sin(a * (weave === 'Chevron' ? 10 : 6) + s * Math.PI * 2 / strands);
+        if (weave === 'Chevron') w = Math.asin(w) * 2 / Math.PI;
         pts.push(new THREE.Vector3(Math.cos(a) * (0.046 + w * 0.004), y + w * 0.009, Math.sin(a) * (0.046 + w * 0.004)));
       }
       var hex = palColor(W, s, strands, false), mat = std(hex, 0.85);

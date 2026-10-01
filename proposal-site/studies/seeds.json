@@ -1,0 +1,38 @@
+[
+  {
+    "hash": "0x2afd4a2ed0412e4533314c43de0af1d8af11cd38c83d83bfbf573ce81fa115a4",
+    "name": "Ordinary 1",
+    "hour": 18.5,
+    "pattern": "Contour Isobars"
+  },
+  {
+    "hash": "0xd6bccc0a053f17813327ed97faa2aa1d3853df392fd230332639e5c9e6971abb",
+    "name": "Ordinary 2",
+    "hour": 18.5,
+    "pattern": "Peg Constellation"
+  },
+  {
+    "hash": "0x5d716e2f8f9c986e00f4ad156bd8fb06ae9cf264cbf6857a6801ade401eda784",
+    "name": "Ordinary 3",
+    "hour": 18.5,
+    "pattern": "Flow Ribbons"
+  },
+  {
+    "hash": "0xa12c117f6c77a1feb8c77ece3f6dc4b0d0ba25c9db87626377cf863a70b0dc00",
+    "name": "Ordinary 4",
+    "hour": 18.5,
+    "pattern": "Recursive Terraces"
+  },
+  {
+    "hash": "0xc1ced4ea9ec052403e805fb1596f360cfedf78682f98d81e53837fca43f28a3e",
+    "name": "Ordinary 5",
+    "hour": 18.5,
+    "pattern": "Chromie Trace"
+  },
+  {
+    "hash": "0xcd66a7ae05878c448f4050dec6e0301bd8eadb22c806e67b1a3e79746ab2d02e",
+    "name": "Ordinary 6",
+    "hour": 18.5,
+    "pattern": "Flow Ribbons"
+  }
+]

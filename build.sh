@@ -7,11 +7,11 @@ OUT="${1:-marfa-light.js}"
 {
 cat <<'HEAD'
 /*
-  MARFA LIGHT (working title). Prototype v0.4, September 2026.
+  MARFA LIGHT (working title). Prototype v0.9, October 2026.
   Michael Low (MLow). mlow.xyz
 
   Every token is a working clock for Marfa, Texas, 30.3095 N 104.0206 W.
-  The hash picks one of 29 clocks and its variations, one of 19 places, the
+  The hash picks one of 29 clocks and its variations, one of 22 places, the
   material, the sky, the wind, the film stock, a quoted label, the easter eggs
   hidden around it, and a generative layer of lens, framing, condition, bloom,
   visitors, light work, birds, sky events and the rare anomaly. The sun, the moon, and the stars are computed for

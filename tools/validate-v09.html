@@ -1,0 +1,17 @@
+<!doctype html><meta charset="utf-8"><title>Marfa v0.9 GPU validation</title><style>body{background:#171e29;color:#ddd;font:14px monospace}canvas{width:480px;height:320px}pre{white-space:pre-wrap}</style><h1>GPU validation</h1><button id="run">Validate 100 tokens</button><p id="status">Ready</p><canvas id="canvas"></canvas><pre id="result"></pre><script src="../proposal-site/studies/three-r124.min.js"></script><script>window.MARFA_LIGHT_GALLERY=true;window.MARFA_GEN_STRICT=true;</script><script src="../marfa-light.js"></script><script>
+const L=marfaLight,canvas=document.querySelector('canvas'),out=document.querySelector('#result');
+const errors=[]; const ce=console.error;console.error=function(...a){errors.push(a.map(String).join(' '));ce.apply(console,a)};
+window.addEventListener('error',e=>errors.push(e.message));
+let x=317;function hash(){let h='0x';for(let j=0;j<64;j++){x=(Math.imul(x,1664525)+1013904223)>>>0;h+=((x>>>16)&15).toString(16);}return h;}
+document.querySelector('#run').onclick=async function(){this.disabled=true;let hashes=[],clocks=new Set(),patterns=new Set(),gates=0,geometryErrors=0,painted=0,records=[];
+for(let i=0;i<1200 && (clocks.size<29 || hashes.length<100);i++){let h=hash(),p=L.plan(h);if(hashes.length<71||!clocks.has(p.clock)||hashes.length<100){hashes.push(h);clocks.add(p.clock);}}
+const renderer=new THREE.WebGLRenderer({canvas,antialias:false,preserveDrawingBuffer:true});
+for(let i=0;i<hashes.length;i++){
+document.querySelector('#status').textContent=(i+1)+' / '+hashes.length;await new Promise(r=>setTimeout(r,20));let ctl;
+try{ctl=L.create(canvas,hashes[i],{renderer,mode:'still',interactive:false,overlay:false,maxPixelRatio:1,reducedMotion:true});const W=ctl.world,P=ctl.plan;patterns.add(P.resonance.pattern);let accents=0;const seen=new Set();W.root.traverse(o=>{if(o.material && o.material.userData && o.material.userData.res)accents++;if(o.geometry&&!seen.has(o.geometry)){seen.add(o.geometry);for(const a of Object.values(o.geometry.attributes)){if(a.array && !a.array.every(Number.isFinite))geometryErrors++;}}});painted+=accents>0?1:0;
+for(const utc of [L.marfaUtc(2027,4,17,13,45),L.marfaUtc(2027,4,17,19,50),P.align.utc]){ctl.setTime(utc);ctl.renderOnce();if(!Number.isFinite(W.exposure))throw Error('nonfinite exposure');}
+if(P.align.built)gates++;
+records.push({hash:hashes[i],clock:P.clock,pattern:P.resonance.pattern,segments:W.resonanceStats.segments,accents,gate:P.align.built||false,stats:ctl.stats()});
+}catch(e){errors.push(hashes[i]+': '+e.stack)}finally{if(ctl)ctl.dispose();}}
+renderer.dispose();const result={tokens:hashes.length,frames:hashes.length*3,clocks:[...clocks],patterns:[...patterns],gates,painted,geometryErrors,errors,records};out.textContent=JSON.stringify(result,null,2);document.querySelector('#status').textContent='COMPLETE: '+hashes.length+' tokens, '+errors.length+' errors, '+geometryErrors+' invalid geometries';};
+</script>

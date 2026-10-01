@@ -158,6 +158,7 @@
     var plate = textPlane([A.event.toUpperCase(), A.when + (A.rising ? '  SUNRISE' : '  SUNSET')], { bg: '#7A5C36', color: '#F2E6CF', font: FONT_MONO, height: 0.11, px: 30, pad: 0.4 });
     plate.rotation.x = -Math.PI / 2; plate.rotation.z = -face; plate.position.set(-hz.x * 0.52, 0.026, -hz.z * 0.52); mk.add(plate);
     shade(mk, false, true);
+    resAlignment(W, A, mk, g);
 
     // the marker answers the sun: a warm glow within a few minutes of the alignment
     var dm = disc.material; dm.emissive = C('#FFB869'); dm.emissiveIntensity = 0;
@@ -165,7 +166,8 @@
     W.onUpdate(function (ctx) {
       dirAzEl(ctx.sun.az, ctx.sun.el, sd);
       var off = Math.acos(clamp(sd.dot(u), -1, 1)) * R2D;
-      dm.emissiveIntensity = ctx.sun.el > 0 ? 1.6 * (1 - sstep(0.15, 0.9, off)) : 0;
+      var date = marfaTime(A.utc);
+      dm.emissiveIntensity = ctx.sun.el > 0 && ctx.t.mo === date.mo && ctx.t.d === date.d ? 1.6 * (1 - sstep(0.15, 0.9, off)) : 0;
     });
     W.pick(g, 'Alignment Gate', 'On ' + A.event.toLowerCase() + ', at ' + A.when.slice(-5) + ' as the sun ' + (A.rising ? 'rises' : 'sets') +
       ', the light passes through this ' + (A.gate === 'Twin Stones' ? 'gap' : A.gate.toLowerCase()) + ' and lands on the bronze marker. It happens once a year. Press A to go to the minute.');

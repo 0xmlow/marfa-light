@@ -8,6 +8,7 @@
     ['L', 'live Marfa time'],
     ['T', 'time-lapse'],
     ['S', 'the residency minute'],
+    ['A', 'the annual alignment minute'],
     ['[  ]', 'an hour back or on'],
     [',  .', 'a day back or on'],
     ['Space', 'hold time still'],

@@ -1,9 +1,9 @@
 /*
-  MARFA LIGHT (working title). Prototype v0.4, September 2026.
+  MARFA LIGHT (working title). Prototype v0.9, October 2026.
   Michael Low (MLow). mlow.xyz
 
   Every token is a working clock for Marfa, Texas, 30.3095 N 104.0206 W.
-  The hash picks one of 29 clocks and its variations, one of 19 places, the
+  The hash picks one of 29 clocks and its variations, one of 22 places, the
   material, the sky, the wind, the film stock, a quoted label, the easter eggs
   hidden around it, and a generative layer of lens, framing, condition, bloom,
   visitors, light work, birds, sky events and the rare anomaly. The sun, the moon, and the stars are computed for
@@ -900,7 +900,7 @@
   }
   // a textured standard material in one call: mtl('#hex', 'concrete', rough, metal, tileMetres)
   function mtl(hex, kind, rough, metal, tile) { return std(hex, rough, metal, { tex: kind, tile: tile }); }
-  function heroMat(name) { var d = MATERIALS[name] || MATERIALS.Concrete; return std(d.color, d.rough, d.metal, { tex: d.tex, tile: d.tile }); }
+  function heroMat(name) { var d = MATERIALS[name] || MATERIALS.Concrete; var m = std(d.color, d.rough, d.metal, { tex: d.tex, tile: d.tile }); m.userData.heroBase = true; return m; }
   function glowMat(hex, strength) {
     var m = std('#111418', 0.5, 0);
     m.emissive = C(hex); m.emissiveIntensity = strength == null ? 1 : strength;
@@ -14557,6 +14557,7 @@
     var plate = textPlane([A.event.toUpperCase(), A.when + (A.rising ? '  SUNRISE' : '  SUNSET')], { bg: '#7A5C36', color: '#F2E6CF', font: FONT_MONO, height: 0.11, px: 30, pad: 0.4 });
     plate.rotation.x = -Math.PI / 2; plate.rotation.z = -face; plate.position.set(-hz.x * 0.52, 0.026, -hz.z * 0.52); mk.add(plate);
     shade(mk, false, true);
+    resAlignment(W, A, mk, g);
 
     // the marker answers the sun: a warm glow within a few minutes of the alignment
     var dm = disc.material; dm.emissive = C('#FFB869'); dm.emissiveIntensity = 0;
@@ -14564,7 +14565,8 @@
     W.onUpdate(function (ctx) {
       dirAzEl(ctx.sun.az, ctx.sun.el, sd);
       var off = Math.acos(clamp(sd.dot(u), -1, 1)) * R2D;
-      dm.emissiveIntensity = ctx.sun.el > 0 ? 1.6 * (1 - sstep(0.15, 0.9, off)) : 0;
+      var date = marfaTime(A.utc);
+      dm.emissiveIntensity = ctx.sun.el > 0 && ctx.t.mo === date.mo && ctx.t.d === date.d ? 1.6 * (1 - sstep(0.15, 0.9, off)) : 0;
     });
     W.pick(g, 'Alignment Gate', 'On ' + A.event.toLowerCase() + ', at ' + A.when.slice(-5) + ' as the sun ' + (A.rising ? 'rises' : 'sets') +
       ', the light passes through this ' + (A.gate === 'Twin Stones' ? 'gap' : A.gate.toLowerCase()) + ' and lands on the bronze marker. It happens once a year. Press A to go to the minute.');
@@ -14675,7 +14677,7 @@
     }
     return P;
   }
-  function pal_on(W) { var p = W.P.palette; return p && p.name !== 'Marfa' ? p : null; }
+  function pal_on(W) { var p = W.P.resonance && W.P.resonance.paintPalette || W.P.palette; return p && p.name !== 'Marfa' ? p : null; }
   // the Squiggle's colour at t (0..1) along its run, as Snowfro computes it
   function pal_hue(p, t) {
     var sp = p.spectrum, color = t * sp.n;
@@ -14740,11 +14742,12 @@
   // returns true when it made a woven tie, so the plaque skips the zip tie
   function labelTie(W, g, y) {
     var p = pal_on(W); if (!p) return false;
-    var strands = 3, rr = seedRng(p.seed ^ 0x51ED);
+    var weave = W.P.resonance && W.P.resonance.weave, strands = weave === 'Double Twist' ? 6 : 3, rr = seedRng(p.seed ^ 0x51ED);
     for (var s = 0; s < strands; s++) {
       var pts = [];
       for (var k = 0; k <= 64; k++) {
-        var a = k / 64 * Math.PI * 2, w = Math.sin(a * 6 + s * Math.PI * 2 / strands);
+        var a = k / 64 * Math.PI * 2, w = Math.sin(a * (weave === 'Chevron' ? 10 : 6) + s * Math.PI * 2 / strands);
+        if (weave === 'Chevron') w = Math.asin(w) * 2 / Math.PI;
         pts.push(new THREE.Vector3(Math.cos(a) * (0.046 + w * 0.004), y + w * 0.009, Math.sin(a) * (0.046 + w * 0.004)));
       }
       var hex = palColor(W, s, strands, false), mat = std(hex, 0.85);
@@ -14819,6 +14822,312 @@
     W.pick(im, 'Skywriting', 'Every hour, on the hour, a plane writes Chromie Squiggle #' + F.squiggle + ' across the sky over Marfa. The smoke spreads on the wind and is gone by the next hour.');
   }
 
+  // Minted token IDs verified against token.artblocks.io on 2026-10-01.
+  var REF_IDS = {"Ringers":[[0,"13000000"],[1,"13000001"],[2,"13000002"],[3,"13000003"],[4,"13000004"],[5,"13000005"],[6,"13000006"],[7,"13000007"],[8,"13000008"],[9,"13000009"],[10,"13000010"],[11,"13000011"],[12,"13000012"],[13,"13000013"],[14,"13000014"],[15,"13000015"],[16,"13000016"],[17,"13000017"],[18,"13000018"],[19,"13000019"],[20,"13000020"],[21,"13000021"],[22,"13000022"],[23,"13000023"],[24,"13000024"],[25,"13000025"],[26,"13000026"],[27,"13000027"],[28,"13000028"],[29,"13000029"],[30,"13000030"],[31,"13000031"],[32,"13000032"],[33,"13000033"],[34,"13000034"],[35,"13000035"],[36,"13000036"],[37,"13000037"],[38,"13000038"],[39,"13000039"]],"Fidenza":[[0,"78000000"],[1,"78000001"],[2,"78000002"],[3,"78000003"],[4,"78000004"],[5,"78000005"],[6,"78000006"],[7,"78000007"],[8,"78000008"],[9,"78000009"],[10,"78000010"],[11,"78000011"],[12,"78000012"],[13,"78000013"],[14,"78000014"],[15,"78000015"],[16,"78000016"],[17,"78000017"],[18,"78000018"],[19,"78000019"],[20,"78000020"],[21,"78000021"],[22,"78000022"],[23,"78000023"],[24,"78000024"],[25,"78000025"],[26,"78000026"],[27,"78000027"],[28,"78000028"],[29,"78000029"],[30,"78000030"],[31,"78000031"],[32,"78000032"],[33,"78000033"],[34,"78000034"],[35,"78000035"],[36,"78000036"],[37,"78000037"],[38,"78000038"],[39,"78000039"]],"Archetype":[[0,"23000000"],[1,"23000001"],[2,"23000002"],[3,"23000003"],[4,"23000004"],[5,"23000005"],[6,"23000006"],[7,"23000007"],[8,"23000008"],[9,"23000009"],[10,"23000010"],[11,"23000011"],[12,"23000012"],[13,"23000013"],[14,"23000014"],[15,"23000015"],[16,"23000016"],[17,"23000017"],[18,"23000018"],[19,"23000019"],[20,"23000020"],[21,"23000021"],[27,"23000027"],[28,"23000028"],[29,"23000029"],[30,"23000030"],[31,"23000031"],[32,"23000032"],[33,"23000033"],[34,"23000034"],[35,"23000035"],[36,"23000036"],[37,"23000037"],[38,"23000038"],[39,"23000039"]],"Meridian":[[0,"163000000"],[1,"163000001"],[2,"163000002"],[3,"163000003"],[4,"163000004"],[5,"163000005"],[6,"163000006"],[7,"163000007"],[8,"163000008"],[9,"163000009"],[10,"163000010"],[11,"163000011"],[12,"163000012"],[13,"163000013"],[14,"163000014"],[15,"163000015"],[16,"163000016"],[17,"163000017"],[18,"163000018"],[19,"163000019"]]};
+
+  // MLow's original spatial studies, informed by the credited collections.
+  // This is NOT those artists' code or a reproduction of a minted output.
+  // Independent streams preserve all v0.8 token selections.
+  var RES_SOURCES = {
+    'Peg Constellation': 'Ringers / Dmitri Cherniak',
+    'Flow Ribbons': 'Fidenza / Tyler Hobbs',
+    'Recursive Terraces': 'Archetype / Kjetil Golid',
+    'Contour Isobars': 'Meridian / Matt DesLauriers',
+    'Chromie Trace': 'Chromie Squiggle / Snowfro',
+    'Woven Paths': 'Friendship Bracelets / Alexis André'
+  };
+  // Exact RGB samples from Art Blocks' official #0 preview images, 2026-10-01.
+  // A sampled subset, not the complete original algorithm's palette definition.
+  var RES_PALETTES = {
+    'Ringers #0 / Ivory and Gold': { by: 'Ringers #0 / Dmitri Cherniak', colors: ['#F5F5F5', '#2B2B2B', '#F2C945'] },
+    'Fidenza #0 / Golf Socks': { by: 'Fidenza #0 / Tyler Hobbs', colors: ['#66806A', '#EBE4D8', '#264D2D', '#204973', '#F2C7C2', '#F29191', '#FCD9B1'] },
+    'Archetype #0 / Red Spider': { by: 'Archetype #0 / Kjetil Golid', colors: ['#F2DBBD', '#E93E48', '#050505'] },
+    'Meridian #0 / Shore': { by: 'Meridian #0 / Matt DesLauriers', colors: ['#E9E3D5', '#D6CE84', '#0B4A63', '#D69D02', '#328191'] }
+  };
+  function resPlan(hash, gen, place, align, palette) {
+    var r = hashRng(hash, 8601), indoor = !!GEN_INDOOR[place];
+    var pattern = pickW(r, [['Peg Constellation', 17], ['Flow Ribbons', 22], ['Recursive Terraces', 15], ['Contour Isobars', 20], ['Chromie Trace', 14], ['Woven Paths', 12]]);
+    var density = pickW(r, [['Spare', 25], ['Measured', 53], ['Abundant', 22]]);
+    var scale = pickW(r, [['Intimate', 30], ['Field', 52], ['Expansive', 18]]);
+    var rhythm = pick(r, ['Sequence', 'Alternating', 'Grouped', 'Single Accent']);
+    var finish = pickW(r, [['Mineral Inlay', 42], ['Satin Enamel', 40], ['Chalk Wash', 18]]);
+    var paint = pickW(r, [['Tidal Bands', 38], ['Vertical Seams', 26], ['Contour Paint', 23], ['Basal Band', 13]]);
+    var air = pickW(r, [['High Desert', 38], ['Pearl Haze', 25], ['Copper Veil', 23], ['Blue Distance', 14]]);
+    var score = pickW(r, [['Open Arc', 42], ['Counterpoint', 33], ['Solar Axis', 25]]);
+    var marker = pick(r, ['Sixty Petals', 'Braided Halo', 'Concentric Register']);
+    var weave = pick(r, ['Three Strand', 'Double Twist', 'Chevron']);
+    var cut = pick(r, ['Close Grain', 'Cross Bedding', 'Long Vein']);
+    var grain = pickW(r, [['Fine', 35], ['Balanced', 45], ['Coarse', 20]]);
+    var extent = indoor ? 0.62 : scale === 'Intimate' ? 0.78 : scale === 'Expansive' ? 1.3 : 1;
+    var pitch = rf(r, 0.7, 1.8), phase = r() * Math.PI * 2, seed = Math.floor(r() * 4294967296) >>> 0;
+    var pr = hashRng(hash, 8603), pname = pickW(pr, [['Token Palette', 52], ['Ringers #0 / Ivory and Gold', 12], ['Fidenza #0 / Golf Socks', 12], ['Archetype #0 / Red Spider', 12], ['Meridian #0 / Shore', 12]]);
+    var sampled = RES_PALETTES[pname], paintPalette = sampled ? { name: pname, colors: sampled.colors, seed: seed, by: sampled.by } : null;
+    var source = RES_SOURCES[pattern];
+    var features = {
+      'Pigment Palette': sampled ? pname : palette.name, 'Pigment Source': sampled ? sampled.by + ' / sampled preview' : 'Token palette',
+      'Landscape Score': pattern, 'Score Reference': source, 'Score Density': density,
+      'Score Scale': indoor ? 'Interior' : scale, 'Score Composition': score,
+      'Pigment Rhythm': rhythm, 'Clock Accent': paint, 'Accent Finish': finish,
+      'Atmospheric Depth': air, 'Mineral Cut': cut, 'Surface Grain': grain
+    };
+    if (palette.name !== 'Marfa' || paintPalette) features['Tie Weave'] = weave;
+    if (align.gate !== 'None') { features['Alignment Register'] = marker; features['Alignment Approach'] = 'Twelve minute stations'; }
+    return { paintPalette: paintPalette, pattern: pattern, density: density, scale: scale, rhythm: rhythm, finish: finish, paint: paint, air: air,
+      score: score, marker: marker, weave: weave, cut: cut, grain: grain, extent: extent, pitch: pitch, phase: phase, seed: seed, features: features };
+  }
+  function resColor(W, i, n) {
+    var R = W.P.resonance, j = i;
+    if (R.rhythm === 'Alternating') j = i % 2 ? n - 1 : 0;
+    if (R.rhythm === 'Grouped') j = Math.floor(i / 4) * 4;
+    if (R.rhythm === 'Single Accent') j = Math.floor(n * 0.35);
+    return palColor(W, j, n, false) || ['#C1764D', '#4D7477', '#D8B978', '#8B715C', '#E8D8BB'][j % 5];
+  }
+  // Paint only the clock builder's tagged structural material. Numerals,
+  // hands, screens, mechanisms and other artists' exhibits keep their colours.
+  function RES_PAINT(shader) {
+    var d = this.userData.res;
+    shader.uniforms.resA = { value: C(d.a) }; shader.uniforms.resB = { value: C(d.b) };
+    shader.uniforms.resPitch = { value: d.pitch }; shader.uniforms.resPhase = { value: d.phase };
+    shader.uniforms.resKind = { value: d.kind }; shader.uniforms.resRough = { value: d.rough };
+    shader.fragmentShader = shader.fragmentShader.replace('#include <common>', '#include <common>\nuniform vec3 resA; uniform vec3 resB; uniform float resPitch; uniform float resPhase; uniform float resKind; uniform float resRough;');
+    shader.fragmentShader = shader.fragmentShader.replace('#include <roughnessmap_fragment>', [
+      'float resAxis = vTpW.y;',
+      'if (resKind > 0.5 && resKind < 1.5) resAxis = vTpW.x + 0.28 * vTpW.z;',
+      'if (resKind > 1.5 && resKind < 2.5) resAxis += 0.18 * sin(vTpW.x * 1.8 + resPhase) + 0.12 * cos(vTpW.z * 1.4);',
+      'float resWave = fract(resAxis / resPitch + resPhase);',
+      'float resMask = (1.0 - smoothstep(0.12, 0.18, resWave)) * smoothstep(0.0, 0.025, resWave);',
+      'if (resKind > 2.5) resMask = (1.0 - smoothstep(0.22, 0.26, vTpW.y)) * smoothstep(0.07, 0.10, vTpW.y);',
+      'resMask *= 1.0 - tpDustUp * 0.28;',
+      'diffuseColor.rgb = mix(diffuseColor.rgb, mix(resA, resB, smoothstep(-1.0, 1.0, sin(resAxis * 0.45 + resPhase))) * (0.83 + 0.34 * tpS.r), resMask);',
+      '#include <roughnessmap_fragment>',
+      'roughnessFactor = mix(roughnessFactor, resRough, resMask);'
+    ].join('\n'));
+  }
+  function resPaint(W, hero) {
+    var R = W.P.resonance, done = new Set();
+    [hero.group].concat(W.heroParts || []).forEach(function (group) { group.traverse(function (o) {
+      var m = o.material;
+      if (!m || !m.userData || !m.userData.heroBase || !m.userData.tp || done.has(m)) return;
+      done.add(m);
+      m.userData.res = { a: resColor(W, 0, 6), b: resColor(W, 4, 6), pitch: R.pitch, phase: R.phase,
+        kind: ['Tidal Bands', 'Vertical Seams', 'Contour Paint', 'Basal Band'].indexOf(R.paint),
+        rough: R.finish === 'Satin Enamel' ? 0.32 : R.finish === 'Chalk Wash' ? 0.92 : 0.56 };
+      // Vary grain on the clock only. Avoid modifying shared texture objects.
+      m.userData.tp = Object.assign({}, m.userData.tp);
+      m.userData.tp.scale *= R.grain === 'Fine' ? 1.8 : R.grain === 'Coarse' ? 0.65 : 1;
+      var before = m.onBeforeCompile, key = m.customProgramCacheKey();
+      // a clone keeps userData.tp but r124 drops onBeforeCompile, so paint
+      // only shaders the triplanar pass actually patched
+      m.onBeforeCompile = function (shader) { before.call(this, shader); if (shader.fragmentShader.indexOf('vTpW') >= 0) RES_PAINT.call(this, shader); };
+      m.customProgramCacheKey = function () { return key + '/marfa-res-paint-1'; };
+      m.needsUpdate = true;
+    }); });
+  }
+  // The relief catches the low sun. Faces turned toward the sun glow in the
+  // token's own pigment as the light rakes across the ground: nothing at
+  // noon, full at the horizon. Shadows do the rest.
+  function resLowSun(W, m) {
+    var before = m.onBeforeCompile, key = m.customProgramCacheKey ? m.customProgramCacheKey() : '';
+    var U = { resSun: { value: new THREE.Vector3(0, 1, 0) }, resLow: { value: 0 } };
+    m.onBeforeCompile = function (shader) {
+      if (before) before.call(this, shader);
+      shader.uniforms.resSun = U.resSun; shader.uniforms.resLow = U.resLow;
+      var hasN = shader.fragmentShader.indexOf('vTpN') >= 0;
+      if (!hasN) {
+        shader.vertexShader = shader.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vResN;')
+          .replace('#include <beginnormal_vertex>', '#include <beginnormal_vertex>\nvResN = normalize(mat3(modelMatrix) * objectNormal);');
+        shader.fragmentShader = shader.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vResN;');
+      }
+      shader.fragmentShader = shader.fragmentShader.replace('#include <common>', '#include <common>\nuniform vec3 resSun; uniform float resLow;')
+        .replace('#include <emissivemap_fragment>', ['#include <emissivemap_fragment>',
+          'vec3 resWn = normalize(' + (hasN ? 'vTpN' : 'vResN') + ');',
+          'float resFace = pow(max(dot(resWn, resSun), 0.0), 1.4);',
+          'vec3 resPig = vec3(1.0);',
+          '#ifdef USE_INSTANCING_COLOR',
+          'resPig = vColor;',
+          '#endif',
+          'totalEmissiveRadiance += resPig * vec3(1.0, 0.74, 0.5) * resFace * resLow * 0.55;'].join('\n'));
+    };
+    m.customProgramCacheKey = function () { return key + '/marfa-res-lowsun-1'; };
+    W.onUpdate(function (ctx) {
+      dirAzEl(ctx.sun.az, Math.max(ctx.sun.el, 0), U.resSun.value);
+      U.resLow.value = sstep(-1, 2, ctx.sun.el) * (1 - sstep(4, 20, ctx.sun.el));
+    });
+  }
+  // pigment pressed into earth never reads as pure black: lift the darkest
+  // palette entries toward a burnt umber so the relief keeps its form
+  function resRelief(hex) {
+    var c = C(hex), l = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
+    return l < 0.08 ? c.lerp(C('#5A4636'), 0.7) : c;
+  }
+  function resBuild(W, hero) {
+    if (!W.P.resonance) return;
+    var R = W.P.resonance;
+    resPaint(W, hero);
+    var S = { W: W, R: hero.R, g: W.P.gen, fov: GEN_FOV[W.P.gen.lens] || 38, shift: gen_shift(W.P.gen) };
+    gen_basis(S);
+    var group = new THREE.Group(); group.userData.plcSkip = true; group.userData.alnSkip = true; W.add(group);
+    var rows = [], pegs = [], phase = R.phase, radius = hero.R + 2.4;
+    // relief scale: raised enough to throw a long shadow when the sun is low
+    var lift = R.density === 'Spare' ? 1.35 : R.density === 'Abundant' ? 0.85 : 1;
+    // and it grows with the camera's distance, so a far framing still reads it
+    // above the grass: knee-high land-art walls rather than a painted line
+    var near = clamp(W.cam.dist / 12, 1, 2.4); lift *= near;
+    var count = R.density === 'Spare' ? 7 : R.density === 'Abundant' ? 17 : 11;
+    var span = (R.scale === 'Expansive' ? 24 : R.scale === 'Intimate' ? 12 : 17) * R.extent;
+    // The same solar axis determines composition and the direction of the field.
+    var az = R.score === 'Solar Axis' ? W.P.align.az * D2R : Math.atan2(W.cam.right.x, W.cam.right.z);
+    var ax = Math.sin(az), azz = Math.cos(az), bx = -azz, bz = ax;
+    function position(x, z) { return { x: ax * x + bx * z, z: azz * x + bz * z }; }
+    function allowed(p, clearance) {
+      return gen_open(S, p.x, p.z, clearance || 0.1, 1.03) && gen_inside(S, p.x, p.z, 0.45);
+    }
+    function segment(a, b, width, col, height) {
+      var p = position((a[0] + b[0]) / 2, (a[1] + b[1]) / 2);
+      if (!allowed(p, width * 0.55)) return;
+      if (R.score === 'Open Arc' && p.x * W.cam.dir.x + p.z * W.cam.dir.z > radius + span * 0.35) return;
+      var pa = position(a[0], a[1]), pb = position(b[0], b[1]);
+      var ya = gen_gy(S, pa.x, pa.z), yb = gen_gy(S, pb.x, pb.z);
+      if (Math.abs(ya - yb) > 0.35) return;
+      var dx = pb.x - pa.x, dz = pb.z - pa.z, len = Math.sqrt(dx * dx + dz * dz);
+      // sunk 4 cm so the relief reads as set into the ground, not resting on it
+      var hh = height || 0.12; width *= Math.sqrt(near);
+      rows.push([p.x, (ya + yb) / 2 + hh / 2 - 0.04, p.z, Math.atan2(dx, dz), width, hh + 0.04, len * 1.04, col]);
+    }
+    if (R.pattern === 'Peg Constellation') {
+      for (var i = 0; i < count; i++) {
+        var a = phase + i / count * Math.PI * 2, rr = radius - 0.3 + Math.sin(i * 2.399) * 0.7;
+        var p = [Math.cos(a) * rr, Math.sin(a) * rr], w = position(p[0], p[1]);
+        if (allowed(w, 0.45)) pegs.push([w.x, gen_gy(S, w.x, w.z), w.z, i, (1.1 + 0.9 * ((i * 7) % 5) / 4) * Math.sqrt(near)]);
+        var na = phase + (i + 1) / count * Math.PI * 2, nr = radius - 0.3 + Math.sin((i + 1) * 2.399) * 0.7;
+        for (var k = 0; k < 18; k++) {
+          var t = k / 18, t1 = (k + 1) / 18;
+          segment([lerp(p[0], Math.cos(na) * nr, t), lerp(p[1], Math.sin(na) * nr, t)], [lerp(p[0], Math.cos(na) * nr, t1), lerp(p[1], Math.sin(na) * nr, t1)], 0.18, i, 0.14 * lift);
+        }
+      }
+    } else if (R.pattern === 'Recursive Terraces') {
+      for (var row = -count; row <= count; row++) for (var col = -count; col <= count; col++) {
+        var x = col * 1.25, z = row * 1.25;
+        if ((row + col + 2 * count) % 3 === 0 || x * x + z * z > (radius + span * 0.5) * (radius + span * 0.5)) continue;
+        // stepped like a terrace: the farther ring, the higher the step
+        // terraces are solid blocks: they scale gently, not with the full lift
+        var h = (0.12 + 0.1 * ((Math.abs(row) + Math.abs(col)) % 3) + 0.04 * Math.max(Math.abs(row), Math.abs(col)) / count * 3) * lift / Math.sqrt(near);
+        segment([x, z], [x, z + 1.0], 0.5, Math.abs(row + col), h);
+      }
+    } else {
+      var sq = R.pattern === 'Chromie Trace' ? sqgPathFn(W.P.forms.path) : null;
+      for (var lane = 0; lane < count; lane++) {
+        var prev = null;
+        for (var step = 0; step <= 90; step++) {
+          var t2 = step / 90, xx = (t2 - 0.5) * span * 2, zz = (lane - (count - 1) / 2) * 0.75;
+          if (R.pattern === 'Contour Isobars') {
+            var ang = t2 * Math.PI * 2, rr2 = radius + lane * 0.62 + 0.6 * Math.sin(ang * 3 + phase) + 0.35 * Math.cos(ang * 5);
+            xx = Math.cos(ang) * rr2; zz = Math.sin(ang) * rr2;
+          } else if (R.pattern === 'Chromie Trace') zz += sq(t2) * 5.2;
+          else if (R.pattern === 'Woven Paths') zz += Math.sin(t2 * Math.PI * 6 + lane * Math.PI * 2 / 3) * 2.4;
+          else zz += 3 * Math.sin(xx * 0.15 + phase) + 1.1 * Math.sin(xx * 0.33 + lane * 0.19);
+          // the crest swells and settles along each line, so the low sun rakes it
+          var crest = (0.24 + 0.14 * Math.sin(t2 * Math.PI * 5 + lane * 1.7 + phase)) * lift;
+          if (R.pattern === 'Flow Ribbons') crest *= 0.75;
+          if (prev) segment(prev, [xx, zz], R.pattern === 'Flow Ribbons' ? 0.55 : R.pattern === 'Contour Isobars' ? 0.2 : 0.24, lane, crest);
+          prev = [xx, zz];
+        }
+      }
+    }
+    if (rows.length) {
+      var mat = mtl('#FFFFFF', R.finish === 'Satin Enamel' ? 'paint' : 'stone', R.finish === 'Satin Enamel' ? 0.4 : 0.85, 0.03, R.cut === 'Close Grain' ? 0.32 : R.cut === 'Long Vein' ? 1.7 : 0.8);
+      resLowSun(W, mat);
+      var mesh = gen_inst(new THREE.BoxBufferGeometry(1, 1, 1), mat, rows.length, true);
+      var m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), p3 = new THREE.Vector3(), sc = new THREE.Vector3();
+      rows.forEach(function (v, j) { mesh.setMatrixAt(j, m4.compose(p3.set(v[0], v[1], v[2]), q.setFromEuler(e.set(0, v[3], 0)), sc.set(v[4], v[5], v[6]))); mesh.setColorAt(j, resRelief(resColor(W, v[7], count))); });
+      group.add(mesh);
+      W.pick(mesh, R.pattern, 'An original MLow landscape score, in dialogue with ' + RES_SOURCES[R.pattern] + '. Pigment and shallow relief follow the token’s palette and leave the clock’s footprint clear.');
+    }
+    if (pegs.length) {
+      var pinMat = std('#FFFFFF', 0.45, 0.5); resLowSun(W, pinMat);
+      var pins = gen_inst(new THREE.CylinderBufferGeometry(0.13, 0.17, 1, 14), pinMat, pegs.length, true);
+      pegs.forEach(function (v, j) { pins.setMatrixAt(j, new THREE.Matrix4().compose(new THREE.Vector3(v[0], v[1] + v[4] / 2 - 0.04, v[2]), new THREE.Quaternion(), new THREE.Vector3(Math.sqrt(near), v[4], Math.sqrt(near)))); pins.setColorAt(j, resRelief(resColor(W, v[3], count))); }); group.add(pins);
+    }
+    W.resonanceStats = { segments: rows.length, pegs: pegs.length };
+  }
+
+  // An engraved, palette-coloured approach to the existing physical gate.
+  // The register lights ONLY on the chosen calendar date; geometry alone
+  // can also align on a second day with the same solar declination.
+  function resAlignment(W, A, marker, gate) {
+    var R = W.P.resonance; if (!R) return;
+    var N = R.marker === 'Sixty Petals' ? 60 : R.marker === 'Braided Halo' ? 72 : 96;
+    var ring = gen_inst(new THREE.BoxBufferGeometry(1, 1, 1), std('#FFFFFF', 0.46, 0.6), N, false);
+    for (var j = 0; j < N; j++) {
+      var a = j / N * Math.PI * 2, rr = R.marker === 'Concentric Register' ? 0.43 + (j % 3) * 0.13 : 0.55 + (R.marker === 'Braided Halo' ? 0.075 * Math.sin(a * 12) : 0);
+      ring.setMatrixAt(j, new THREE.Matrix4().compose(new THREE.Vector3(Math.sin(a) * rr, 0.015, Math.cos(a) * rr), new THREE.Quaternion().setFromEuler(new THREE.Euler(0, a, 0)), new THREE.Vector3(0.028, 0.025, R.marker === 'Sixty Petals' ? (j % 5 ? 0.09 : 0.19) : 0.055)));
+      ring.setColorAt(j, C(resColor(W, j, N)));
+    }
+    marker.add(ring);
+    var stations = [], dir = dirAzEl(A.az, 0), perp = new THREE.Vector3(-dir.z, 0, dir.x);
+    for (var i = 0; i < 12; i++) {
+      var p = marker.position.clone().addScaledVector(dir, (i + 1) * 0.28).addScaledVector(perp, 0.85);
+      var m = std(resColor(W, i, 12), 0.5, 0.35), stone = box(0.12, 0.035, 0.2, m);
+      m.emissive = C(resColor(W, i, 12));
+      stone.position.set(p.x, aln_gy(W, p.x, p.z) + 0.033, p.z); stone.rotation.y = Math.atan2(dir.x, dir.z);
+      W.add(stone); stations.push(m);
+    }
+    var chosen = marfaTime(A.utc);
+    W.onUpdate(function (ctx) {
+      var sameDay = ctx.t.mo === chosen.mo && ctx.t.d === chosen.d;
+      var delta = (chosen.h * 60 + chosen.m) - (ctx.t.h * 60 + ctx.t.m + (ctx.t.s || 0) / 60);
+      stations.forEach(function (m, j) { m.emissiveIntensity = sameDay && delta >= 0 && delta <= 12 && j >= delta - 1 ? 0.7 : 0; });
+    });
+    W.pick(ring, 'Alignment Register', R.marker + '. The twelve inlaid stations illuminate during the twelve minutes before the token’s annual appointment with the sun.');
+  }
+
+  // Offline studies occupy the four former credit plaques. The website can
+  // replace these with official Art Blocks preview textures and open the
+  // original generator. The standalone token never requests those resources.
+  var RES_EXHIBITS = {
+    'Ringers Board': ['Ringers', 'Dmitri Cherniak', 1],
+    'Fidenza Mural': ['Fidenza', 'Tyler Hobbs', 5 / 6],
+    'Archetype Stack': ['Archetype', 'Kjetil Golid', 1],
+    'Meridian Painting': ['Meridian', 'Matt DesLauriers', 0.5625]
+  };
+  function resReference(hash, name) {
+    var keys = Object.keys(REF_IDS), r = hashRng(hash, 8700 + keys.indexOf(name)), list = REF_IDS[name];
+    var t = list[Math.floor(r() * list.length)]; return { name: name, n: t[0], id: t[1], contract: '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270', chain: 1 };
+  }
+  Object.keys(RES_EXHIBITS).forEach(function (key) {
+    var info = RES_EXHIBITS[key], def = EGG_DEFS[key];
+    def.line = 'An original MLow study in dialogue with ' + info[0] + ' by ' + info[1] + '. The website can show the actual referenced token through Art Blocks.';
+    def.build = function (W) {
+      var ref = resReference(W.P.hash, info[0]), r = hashRng(W.P.hash, 8711 + Object.keys(RES_EXHIBITS).indexOf(key));
+      var aspect = info[2], hh = 3.1, ww = hh * aspect;
+      var texture = canvasTex(Math.round(600 * aspect), 600, function (c, w, h) {
+        c.fillStyle = '#E8DFC9'; c.fillRect(0, 0, w, h);
+        // These are diagrams of this token's own landscape score, labelled
+        // as MLow studies; they are never passed off as the referenced NFT.
+        for (var j = 0; j < 22; j++) {
+          c.strokeStyle = resColor(W, j, 22); c.fillStyle = c.strokeStyle; c.lineWidth = 2.5;
+          if (info[0] === 'Archetype') {
+            var x = 24 + (j % 4) * (w - 48) / 4, y = 24 + Math.floor(j / 4) * (h - 110) / 6;
+            c.fillRect(x, y, (w - 70) / 4, 20 + r() * 42);
+          } else if (info[0] === 'Ringers') {
+            var a = j / 22 * Math.PI * 2, rad = Math.min(w, h) * 0.31;
+            c.beginPath(); c.arc(w / 2 + Math.cos(a) * rad, h * 0.44 + Math.sin(a) * rad, 6 + j % 4, 0, Math.PI * 2); c.stroke();
+          } else {
+            c.beginPath(); for (var k = 0; k <= 80; k++) { var px = 22 + k / 80 * (w - 44), py = 35 + j * (h - 140) / 22 + Math.sin(k * 0.07 + j * 0.18) * 20; if (!k) c.moveTo(px, py); else c.lineTo(px, py); } c.stroke();
+          }
+        }
+        c.fillStyle = '#E8DFC9'; c.fillRect(0, h - 62, w, 62); c.fillStyle = '#292D2B'; c.font = '16px monospace'; c.textAlign = 'center'; c.fillText('MLOW / SPATIAL STUDY', w / 2, h - 34);
+        c.font = '12px monospace'; c.fillText('AFTER ' + info[0].toUpperCase(), w / 2, h - 14);
+      });
+      var E = exh_screen(W, ww, hh, 2.35, texture, [info[0].toUpperCase() + ' #' + ref.n, info[1].toUpperCase(), 'OFFLINE: MLOW STUDY / ONLINE: ORIGINAL']);
+      if (!exh_place(W, E.g, 2.6)) { texture.dispose(); return; }
+      ref.mesh = E.screen; ref.artist = info[1]; ref.aspect = aspect;
+      (W.referenceScreens = W.referenceScreens || []).push(ref);
+      E.g.userData.onClick = E.screen.userData.onClick = function () { if (W.openReference) W.openReference(ref); };
+      W.pick(E.g, info[0] + ' / ' + info[1], 'Offline: an original MLow spatial study. On the website, the official preview of ' + info[0] + ' #' + ref.n + ' replaces it; click to play the original Art Blocks script.');
+    };
+  });
+
   // =====================================================================
   // INTERACT: click anything with a story, camera views, keys, captions
   // =====================================================================
@@ -14829,6 +15138,7 @@
     ['L', 'live Marfa time'],
     ['T', 'time-lapse'],
     ['S', 'the residency minute'],
+    ['A', 'the annual alignment minute'],
     ['[  ]', 'an hour back or on'],
     [',  .', 'a day back or on'],
     ['Space', 'hold time still'],
@@ -15125,13 +15435,20 @@
     // Squiggle forms, the woven tie, painted bloom, skywriting (54-squiggle-forms.js)
     var forms = typeof formsPlan === 'function' ? formsPlan(hash, gen, place, palette) : null;
     if (forms) for (var fk in forms.features) features[fk] = forms.features[fk];
+    var resonance = resPlan(hash, gen, place, align, palette);
+    for (var rk in resonance.features) features[rk] = resonance.features[rk];
+    if (resonance.paintPalette) {
+      features['Label Tie'] = 'Woven, ' + resonance.paintPalette.name;
+      if (gen.bloom !== 'None' && gen.bloom !== 'Cholla in Bloom') features['Bloom Tint'] = resonance.paintPalette.name;
+    }
+    eggs.forEach(function (key) { if (RES_EXHIBITS[key]) { var ref = resReference(hash, RES_EXHIBITS[key][0]); features[ref.name + ' Reference'] = '#' + ref.n; } });
     features['Easter Eggs'] = eggs.join(' · ');
     features['Egg Count'] = eggs.length;
     if (eggs.indexOf('First Eye Flower') >= 0) features['Witness Bloom'] = 'Solar-responsive / six bone petals';
     if (eggs.indexOf('Chromie Squiggle') >= 0) { var sq = sqgPick(hash); features['Chromie Squiggle'] = '#' + sq.id; features['Squiggle Type'] = sq.type; if (sq.spectrum !== 'Normal') features['Squiggle Spectrum'] = sq.spectrum; }
     if (eggs.indexOf('Friendship Bracelets') >= 0) { var fb = brcPick(hash); features['Friendship Bracelet'] = '#' + fb.id; features['Bracelet Palette'] = fb.palette; }
     return {
-      gen: gen, observatory: observatory, align: align, palette: palette, forms: forms,
+      resonance: resonance, gen: gen, observatory: observatory, align: align, palette: palette, forms: forms,
       hash: hash, seed: seed, clock: clock, place: place, material: material, sky: sky, wind: wind, film: film, tag: tag,
       eggs: eggs, clockTraits: ct, camAz: camAz, camK: camK, camHk: camHk, windAz: r() * 360,
       stillUtc: stillUtc, stillLabel: 'APR ' + day + ' 2027 ' + pad2(hh) + ':' + pad2(mi),
@@ -15201,6 +15518,7 @@
     });
     if (typeof genBuild === 'function') genBuild(W, hero);
     if (typeof alnBuild === 'function') alnBuild(W, hero);
+    resBuild(W, hero);
     // surface wear follows the token's condition
     W.wear = { Pristine: 0.35, Weathered: 1, Dusted: 0.85, Overgrown: 0.8, Calcified: 0.7 }[P.gen && P.gen.condition] || 0.6;
     addLife(W);
@@ -15293,8 +15611,13 @@
       cm.color.copy(L.hor).lerp(L.sun, 0.25 * (1 - night)).lerp(C('#FFFFFF'), 0.45 * (1 - night));
       cm.emissive.copy(L.hor).multiplyScalar(0.35 * (1 - night)).add(L.zen.clone().multiplyScalar(1.1 * night));
     }
-    W.scene.fog.color.copy(u.hor.value).lerp(u.zen.value, 0.15);
     W.scene.fog.density = tune.fog;
+    W.scene.fog.color.copy(u.hor.value).lerp(u.zen.value, 0.15);
+    if (W.P.resonance) {
+      var air = W.P.resonance.air, low = 1 - sstep(2, 18, sun.el);
+      W.scene.fog.density *= air === 'Pearl Haze' ? 1.35 : air === 'Copper Veil' ? 1.2 : air === 'Blue Distance' ? 0.85 : 1;
+      W.scene.fog.color.lerp(C(air === 'Copper Veil' ? '#BF9878' : air === 'Blue Distance' ? '#7187AA' : '#DBD1C2'), (air === 'High Desert' ? 0 : 0.09) * low * (1 - night));
+    }
     W.glows.forEach(function (g) { g[0].emissiveIntensity = lerp(g[1], g[2], night); });
     W.lamps.forEach(function (l) { l.intensity = l.userData.full * night; });
     var level = L.ambient + L.direct * Math.max(Math.sin(Math.max(sun.el, 0) * D2R), 0.3) * cloudF;
@@ -15608,10 +15931,10 @@
   // EXPORTS, and the token itself
   // =====================================================================
   root.marfaLight = {
-    version: '0.8', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
+    version: '0.9', plan: plan, create: create, snapshot: snapshot, films: FILMS, views: VIEWS,
     clocks: CLOCK_DEFS, places: PLACE_DEFS, eggs: EGG_DEFS,
     // the Art Blocks exhibits: draw a real Squiggle by token hash onto any canvas
-    exhibits: { squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, labelTie: function (palette, group, y) { return labelTie({ P: { palette: palette } }, group, y); }, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },
+    exhibits: { reference: resReference, squiggles: SQG_TOKENS, bracelets: BRC_TOKENS, labelTie: function (palette, group, y) { return labelTie({ P: { palette: palette } }, group, y); }, runBracelet: function (i, size) { return brcRun({ id: BRC_TOKENS[i][0], hash: BRC_TOKENS[i][1] }, size || 600); }, drawSquiggle: function (canvas, hash) { sqgDraw(canvas.getContext('2d'), canvas.width, canvas.height, sqgState(hash)); } },
     marfaTime: marfaTime, marfaUtc: marfaUtc, sunPos: sunPos, moonPos: moonPos, sunEvents: sunEvents, moonEvents: moonEvents
   };
   root.calculateFeatures = function (tokenData) { return plan(tokenData.hash).features; };

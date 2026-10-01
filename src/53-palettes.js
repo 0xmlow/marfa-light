@@ -40,7 +40,7 @@
     }
     return P;
   }
-  function pal_on(W) { var p = W.P.palette; return p && p.name !== 'Marfa' ? p : null; }
+  function pal_on(W) { var p = W.P.resonance && W.P.resonance.paintPalette || W.P.palette; return p && p.name !== 'Marfa' ? p : null; }
   // the Squiggle's colour at t (0..1) along its run, as Snowfro computes it
   function pal_hue(p, t) {
     var sp = p.spectrum, color = t * sp.n;

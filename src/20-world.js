@@ -29,7 +29,7 @@
   }
   // a textured standard material in one call: mtl('#hex', 'concrete', rough, metal, tileMetres)
   function mtl(hex, kind, rough, metal, tile) { return std(hex, rough, metal, { tex: kind, tile: tile }); }
-  function heroMat(name) { var d = MATERIALS[name] || MATERIALS.Concrete; return std(d.color, d.rough, d.metal, { tex: d.tex, tile: d.tile }); }
+  function heroMat(name) { var d = MATERIALS[name] || MATERIALS.Concrete; var m = std(d.color, d.rough, d.metal, { tex: d.tex, tile: d.tile }); m.userData.heroBase = true; return m; }
   function glowMat(hex, strength) {
     var m = std('#111418', 0.5, 0);
     m.emissive = C(hex); m.emissiveIntensity = strength == null ? 1 : strength;
