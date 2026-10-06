@@ -152,12 +152,27 @@
     for (let id = supply - 1; id >= 0; id--) {
       const a = document.createElement('a');
       a.className = 'tile'; a.target = '_blank'; a.rel = 'noopener';
-      a.href = 'https://resolver.abx.io/a/' + NET.chain.id + '/' + TOKEN.toLowerCase() + '/' + id;
+      a.href = liveUrl(id);
       const img = document.createElement('img');
       img.loading = 'lazy'; img.src = thumb(id); img.alt = 'Marfa Light #' + id;
       const cap = document.createElement('span'); cap.textContent = '#' + id + '  live view ↗';
       a.append(img, cap); box.append(a);
     }
+  }
+
+  const liveUrl = (id) => 'https://resolver.abx.io/a/' + NET.chain.id + '/' + TOKEN.toLowerCase() + '/' + id;
+
+  // ABX's resolver indexes a new mint a little after the block lands; until then its live view
+  // answers 404 not_minted. Poll it and offer the 3D link only once it opens.
+  async function waitForLive(id) {
+    say('Minted Marfa Light #' + id + '. Preparing its 3D live view (usually under a minute)…', 'ok');
+    for (let i = 0; i < 60; i++) {
+      try { const r = await fetch(liveUrl(id), { cache: 'no-store' }); if (r.ok) break; } catch (e) {}
+      await new Promise((r) => setTimeout(r, 5000));
+    }
+    const m = $('msg'); m.textContent = 'Minted Marfa Light #' + id + '. '; m.className = 'msg ok';
+    const a = document.createElement('a'); a.href = liveUrl(id); a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = 'Enter #' + id + ' in 3D ↗'; m.append(a, document.createTextNode(' Its day GIF thumbnail appears within the hour.'));
   }
 
   async function connect() {
@@ -188,7 +203,7 @@
       const r = await pub.waitForTransactionReceipt({ hash });
       if (r.status !== 'success') throw new Error('The transaction reverted. Nothing was minted.');
       await refresh();
-      say('Minted Marfa Light #' + (supply - 1) + '. Its day GIF appears here once rendered; the live view works now.', 'ok');
+      waitForLive(supply - 1);
     } catch (e) {
       const t = String((e && (e.shortMessage || e.message)) || e);
       if (/SaleTermsChanged|WrongPayment/.test(String(e && (e.message || e)))) { await refresh().catch(() => {}); say('The sale terms changed, so nothing was charged. Check the price above and mint again.', 'bad'); }
