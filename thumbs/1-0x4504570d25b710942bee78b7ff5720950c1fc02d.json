@@ -2138,5 +2138,353 @@
    "trait_type": "Witness Bloom",
    "value": "Solar-responsive / six bone petals"
   }
+ ],
+ "12": [
+  {
+   "trait_type": "Clock",
+   "value": "Bow Dial"
+  },
+  {
+   "trait_type": "Scale",
+   "value": "Large"
+  },
+  {
+   "trait_type": "Numerals",
+   "value": "Arabic"
+  },
+  {
+   "trait_type": "Plinth",
+   "value": "Cut Stone"
+  },
+  {
+   "trait_type": "Keeps Time By",
+   "value": "Shadow"
+  },
+  {
+   "trait_type": "Place",
+   "value": "Highway 90"
+  },
+  {
+   "trait_type": "Material",
+   "value": "Ink Black"
+  },
+  {
+   "trait_type": "Sky",
+   "value": "Blue Norther"
+  },
+  {
+   "trait_type": "Wind",
+   "value": "Calm"
+  },
+  {
+   "trait_type": "Film",
+   "value": "Clean"
+  },
+  {
+   "trait_type": "Tag",
+   "value": "\"LATER\""
+  },
+  {
+   "trait_type": "Lens",
+   "value": "35mm"
+  },
+  {
+   "trait_type": "Framing",
+   "value": "Centered"
+  },
+  {
+   "trait_type": "Condition",
+   "value": "Dusted"
+  },
+  {
+   "trait_type": "Ground Bloom",
+   "value": "Firewheel"
+  },
+  {
+   "trait_type": "Visitors",
+   "value": "Empty"
+  },
+  {
+   "trait_type": "Light Work",
+   "value": "None"
+  },
+  {
+   "trait_type": "Birds",
+   "value": "None"
+  },
+  {
+   "trait_type": "Sky Event",
+   "value": "None"
+  },
+  {
+   "trait_type": "Anomaly",
+   "value": "None"
+  },
+  {
+   "trait_type": "Alignment",
+   "value": "Autumn Equinox Sunrise, SEP 22 08:29"
+  },
+  {
+   "trait_type": "Alignment Gate",
+   "value": "Oculus"
+  },
+  {
+   "trait_type": "Ground Work",
+   "value": "Cairns"
+  },
+  {
+   "trait_type": "Palette",
+   "value": "Marfa"
+  },
+  {
+   "trait_type": "Label Tie",
+   "value": "Safety Orange"
+  },
+  {
+   "trait_type": "Pigment Palette",
+   "value": "Marfa"
+  },
+  {
+   "trait_type": "Pigment Source",
+   "value": "Token palette"
+  },
+  {
+   "trait_type": "Landscape Score",
+   "value": "Flow Ribbons"
+  },
+  {
+   "trait_type": "Score Reference",
+   "value": "Fidenza / Tyler Hobbs"
+  },
+  {
+   "trait_type": "Score Density",
+   "value": "Spare"
+  },
+  {
+   "trait_type": "Score Scale",
+   "value": "Field"
+  },
+  {
+   "trait_type": "Score Composition",
+   "value": "Open Arc"
+  },
+  {
+   "trait_type": "Pigment Rhythm",
+   "value": "Sequence"
+  },
+  {
+   "trait_type": "Clock Accent",
+   "value": "Vertical Seams"
+  },
+  {
+   "trait_type": "Accent Finish",
+   "value": "Satin Enamel"
+  },
+  {
+   "trait_type": "Atmospheric Depth",
+   "value": "Copper Veil"
+  },
+  {
+   "trait_type": "Mineral Cut",
+   "value": "Cross Bedding"
+  },
+  {
+   "trait_type": "Surface Grain",
+   "value": "Balanced"
+  },
+  {
+   "trait_type": "Alignment Register",
+   "value": "Sixty Petals"
+  },
+  {
+   "trait_type": "Alignment Approach",
+   "value": "Twelve minute stations"
+  },
+  {
+   "trait_type": "Archetype Reference",
+   "value": "#15"
+  },
+  {
+   "trait_type": "Easter Eggs",
+   "value": "Prada Marfa · Mile Marker 317 · Archetype Stack · Roadrunner · NYC Taxi"
+  },
+  {
+   "trait_type": "Egg Count",
+   "value": 5
+  }
+ ],
+ "13": [
+  {
+   "trait_type": "Clock",
+   "value": "Wall Dial"
+  },
+  {
+   "trait_type": "Facing",
+   "value": "12° West"
+  },
+  {
+   "trait_type": "Style",
+   "value": "Bronze Plate"
+  },
+  {
+   "trait_type": "Motto",
+   "value": "LUX ET UMBRA"
+  },
+  {
+   "trait_type": "Keeps Time By",
+   "value": "Shadow"
+  },
+  {
+   "trait_type": "Place",
+   "value": "Ghost Town"
+  },
+  {
+   "trait_type": "Material",
+   "value": "Cherokee Red"
+  },
+  {
+   "trait_type": "Sky",
+   "value": "Monsoon"
+  },
+  {
+   "trait_type": "Wind",
+   "value": "Gusty"
+  },
+  {
+   "trait_type": "Film",
+   "value": "Velvia"
+  },
+  {
+   "trait_type": "Tag",
+   "value": "\"WAIT\""
+  },
+  {
+   "trait_type": "Lens",
+   "value": "50mm"
+  },
+  {
+   "trait_type": "Framing",
+   "value": "Right Third"
+  },
+  {
+   "trait_type": "Condition",
+   "value": "Pristine"
+  },
+  {
+   "trait_type": "Ground Bloom",
+   "value": "None"
+  },
+  {
+   "trait_type": "Visitors",
+   "value": "Empty"
+  },
+  {
+   "trait_type": "Light Work",
+   "value": "None"
+  },
+  {
+   "trait_type": "Birds",
+   "value": "Vultures"
+  },
+  {
+   "trait_type": "Sky Event",
+   "value": "Virga"
+  },
+  {
+   "trait_type": "Anomaly",
+   "value": "None"
+  },
+  {
+   "trait_type": "Alignment",
+   "value": "Autumn Equinox Sunrise, SEP 22 08:48"
+  },
+  {
+   "trait_type": "Alignment Gate",
+   "value": "Slot"
+  },
+  {
+   "trait_type": "Ground Work",
+   "value": "None"
+  },
+  {
+   "trait_type": "Palette",
+   "value": "Marfa"
+  },
+  {
+   "trait_type": "Label Tie",
+   "value": "Woven, Meridian #0 / Shore"
+  },
+  {
+   "trait_type": "Pigment Palette",
+   "value": "Meridian #0 / Shore"
+  },
+  {
+   "trait_type": "Pigment Source",
+   "value": "Meridian #0 / Matt DesLauriers / sampled preview"
+  },
+  {
+   "trait_type": "Landscape Score",
+   "value": "Woven Paths"
+  },
+  {
+   "trait_type": "Score Reference",
+   "value": "Friendship Bracelets / Alexis André"
+  },
+  {
+   "trait_type": "Score Density",
+   "value": "Measured"
+  },
+  {
+   "trait_type": "Score Scale",
+   "value": "Intimate"
+  },
+  {
+   "trait_type": "Score Composition",
+   "value": "Counterpoint"
+  },
+  {
+   "trait_type": "Pigment Rhythm",
+   "value": "Single Accent"
+  },
+  {
+   "trait_type": "Clock Accent",
+   "value": "Vertical Seams"
+  },
+  {
+   "trait_type": "Accent Finish",
+   "value": "Satin Enamel"
+  },
+  {
+   "trait_type": "Atmospheric Depth",
+   "value": "Pearl Haze"
+  },
+  {
+   "trait_type": "Mineral Cut",
+   "value": "Long Vein"
+  },
+  {
+   "trait_type": "Surface Grain",
+   "value": "Fine"
+  },
+  {
+   "trait_type": "Tie Weave",
+   "value": "Double Twist"
+  },
+  {
+   "trait_type": "Alignment Register",
+   "value": "Braided Halo"
+  },
+  {
+   "trait_type": "Alignment Approach",
+   "value": "Twelve minute stations"
+  },
+  {
+   "trait_type": "Easter Eggs",
+   "value": "Roadrunner · Bloom Cycle · Marfa Blimp · Pronghorn · Dossier Cabinet"
+  },
+  {
+   "trait_type": "Egg Count",
+   "value": 5
+  }
  ]
 }
