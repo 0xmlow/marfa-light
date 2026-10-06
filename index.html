@@ -54,6 +54,11 @@
   .bar nav a { text-decoration: none; font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; }
   .bar .left { display: flex; align-items: center; gap: 16px; min-width: 0; }
   .bar .left span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mint-cta, .mint-line .btn { text-decoration: none; white-space: nowrap; display: inline-block; }
+  .mint-cta { padding: 7px 12px; }
+  .bar:has(.mint-cta) nav { gap: 14px; }
+  @media (max-width: 1340px) { .bar:has(.mint-cta) .left span { display: none; } }
+  .mint-line { margin: 18px 0 0; }
 
   /* hero */
   .hero { padding-block: clamp(28px, 5vw, 56px) 0; }
@@ -334,6 +339,7 @@
     <nav aria-label="Sections">
       <a href="#token">Token</a><a href="#sky">Sky</a><a href="#idea">Idea</a><a href="#day">A day</a><a href="#clocks">Clocks</a><a href="#draws">Draws</a><a href="#film">Film</a><a href="#calendar">Calendar</a><a href="#residency">Residency</a><a href="#artist">Artist</a><a href="arcade/">Arcade</a>
     </nav>
+    <a class="btn solid mint-cta" href="mint/">Mint · 0.069 ETH</a>
   </div>
 </header>
 
@@ -357,7 +363,7 @@
         <span class="eyebrow">A proposal for the Art Blocks x OpenSea Artist Residency · Spring 2027</span>
         <h1>Marfa Light</h1>
       </div>
-      <p class="thesis">Every token is a working clock for Marfa, Texas. The hash chooses the clock, how it is made, and where it stands. <em>The minute comes from the sky.</em></p>
+      <div><p class="thesis">Every token is a working clock for Marfa, Texas. The hash chooses the clock, how it is made, and where it stands. <em>The minute comes from the sky.</em></p><p class="mint-line"><a class="btn solid" href="mint/">Now minting on Ethereum · 0.069 ETH</a></p></div>
     </div>
 
     <div class="stage" id="token">
