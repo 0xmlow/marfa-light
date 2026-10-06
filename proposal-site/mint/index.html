@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mint Marfa Light</title>
+<meta name="description" content="Mint Marfa Light by MLow on Ethereum. 0.069 ETH. Every token is a working clock for Marfa, Texas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #141820; --bg2: #1B2232; --ink: #F0F4F8; --muted: #7EB8FF; --line: rgba(240,244,248,.17);
+    --accent: #FF2E63; --on-accent: #0D0D0D; --ok: #7fe0a0; --bad: #ff9d9d;
+    --display: "Big Shoulders Display", "Oswald", "Arial Narrow", Impact, sans-serif;
+    --body: "Spectral", Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 18px/1.55 var(--body); }
+  a { color: var(--muted); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  header a { font: 500 13px var(--mono); letter-spacing: .08em; text-transform: uppercase; text-decoration: none; }
+  h1 { font: 800 clamp(56px, 11vw, 120px)/.9 var(--display); letter-spacing: .01em; margin: 36px 0 8px; text-transform: uppercase; }
+  .by { font: 500 14px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 28px; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 36px; align-items: start; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  .hero { width: 100%; aspect-ratio: 1; background: var(--bg2); border: 1px solid var(--line); display: block; object-fit: cover; }
+  .lede { margin: 0 0 24px; font-weight: 300; }
+  .card { border: 1px solid var(--line); background: var(--bg2); padding: 22px; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; margin: 0 0 20px; }
+  .stat .k { font: 500 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .stat .v { font: 700 34px/1.1 var(--display); }
+  .bar { height: 6px; background: rgba(240,244,248,.08); margin: 0 0 20px; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .6s; }
+  button { font: 800 22px var(--display); letter-spacing: .06em; text-transform: uppercase; width: 100%; padding: 14px 18px; border: 0; cursor: pointer; background: var(--accent); color: var(--on-accent); }
+  button.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); font-size: 18px; margin-bottom: 10px; }
+  button:disabled { opacity: .45; cursor: default; }
+  .msg { font: 400 13px/1.5 var(--mono); margin: 14px 0 0; min-height: 1.5em; word-break: break-word; }
+  .msg.ok { color: var(--ok); } .msg.bad { color: var(--bad); }
+  .fine { font: 400 12px/1.6 var(--mono); color: var(--muted); margin: 16px 0 0; }
+  .fine code { color: var(--ink); }
+  h2 { font: 700 34px var(--display); text-transform: uppercase; margin: 56px 0 16px; letter-spacing: .02em; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .tile { display: block; text-decoration: none; color: var(--ink); }
+  .tile img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--bg2); border: 1px solid var(--line); }
+  .tile span { font: 500 12px var(--mono); display: block; padding: 6px 0 0; }
+  .net { font: 500 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--bg); background: var(--muted); padding: 2px 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a href="../">&larr; Marfa Light</a>
+    <span class="net" id="net">Ethereum</span>
+  </header>
+  <h1>Marfa Light</h1>
+  <p class="by">By MLow &middot; V1</p>
+  <div class="grid">
+    <img class="hero" id="hero" src="../tokens/1/0.gif" alt="Marfa Light #0, a day in Marfa, Texas, from midnight to midnight">
+    <div>
+      <p class="lede">Every token is a working clock for Marfa, Texas. The sun, the moon and the stars are computed for Marfa and for the minute you are looking. The program lives on Ethereum, with three.js from the Art Blocks dependency registry.</p>
+      <div class="card">
+        <div class="stats">
+          <div class="stat"><div class="k">Price</div><div class="v" id="price">&hellip;</div></div>
+          <div class="stat"><div class="k">Minted in sale</div><div class="v" id="sold">&hellip;</div></div>
+        </div>
+        <div class="bar"><i id="bar"></i></div>
+        <button class="secondary" id="connect">Connect wallet</button>
+        <button id="mint" disabled>Mint</button>
+        <p class="msg" id="msg"></p>
+        <p class="fine">One token per transaction. You pay the price above plus gas; the sale contract refuses any other amount.<br>
+          Contract <a id="tokenLink" target="_blank" rel="noopener"><code id="tokenAddr"></code></a></p>
+      </div>
+    </div>
+  </div>
+  <h2>Minted</h2>
+  <div class="tiles" id="tiles"></div>
+</div>
+<script type="module">
+  import { createPublicClient, createWalletClient, custom, http, fallback, parseAbi, formatEther } from 'https://cdn.jsdelivr.net/npm/viem@2.21.0/+esm';
+  import { mainnet, sepolia } from 'https://cdn.jsdelivr.net/npm/viem@2.21.0/chains/+esm';
+
+  // ?chain=sepolia runs the page against the rehearsal contract
+  const NETS = {
+    ethereum: { chain: mainnet, token: '0x4504570d25b710942BeE78b7Ff5720950c1FC02D', scan: 'https://etherscan.io',
+      rpc: ['https://ethereum-rpc.publicnode.com', 'https://eth.drpc.org', 'https://rpc.mevblocker.io'] },
+    sepolia: { chain: sepolia, token: '0x32710D9A7944Df70b333590ef5D4a452504613A7', scan: 'https://sepolia.etherscan.io',
+      rpc: ['https://ethereum-sepolia-rpc.publicnode.com', 'https://sepolia.drpc.org'] },
+  };
+  const key = new URLSearchParams(location.search).get('chain') === 'sepolia' ? 'sepolia' : 'ethereum';
+  const NET = NETS[key];
+  const MINTER = '0xfb5C61274a3A7dA83CcDD88DdEC914438244E2c9';
+  const TOKEN = NET.token;
+  const ZERO = '0x0000000000000000000000000000000000000000';
+  const minterAbi = parseAbi([
+    'function sales(address token) view returns (bool configured, address paymentToken, uint256 price, uint256 allocation, uint256 sold)',
+    'function purchase(address token, address expectedPaymentToken, uint256 maxPrice) payable returns (uint256 tokenId)',
+  ]);
+  const tokenAbi = parseAbi([
+    'function totalSupply() view returns (uint256)',
+    'function maxInvocations() view returns (uint256)',
+    'function paused() view returns (bool)',
+  ]);
+  const pub = createPublicClient({ chain: NET.chain, transport: fallback(NET.rpc.map((u) => http(u))) });
+  const $ = (id) => document.getElementById(id);
+  const say = (t, kind) => { $('msg').textContent = t; $('msg').className = 'msg' + (kind ? ' ' + kind : ''); };
+  const thumb = (id) => '../tokens/' + NET.chain.id + '/' + id + '.gif';
+
+  $('net').textContent = NET.chain.name;
+  $('tokenAddr').textContent = TOKEN.slice(0, 6) + '…' + TOKEN.slice(-4);
+  $('tokenLink').href = NET.scan + '/address/' + TOKEN;
+  $('hero').src = thumb(0);
+
+  let sale = null, supply = 0, account = '', busy = false, shown = -1;
+
+  function gate() {
+    const soldOut = sale && sale.sold >= sale.allocation;
+    const open = sale && sale.configured && !state.paused && !soldOut && sale.paymentToken === ZERO;
+    $('mint').disabled = busy || !open;
+    $('mint').textContent = soldOut ? 'Sold out' : state.paused ? 'Sale paused' : account ? 'Mint for ' + formatEther(sale ? sale.price : 0n) + ' ETH' : 'Mint';
+  }
+  const state = { paused: true };
+
+  async function refresh() {
+    const [s, ts, pz] = await Promise.all([
+      pub.readContract({ address: MINTER, abi: minterAbi, functionName: 'sales', args: [TOKEN] }),
+      pub.readContract({ address: TOKEN, abi: tokenAbi, functionName: 'totalSupply' }),
+      pub.readContract({ address: TOKEN, abi: tokenAbi, functionName: 'paused' }),
+    ]);
+    sale = { configured: s[0], paymentToken: s[1], price: s[2], allocation: s[3], sold: s[4] };
+    supply = Number(ts); state.paused = pz;
+    $('price').textContent = formatEther(sale.price) + ' ETH';
+    $('sold').textContent = sale.sold + ' / ' + sale.allocation;
+    $('bar').style.width = (sale.allocation ? Number(sale.sold * 100n / sale.allocation) : 0) + '%';
+    if (supply - 1 !== shown) drawTiles();
+    gate();
+  }
+
+  function drawTiles() {
+    shown = supply - 1;
+    const box = $('tiles'); box.textContent = '';
+    for (let id = supply - 1; id >= 0; id--) {
+      const a = document.createElement('a');
+      a.className = 'tile'; a.target = '_blank'; a.rel = 'noopener';
+      a.href = 'https://resolver.abx.io/a/' + NET.chain.id + '/' + TOKEN.toLowerCase() + '/' + id;
+      const img = document.createElement('img');
+      img.loading = 'lazy'; img.src = thumb(id); img.alt = 'Marfa Light #' + id;
+      const cap = document.createElement('span'); cap.textContent = '#' + id + '  live view ↗';
+      a.append(img, cap); box.append(a);
+    }
+  }
+
+  async function connect() {
+    const eth = window.ethereum;
+    if (!eth) { say('No browser wallet found. Install MetaMask, Rabby or another wallet, then reload.', 'bad'); return; }
+    try {
+      const accts = await eth.request({ method: 'eth_requestAccounts' });
+      account = accts[0] || '';
+      try { await eth.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x' + NET.chain.id.toString(16) }] }); }
+      catch (e) { say('Switch your wallet to ' + NET.chain.name + ' to mint.', 'bad'); }
+      $('connect').textContent = account.slice(0, 6) + '…' + account.slice(-4);
+      gate();
+    } catch (e) { say(e && e.message ? e.message : String(e), 'bad'); }
+  }
+
+  async function mint() {
+    if (!sale || busy) return;
+    if (!account) { await connect(); if (!account) return; }
+    busy = true; gate();
+    try {
+      const wallet = createWalletClient({ account, chain: NET.chain, transport: custom(window.ethereum) });
+      const chainId = await wallet.getChainId();
+      if (chainId !== NET.chain.id) throw new Error('Your wallet is on another network. Switch it to ' + NET.chain.name + ' and try again.');
+      say('Confirm in your wallet…');
+      // the price this page shows is the most the buyer agrees to pay
+      const hash = await wallet.writeContract({ address: MINTER, abi: minterAbi, functionName: 'purchase', args: [TOKEN, sale.paymentToken, sale.price], value: sale.price });
+      say('Minting… ' + hash.slice(0, 10) + '…');
+      const r = await pub.waitForTransactionReceipt({ hash });
+      if (r.status !== 'success') throw new Error('The transaction reverted. Nothing was minted.');
+      await refresh();
+      say('Minted Marfa Light #' + (supply - 1) + '. Its day GIF appears here once rendered; the live view works now.', 'ok');
+    } catch (e) {
+      const t = String((e && (e.shortMessage || e.message)) || e);
+      if (/SaleTermsChanged|WrongPayment/.test(String(e && (e.message || e)))) { await refresh().catch(() => {}); say('The sale terms changed, so nothing was charged. Check the price above and mint again.', 'bad'); }
+      else if (/User rejected|denied/i.test(t)) say('Cancelled in your wallet. Nothing was charged.');
+      else say(t, 'bad');
+    } finally { busy = false; gate(); }
+  }
+
+  $('connect').addEventListener('click', connect);
+  $('mint').addEventListener('click', mint);
+  if (window.ethereum) window.ethereum.on && window.ethereum.on('accountsChanged', (a) => { account = a[0] || ''; $('connect').textContent = account ? account.slice(0, 6) + '…' + account.slice(-4) : 'Connect wallet'; gate(); });
+  refresh().catch((e) => say('Could not read the sale: ' + (e.shortMessage || e.message || e), 'bad'));
+  setInterval(() => { if (!busy) refresh().catch(() => {}); }, 20000);
+</script>
+</body>
+</html>
