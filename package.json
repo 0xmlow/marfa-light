@@ -22,13 +22,14 @@
     "proposal:assets": "sh tools/proposal-assets.sh",
     "proposal:serve": "python3 -m http.server 8318 --directory proposal-site",
     "package": "node tools/package.js",
-    "publish:site": "git push origin main && git push -f origin $(git subtree split --prefix proposal-site main):refs/heads/gh-pages"
+    "publish:site": "git push origin main && git push -f origin $(git subtree split --prefix proposal-site main):refs/heads/gh-pages",
+    "thumbs": "node tools/thumbs.mjs"
   },
   "engines": {
     "node": ">=22"
   },
   "devDependencies": {
-    "@artblocks/abx-cli": "^0.3.0",
+    "@artblocks/abx-cli": "^0.5.1",
     "terser": "^5.51.2",
     "three": "0.124.0"
   }

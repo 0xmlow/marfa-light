@@ -1,5 +1,5 @@
 /*
-  MARFA LIGHT (working title). Prototype v0.10, October 2026.
+  MARFA LIGHT // By MLow, V1
   Michael Low (MLow). mlow.xyz
 
   Every token is a working clock for Marfa, Texas, 30.3095 N 104.0206 W.
