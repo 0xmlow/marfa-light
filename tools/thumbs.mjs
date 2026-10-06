@@ -91,7 +91,7 @@ if (!flag('no-push') && (ids.length || held)) {
   git('commit', '-q', '-m', `Token thumbnails: chain ${chainId}, ${ids.length} rendered, ${held} placeholder(s)`);
   execFileSync('npm', ['run', 'publish:site'], { cwd: ROOT, stdio: 'inherit' });
 }
-if (Object.keys(traits).length) {
+if (ids.length && Object.keys(traits).length) {
   console.log('traits → ABX resolver');
   abx('add', address, '--remote', 'abx', '--from-block', String(fromBlock), '--attributes', traitsFile);
 }
