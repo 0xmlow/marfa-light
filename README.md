@@ -139,6 +139,8 @@ To add a clock, a place or an egg, read [docs/ENGINE.md](docs/ENGINE.md). It is 
 
 The design language comes from MLow's virtual architecture practice: Daniel Arsham (the calcified relics), Zaha Hadid (the pavilion), Frank Lloyd Wright (the terrace, Cherokee red), and Virgil Abloh (the quoted labels, the orange zip tie). Easter eggs pay homage to Donald Judd's works at the Chinati Foundation, Elmgreen & Dragset's Prada Marfa, the 1956 film Giant, and Art Blocks projects by Snowfro, Dmitri Cherniak, Tyler Hobbs, Kjetil Golid, Matt DesLauriers and Alexis André. None of this is affiliated with or endorsed by them.
 
+The Marfa lights on the calendar stand where Zach Warren's sight-line study puts them: just under the Chinati skyline at 229 to 238 degrees true from the Viewing Area (203.6 to 210.1 degrees from town), at about magnitude +2.6, showing for about 17 seconds and drifting about 0.9 degrees a minute. Source: Zach Warren, *Separating the known from the unknown at Marfa, Texas*, v1.0, 2026, [doi:10.5281/zenodo.23046856](https://doi.org/10.5281/zenodo.23046856), [github.com/zacharyslate/marfa-lights-investigation](https://github.com/zacharyslate/marfa-lights-investigation). Only his published figures are used, not his code or photographs.
+
 MLow's own worlds appear throughout: NEW YORKERS ([n3wyorkers.com](https://n3wyorkers.com)), fLOWers and The Salon ([mlow.nyc](https://mlow.nyc)), STILL WAITING, THE COMMUTE, BLOOM CYCLE, The MLow Show, and THE SOFT CONSPIRACY, a collaboration with painter Andrés Del Vecchio ([thesoftconspiracy.com](https://thesoftconspiracy.com)). MLow's work has run on 5,000+ NYC taxis and shown in more than ten countries. [mlow.xyz](https://mlow.xyz)
 
 ## License

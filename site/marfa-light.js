@@ -15501,8 +15501,8 @@
     'Spring Equinox': 'The spring equinox. Lines of light run due east and due west, to where the sun rises and sets today.',
     'Autumn Equinox': 'The autumn equinox. Lines of light run due east and due west, to where the sun rises and sets today.',
     'Residency Day': 'This token’s Residency Day, the April date of its still, every year. A blossom of light turns over the clock, and at the token’s own minute it brightens.',
-    'Marfa Lights Festival': 'Marfa Lights Festival weekend. After dark the mystery lights are out on the horizon: they glow, drift, split and vanish.',
-    'Marfa Lights': 'The Marfa lights. Some nights, without warning, they are out on the horizon.'
+    'Marfa Lights Festival': 'Marfa Lights Festival weekend. After dark the mystery lights are out under the Chinati skyline, where Zach Warren’s sight-line study puts them: they glow, drift, and now and then split and vanish.',
+    'Marfa Lights': 'The Marfa lights. Some nights, without warning, they are out under the Chinati skyline, on the bearings in Zach Warren’s sight-line study.'
   };
   // which builder makes each day (solstices and equinoxes share one)
   var HOL_BUILD = {
@@ -15923,27 +15923,41 @@
       p.flush(m);
     };
   };
+  // The lights stand where the sight-line study puts them: Zach Warren,
+  // "Separating the known from the unknown at Marfa, Texas" (v1.0, 2026,
+  // doi:10.5281/zenodo.23046856, github.com/zacharyslate/marfa-lights-investigation).
+  // From the Viewing Area the lights over Mitchell Flat sit just under the
+  // Chinati skyline at 229-238 degrees true, 24-40 km out; from town that same
+  // stretch lies at 203.6-210.1 degrees, 18-34 km. A typical one is magnitude
+  // +2.6 and can outshine Sirius; it shows for about 17 s (the median window)
+  // and drifts about 0.9 degrees a minute. Only his published numbers are used
+  // here, not his code. What splits in two is the part nobody has explained.
+  var ORB_BAND = { town: [203.6, 210.1], platform: [229, 238] };
   HOLB.orbs = function (H) {
-    var c = H.W.cam, N = 7, p = hol_pts(N * 2, 16, true, true, false), cols = hol_cols(['#FFF6DE', '#FFE08A', '#FFB65C', '#FF6A4D', '#DDE8FF']), seed = Math.floor(H.r() * 1e6);
+    var c = H.W.cam, N = 7, p = hol_pts(N * 2, 16, true, true, false), cols = hol_cols(['#FFF6DE', '#FFF6DE', '#FFE08A', '#FFB65C', '#FF6A4D']), seed = Math.floor(H.r() * 1e6);
     H.box.add(p);
-    var base = [];
+    var band = H.W.P.place === 'Marfa Lights Viewing Area' ? ORB_BAND.platform : ORB_BAND.town, base = [];
     for (var i = 0; i < N; i++) {
-      var d = gen_dir(H.S, rf(H.r, -0.75, 0.75), 0), hl = Math.hypot(d.x, d.z) || 1, D = rf(H.r, 700, 1300);
-      base.push({ x: c.pos.x + d.x / hl * D, z: c.pos.z + d.z / hl * D, rx: -d.z / hl, rz: d.x / hl, h: rf(H.r, 30, 75), L: rf(H.r, 9, 23), off: H.r() * 30 });
+      var az = rf(H.r, band[0], band[1]), d = dirAzEl(az, 0), D = rf(H.r, 950, 1300);
+      // magnitude +2.6 typical; brightness relative to that by Pogson's ratio
+      var mag = 2.6 + (H.r() + H.r() + H.r() - 1.5) * 2.4;
+      base.push({ x: d.x * D, z: d.z * D, rx: -d.z, rz: d.x, D: D, h: rf(H.r, 22, 48), L: rf(H.r, 26, 60), off: H.r() * 60,
+        b: clamp(1.7 * Math.pow(10, -0.4 * (mag - 2.6)), 0.3, 4.5), dir: H.r() < 0.5 ? -1 : 1 });
     }
+    var w = 0.9 * D2R / 60;                                 // 0.9 degrees a minute, in radians a second
     return function (ctx, day, a) {
       var m = 0, dark = 1 - sstep(-10, -6, ctx.sun.el);
       if (dark > 0.01) for (var i = 0; i < N; i++) {
         var o = base[i], tt = a + o.off, k = Math.floor(tt / o.L), u = tt / o.L - k;
-        var h1 = hash2(i, k, seed), h2 = hash2(i, k, seed + 1), on = h1 < 0.8;
-        if (!on) continue;
-        var a0 = 0.1 + h2 * 0.3, a1 = a0 + 0.25 + hash2(i, k, seed + 2) * 0.35;
-        var env = sstep(a0, a0 + 0.06, u) * (1 - sstep(a1 - 0.08, a1, u)), b = env * dark * (0.75 + 0.25 * Math.sin(tt * 3 + i)) * 2.6;
+        if (hash2(i, k, seed) >= 0.75) continue;
+        // on for 10-25 s of the slot, around the 17 s median
+        var on = (10 + hash2(i, k, seed + 2) * 15) / o.L, a0 = hash2(i, k, seed + 1) * (0.95 - on), a1 = a0 + on;
+        var env = sstep(a0, a0 + 1.2 / o.L, u) * (1 - sstep(a1 - 1.5 / o.L, a1, u)), b = env * dark * o.b * (0.85 + 0.15 * Math.sin(tt * 2.3 + i));
         if (b <= 0.01) continue;
-        var drift = (u - a0) * (hash2(i, k, seed + 3) - 0.5) * 60, col = cols[Math.floor(hash2(i, k, seed + 4) * 5)];
-        var split = hash2(i, k, seed + 5) < 0.3 ? sstep((a0 + a1) / 2, a1, u) * 25 : 0;
-        hol_set(p, m++, o.x + o.rx * (drift - split), o.h + Math.sin(tt * 0.8) * 2, o.z + o.rz * (drift - split), col, b);
-        if (split > 0) hol_set(p, m++, o.x + o.rx * (drift + split), o.h + Math.sin(tt * 0.8 + 1) * 2, o.z + o.rz * (drift + split), col, b);
+        var drift = o.dir * (u - a0) * o.L * w * o.D, col = cols[Math.floor(hash2(i, k, seed + 4) * 5)];
+        var split = hash2(i, k, seed + 5) < 0.15 ? sstep((a0 + a1) / 2, a1, u) * 0.8 * D2R * o.D : 0;
+        hol_set(p, m++, o.x + o.rx * (drift - split), o.h + Math.sin(tt * 0.5) * 0.6, o.z + o.rz * (drift - split), col, b);
+        if (split > 0) hol_set(p, m++, o.x + o.rx * (drift + split), o.h + Math.sin(tt * 0.5 + 1) * 0.6, o.z + o.rz * (drift + split), col, b);
       }
       p.flush(m);
     };
