@@ -95,5 +95,5 @@ if (ids.length && Object.keys(traits).length) {
   console.log('traits → ABX resolver');
   abx('add', address, '--remote', 'abx', '--from-block', String(fromBlock), '--attributes', traitsFile);
 }
-console.log(`done. GIFs: https://0xmlow.github.io/marfa-light/tokens/${chainId}/<id>.gif (Pages takes a minute or two)`);
+console.log(`done. GIFs: https://marfalight.art/tokens/${chainId}/<id>.gif (Cloudflare is live at once; the onchain image field still reads https://0xmlow.github.io/marfa-light/tokens/${chainId}/<id>.gif, GitHub Pages takes a minute or two)`);
 if (ids.length) console.log(abx('refresh', address, '--token', ids[0]).trim());

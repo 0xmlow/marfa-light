@@ -2,7 +2,7 @@
 
 **A long-form generative series by MLow.** Every token is a working clock for Marfa, Texas (30.3095° N, 104.0206° W), standing somewhere around town, keeping live Marfa time. The hash decides the clock, how it is made, where it stands, the weather, the wind, the film it is shot on, the label it wears, and what is hidden around it. The sun, the moon and the stars are computed for Marfa and for the minute you are looking.
 
-Working title. Prototype v0.8, October 2026. **Live site: https://0xmlow.github.io/marfa-light/** Made for the Art Blocks x OpenSea Artist Residency in Marfa.
+Working title. Prototype v0.8, October 2026. **Live site: https://marfalight.art/** Made for the Art Blocks x OpenSea Artist Residency in Marfa.
 
 ![Marfa Light](proposal-site/img/clock-01-horizontal-sundial.jpg)
 
