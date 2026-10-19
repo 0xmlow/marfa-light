@@ -2486,5 +2486,179 @@
    "trait_type": "Egg Count",
    "value": 5
   }
+ ],
+ "14": [
+  {
+   "trait_type": "Clock",
+   "value": "Skeleton Clock"
+  },
+  {
+   "trait_type": "Escapement",
+   "value": "Anchor"
+  },
+  {
+   "trait_type": "Train",
+   "value": "Brass"
+  },
+  {
+   "trait_type": "Dial",
+   "value": "Blossom"
+  },
+  {
+   "trait_type": "Keeps Time By",
+   "value": "Gears"
+  },
+  {
+   "trait_type": "Place",
+   "value": "Arroyo"
+  },
+  {
+   "trait_type": "Material",
+   "value": "Mill Aluminum"
+  },
+  {
+   "trait_type": "Sky",
+   "value": "Clear"
+  },
+  {
+   "trait_type": "Wind",
+   "value": "Breeze"
+  },
+  {
+   "trait_type": "Film",
+   "value": "Velvia"
+  },
+  {
+   "trait_type": "Tag",
+   "value": "\"MARFA\""
+  },
+  {
+   "trait_type": "Lens",
+   "value": "85mm"
+  },
+  {
+   "trait_type": "Framing",
+   "value": "Right Third"
+  },
+  {
+   "trait_type": "Condition",
+   "value": "Pristine"
+  },
+  {
+   "trait_type": "Ground Bloom",
+   "value": "Cholla in Bloom"
+  },
+  {
+   "trait_type": "Visitors",
+   "value": "Lone Visitor"
+  },
+  {
+   "trait_type": "Light Work",
+   "value": "None"
+  },
+  {
+   "trait_type": "Birds",
+   "value": "None"
+  },
+  {
+   "trait_type": "Sky Event",
+   "value": "None"
+  },
+  {
+   "trait_type": "Anomaly",
+   "value": "None"
+  },
+  {
+   "trait_type": "Alignment",
+   "value": "Summer Solstice Sunrise, JUN 21 07:22"
+  },
+  {
+   "trait_type": "Alignment Gate",
+   "value": "None"
+  },
+  {
+   "trait_type": "Ground Work",
+   "value": "Stone Line"
+  },
+  {
+   "trait_type": "Palette",
+   "value": "Marfa"
+  },
+  {
+   "trait_type": "Label Tie",
+   "value": "Woven, Fidenza #0 / Golf Socks"
+  },
+  {
+   "trait_type": "Pigment Palette",
+   "value": "Fidenza #0 / Golf Socks"
+  },
+  {
+   "trait_type": "Pigment Source",
+   "value": "Fidenza #0 / Tyler Hobbs / sampled preview"
+  },
+  {
+   "trait_type": "Landscape Score",
+   "value": "Peg Constellation"
+  },
+  {
+   "trait_type": "Score Reference",
+   "value": "Ringers / Dmitri Cherniak"
+  },
+  {
+   "trait_type": "Score Density",
+   "value": "Measured"
+  },
+  {
+   "trait_type": "Score Scale",
+   "value": "Intimate"
+  },
+  {
+   "trait_type": "Score Composition",
+   "value": "Open Arc"
+  },
+  {
+   "trait_type": "Pigment Rhythm",
+   "value": "Alternating"
+  },
+  {
+   "trait_type": "Clock Accent",
+   "value": "Contour Paint"
+  },
+  {
+   "trait_type": "Accent Finish",
+   "value": "Satin Enamel"
+  },
+  {
+   "trait_type": "Atmospheric Depth",
+   "value": "High Desert"
+  },
+  {
+   "trait_type": "Mineral Cut",
+   "value": "Close Grain"
+  },
+  {
+   "trait_type": "Surface Grain",
+   "value": "Coarse"
+  },
+  {
+   "trait_type": "Tie Weave",
+   "value": "Three Strand"
+  },
+  {
+   "trait_type": "Ringers Reference",
+   "value": "#9"
+  },
+  {
+   "trait_type": "Meridian Reference",
+   "value": "#17"
+  },
+  {
+   "trait_type": "Easter Eggs",
+   "value": "Ringers Board · Meridian Painting"
+  },
+  {
+   "trait_type": "Egg Count",
+   "value": 2
+  }
  ]
 }
