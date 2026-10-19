@@ -1,0 +1,42 @@
+/* The mint page. Tokens, buttons and the nav come from ../ui/kit.css; this is layout. */
+body { font-size: 18px; }
+.page { max-width: 1120px; margin: 0 auto; padding: 28px clamp(16px, 4vw, 40px) 72px; }
+.first-band { margin: 0 0 36px; }
+.first-band .plaque { max-width: 980px; }
+.first-kicker { font: 500 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; margin: 0 0 8px; opacity: .85; }
+.first-line { font: 700 clamp(26px, 4vw, 50px)/.95 var(--display); text-transform: uppercase; letter-spacing: .01em; margin: 0; text-wrap: balance; }
+.head { display: flex; align-items: end; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; margin: 0 0 28px; }
+h1 { font: 800 clamp(56px, 11vw, 128px)/.86 var(--display); letter-spacing: .01em; margin: 0; text-transform: uppercase; }
+.by { font: 500 13px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 10px 0 0; display: flex; gap: 12px; align-items: center; }
+.net { font: 500 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--on-accent); background: var(--accent); padding: 3px 9px; border-radius: 999px; }
+.grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 36px; align-items: start; }
+.hero { width: 100%; aspect-ratio: 1; background: var(--screen); border: 1px solid var(--line); border-radius: 8px; display: block; object-fit: cover;
+  box-shadow: calc(var(--sdx) * 1.4px) calc(var(--sdy) * 1.6px) calc(var(--slen) * 2px) -20px rgba(var(--shadow-ink),.75); }
+.lede { margin: 0 0 24px; font-weight: 300; font-size: 20px; line-height: 1.5; }
+.lede em { font-style: italic; color: var(--accent); }
+/* the sale card: a wall label */
+.sale { padding: 24px; }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; margin: 0 0 18px; }
+.stat .k { font: 500 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.stat .v { font: 500 40px/1 var(--display); margin-top: 4px; font-variant-numeric: tabular-nums; }
+.fill { height: 8px; background: color-mix(in srgb, var(--ink) 10%, transparent); margin: 0 0 22px; border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,.3); }
+.fill i { display: block; height: 100%; width: 0; background: url(../ui/brass.webp) 0 0/512px 96px; transition: width .6s var(--ease); border-radius: 4px; box-shadow: inset 0 1px 0 rgba(255,250,230,.6); }
+.sale .btn { width: 100%; display: block; text-align: center; font-size: 15px; padding: 15px 18px; letter-spacing: .1em; }
+.sale .btn + .btn { margin-top: 10px; }
+.sale .btn.solid { font-family: var(--display); font-size: 24px; font-weight: 700; letter-spacing: .05em; padding: 15px 18px 16px; }
+.msg { font: 400 13px/1.5 var(--mono); margin: 14px 0 0; min-height: 1.5em; word-break: break-word; }
+.msg.ok { color: #6FBF8A; } .msg.bad { color: #D7775E; }
+:root[data-sky="golden"] .msg.ok, :root[data-sky="day"] .msg.ok { color: #2E7D4A; }
+.fine { font: 400 12px/1.6 var(--mono); color: var(--muted); margin: 16px 0 0; }
+.fine code { color: var(--ink); }
+h2 { font: 700 34px var(--display); text-transform: uppercase; margin: 0; letter-spacing: .02em; }
+.minted-head { display: flex; justify-content: space-between; align-items: end; gap: 12px 24px; flex-wrap: wrap; margin: 64px 0 18px; }
+.minted-head .eyebrow { color: var(--muted); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.tile { display: block; text-decoration: none; color: var(--ink); padding-bottom: 8px; }
+.tile img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--screen); }
+.tile span { font: 500 12px var(--mono); display: block; padding: 8px 10px 0; }
+footer { margin-top: 64px; }
+footer .ticks-rule { margin-bottom: 20px; }
+footer p { font: 400 13px/1.6 var(--mono); color: var(--muted); max-width: none; }
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .stat .v { font-size: 34px; } }

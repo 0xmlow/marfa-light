@@ -1,0 +1,186 @@
+/* ==========================================================================
+   MARFA LIGHT KIT (2026-10-19). Colours measured from 50 engine renders with
+   premium-site-design/scripts/palette_from_images.py, not picked:
+     grounds  caliche #E3D9C8 #DDC09B #C8C2B6, umber #746451 #65422F #907C63,
+              slate #535F72 #212838 #9EABBA, night #0E0B0E #00002E
+     accents  brass #E9CC98 #DCB27B #AE7431, terracotta #D7775E #E69368 #A63926,
+              indigo #353A75, and MLow's blue #1F69EF (the Memories study boards)
+   The page is lit by the real sky over Marfa: <html data-sky> is night, twilight,
+   golden or day, set from the sun's elevation. Brass stays brass in every light
+   because it is an object, not a theme colour.
+   Objects: nav = the dial plate with its hour scale; primary button = a brass
+   plaque; secondary = a stone tablet with an incised rule; cards = wall labels
+   whose shadow falls where the real sun (or moon) puts it (--sdx --sdy from kit.js);
+   rules = the hour ticks of a dial. A light follows the pointer (--mx --my) and a
+   click throws a few brass sparks.
+   ========================================================================== */
+:root {
+  color-scheme: dark;
+  --bg: #0B0D15; --bg2: #141827; --bg3: #1B2033; --ink: #EFE8DA; --muted: #A3AEBD;
+  --line: rgba(239,232,218,.14); --line2: rgba(239,232,218,.06); --tick: rgba(239,232,218,.5);
+  --accent: #E9CC98; --on-accent: #2A1C08; --warm: #D7775E; --blue: #8FB0EA; --screen: #06070C; --logo: none;
+  --sky-a: #07080F; --sky-b: #161A2E; --stars: 1;
+  --stone-a: #1E2336; --stone-b: #12151F; --stone-ink: var(--ink); --stone-rule: rgba(239,232,218,.45);
+  --shadow-ink: 0,0,0; --sdx: 0; --sdy: 14; --slen: 34;
+  --display: "Big Shoulders Display", "Oswald", "Arial Narrow", Impact, sans-serif;
+  --body: "Spectral", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", Menlo, Consolas, monospace;
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+:root[data-sky="twilight"] { --bg: #161A2C; --bg2: #212642; --bg3: #2A2F50; --ink: #F3EADB; --muted: #B3B0C8;
+  --line: rgba(243,234,219,.16); --line2: rgba(243,234,219,.07); --tick: rgba(243,234,219,.5);
+  --accent: #E69368; --on-accent: #2A1408; --warm: #D7775E; --blue: #9DB2E6; --sky-a: #1C1D3C; --sky-b: #5A3A4A; --stars: .5;
+  --stone-a: #2A2E4C; --stone-b: #181B2E; --stone-rule: rgba(243,234,219,.45); }
+:root[data-sky="golden"] { color-scheme: light; --bg: #E8DECB; --bg2: #DFD2BA; --bg3: #D3C4A8; --ink: #2A2118; --muted: #6E5F4E;
+  --line: rgba(42,33,24,.2); --line2: rgba(42,33,24,.07); --tick: rgba(42,33,24,.55);
+  --accent: #A63926; --on-accent: #F7EBD6; --warm: #D7775E; --blue: #353A75; --screen: #1A1612; --logo: invert(1);
+  --sky-a: #D9A871; --sky-b: #E8DECB; --stars: 0;
+  --stone-a: #EDE4D2; --stone-b: #D6C7AD; --stone-rule: rgba(42,33,24,.4); --shadow-ink: 60,40,20; }
+:root[data-sky="day"] { color-scheme: light; --bg: #F3EFE6; --bg2: #E8E0D1; --bg3: #DCD2BF; --ink: #1C1A1D; --muted: #535F72;
+  --line: rgba(28,26,29,.17); --line2: rgba(28,26,29,.06); --tick: rgba(28,26,29,.5);
+  --accent: #AE7431; --on-accent: #FFF7E6; --warm: #D7775E; --blue: #1F69EF; --screen: #1A1612; --logo: invert(1);
+  --sky-a: #B9C7D6; --sky-b: #F3EFE6; --stars: 0;
+  --stone-a: #F7F2E8; --stone-b: #DED4C1; --stone-rule: rgba(28,26,29,.35); --shadow-ink: 50,45,40; }
+
+::selection { background: var(--accent); color: var(--on-accent); }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 19px; line-height: 1.55;
+  transition: background-color 2.4s ease, color 2.4s ease; position: relative; }
+/* caliche grain over everything, very quiet */
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: url(grain.webp) 0 0/192px 192px; opacity: .18; mix-blend-mode: overlay; }
+:root[data-sky="golden"] body::before, :root[data-sky="day"] body::before { opacity: .35; mix-blend-mode: multiply; }
+body > * { position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
+a { color: inherit; text-decoration-color: color-mix(in srgb, var(--accent) 70%, transparent); text-underline-offset: 4px; text-decoration-thickness: 1px; transition: color .2s, text-decoration-color .2s; }
+a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 48px); }
+.mono, .eyebrow, .lab { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.eyebrow, .lab { color: var(--muted); }
+.lab { font-size: 10.5px; }
+.muted { color: var(--muted); }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppercase; line-height: .92; margin: 0; text-wrap: balance; letter-spacing: .005em; }
+p { margin: 0; max-width: 36em; }
+
+/* ---------- the hour ticks of a dial: a rule with character ---------- */
+.ticks-rule { height: 11px; border-bottom: 1px solid var(--tick);
+  background:
+    repeating-linear-gradient(90deg, var(--tick) 0 1px, transparent 1px 60px) 0 0/60px 11px repeat-x,
+    repeating-linear-gradient(90deg, var(--tick) 0 1px, transparent 1px 15px) 0 6px/15px 5px repeat-x; }
+
+/* ---------- buttons ---------- */
+.btn, .seg button, select, input[type="text"], input[type="date"] { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); padding: 10px 14px; border-radius: 4px; border: 1px solid var(--line); background: var(--bg2); }
+.btn, .seg button { cursor: pointer; position: relative; isolation: isolate; overflow: hidden; --mx: 50%; --my: 30%;
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), color .2s, border-color .2s, background-color .2s; }
+/* secondary: a stone tablet, caliche by day and blued steel at night, with an incised rule near the top */
+.btn:not(.solid):not([aria-pressed="true"]), .seg button:not([aria-pressed="true"]) { color: var(--stone-ink);
+  background: radial-gradient(140px 90px at var(--mx) var(--my), rgba(255,250,235,.16), transparent 70%), linear-gradient(180deg, var(--stone-a), var(--stone-b));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.25), 0 6px 16px -10px rgba(var(--shadow-ink),.7); }
+.btn:not(.solid):not([aria-pressed="true"])::before, .seg button:not([aria-pressed="true"])::before { content: ""; position: absolute; left: 9px; right: 9px; top: 4px; height: 1px; background: var(--stone-rule); transition: background .25s; }
+.btn:not(.solid):hover, .seg button:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, transparent); transform: translateY(-2px); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 14px 26px -14px rgba(var(--shadow-ink),.8); }
+.btn:not(.solid):hover::before, .seg button:hover::before { background: var(--accent); }
+.btn:active, .seg button:active { transform: translateY(1px); }
+/* primary: a brass plaque. Brushed brass, engraved dark letters, a sheen that sweeps on hover */
+.btn.solid, .btn[aria-pressed="true"], .seg button[aria-pressed="true"] { color: #2A1C08; border-color: rgba(70,45,10,.6); font-weight: 500; text-shadow: 0 1px 0 rgba(255,245,215,.55);
+  background:
+    radial-gradient(120px 80px at var(--mx) var(--my), rgba(255,250,230,.5), transparent 70%),
+    linear-gradient(180deg, rgba(255,240,200,.35), transparent 40%, rgba(70,45,10,.18)),
+    url(brass.webp) 0 0/512px 96px;
+  box-shadow: inset 0 1px 0 rgba(255,250,230,.7), inset 0 -1px 0 rgba(70,45,10,.5), 0 1px 0 #7A5522, 0 10px 22px -10px rgba(var(--shadow-ink),.75); }
+.btn.solid::after, .btn[aria-pressed="true"]::after, .seg button[aria-pressed="true"]::after { content: ""; position: absolute; inset: -40% -60%; z-index: -1; pointer-events: none;
+  background: linear-gradient(105deg, transparent 42%, rgba(255,255,255,.6) 49%, rgba(255,255,255,.15) 53%, transparent 60%); transform: translateX(-75%); transition: transform .9s var(--ease); }
+.btn.solid:hover, .btn[aria-pressed="true"]:hover, .seg button[aria-pressed="true"]:hover { color: #2A1C08; transform: translateY(-3px) rotate(-.4deg); box-shadow: inset 0 1px 0 rgba(255,250,230,.7), 0 1px 0 #7A5522, 0 20px 36px -14px rgba(var(--shadow-ink),.85); }
+.btn.solid:hover::after, .btn[aria-pressed="true"]:hover::after { transform: translateX(75%); }
+.btn.solid:active { transform: translateY(1px); }
+.btn.swiped { animation: mlSwipe .5s var(--ease); }
+@keyframes mlSwipe { 0% { transform: none } 35% { transform: translateX(6px) rotate(.3deg) } 70% { transform: translateX(-2px) } 100% { transform: none } }
+.btn:disabled { opacity: .45; cursor: progress; transform: none !important; }
+.seg { display: inline-flex; gap: 0; max-width: 100%; border-radius: 4px; }
+.seg button { border-radius: 0; }
+.seg button:first-child { border-radius: 4px 0 0 4px; } .seg button:last-child { border-radius: 0 4px 4px 0; }
+.seg button + button { margin-left: -1px; }
+select, input[type="text"], input[type="date"] { width: 100%; min-width: 0; background: var(--bg); box-shadow: inset 0 1px 2px rgba(0,0,0,.25); }
+select:focus, input:focus { border-color: var(--accent); outline: none; }
+input[type="text"] { text-transform: none; letter-spacing: 0; }
+input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); }
+
+/* the sparks a click throws (kit.js) */
+.ml-pop { position: fixed; width: 7px; height: 7px; margin: -3px 0 0 -3px; border-radius: 50%; pointer-events: none; z-index: 9999;
+  background: radial-gradient(circle at 35% 30%, #FFF6D8, #E9CC98 55%, #AE7431); box-shadow: 0 0 8px rgba(233,204,152,.8);
+  animation: mlPop .7s cubic-bezier(.15,.7,.3,1) forwards; }
+@keyframes mlPop { 0% { transform: scale(.3); opacity: 1 } 100% { transform: translate(var(--dx), var(--dy)) scale(.2); opacity: 0 } }
+
+/* ---------- a brass plaque (the milestone) ---------- */
+.plaque { position: relative; color: #2A1C08; border: 1px solid rgba(70,45,10,.6); border-radius: 5px; padding: 26px 34px 28px;
+  background: linear-gradient(180deg, rgba(255,240,200,.3), transparent 35%, rgba(70,45,10,.2)), url(brass.webp) 0 0/512px 96px;
+  box-shadow: inset 0 1px 0 rgba(255,250,230,.7), inset 0 -1px 0 rgba(70,45,10,.5), 0 1px 0 #7A5522, calc(var(--sdx) * .6px) calc(var(--sdy) * .8px) calc(var(--slen) * 1px) -10px rgba(var(--shadow-ink),.55); }
+.plaque::before { content: ""; position: absolute; inset: 9px; border: 1px solid rgba(70,45,10,.45); border-radius: 3px; pointer-events: none; box-shadow: inset 0 1px 0 rgba(255,250,230,.35); }
+/* four screws */
+.plaque::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 14px 14px, #F3E2B8 0 2px, #6B4A1E 2.6px, transparent 4px),
+    radial-gradient(circle at calc(100% - 14px) 14px, #F3E2B8 0 2px, #6B4A1E 2.6px, transparent 4px),
+    radial-gradient(circle at 14px calc(100% - 14px), #F3E2B8 0 2px, #6B4A1E 2.6px, transparent 4px),
+    radial-gradient(circle at calc(100% - 14px) calc(100% - 14px), #F3E2B8 0 2px, #6B4A1E 2.6px, transparent 4px); }
+.plaque .mono, .plaque a { color: #3A2810; }
+.plaque .first-line { text-shadow: 0 1px 0 rgba(255,245,215,.6), 0 -1px 0 rgba(60,35,5,.35); }
+
+/* ---------- nav: the dial plate ---------- */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(12px) saturate(1.2); -webkit-backdrop-filter: blur(12px) saturate(1.2); transition: background-color 2.4s ease; }
+.bar::before { content: ""; position: absolute; left: 0; right: 0; top: 4px; height: 1px; background: var(--tick); opacity: .55; pointer-events: none; }
+.bar::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 9px; pointer-events: none; border-bottom: 1px solid var(--tick);
+  background:
+    repeating-linear-gradient(90deg, var(--tick) 0 1px, transparent 1px 60px) 0 0/60px 9px repeat-x,
+    repeating-linear-gradient(90deg, var(--tick) 0 1px, transparent 1px 15px) 0 5px/15px 4px repeat-x; }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 13px 15px; }
+.bar .left { display: flex; align-items: center; gap: 16px; min-width: 0; flex: none; }
+.bar .left img { height: 22px; width: auto; filter: var(--logo); display: block; flex: none; transition: transform .5s var(--ease); }
+.bar .left a:hover img { transform: rotate(-3deg) scale(1.05); }
+.bar .left span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .links { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.bar .links a { text-decoration: none; font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 8px 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; transition: color .2s, background-color .2s; }
+.bar .links a::before { content: ""; width: 6px; height: 6px; border-radius: 50%; flex: none; background: radial-gradient(circle at 35% 30%, #FFF6D8, #E9CC98 55%, #AE7431); opacity: 0; transform: scale(.5); transition: opacity .2s, transform .3s cubic-bezier(.3,1.6,.5,1); }
+.bar .links a:hover, .bar .links a.on { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
+.bar .links a:hover::before, .bar .links a.on::before { opacity: 1; transform: scale(1); }
+.bar .more { position: relative; display: inline-flex; }
+.bar .more-b { font: 500 11.5px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); background: none; border: 1px solid transparent; border-radius: 999px; padding: 9px 12px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: color .2s, background-color .2s; }
+.bar .more-b i { width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .25s var(--ease); }
+.bar .more.open .more-b i { transform: translateY(1px) rotate(225deg); }
+.bar .more-b:hover, .bar .more.open .more-b { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
+/* the board under MORE: a wall label listing the rest of the dial */
+.bar .more-p { position: absolute; right: 0; top: calc(100% + 16px); min-width: 400px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; padding: 20px 14px 14px;
+  background: linear-gradient(180deg, var(--bg2), var(--bg)); border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), calc(var(--sdx) * .6px) calc(var(--sdy) * 1.2px) 50px -16px rgba(var(--shadow-ink),.8);
+  opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .2s, transform .25s var(--ease), visibility 0s .25s; z-index: 60; }
+.bar .more-p::before { content: ""; position: absolute; left: 14px; right: 14px; top: 9px; height: 1px; background: var(--tick); opacity: .6; }
+.bar .more-p small { grid-column: 1 / -1; font: 500 9.5px var(--mono); letter-spacing: .28em; text-transform: uppercase; color: var(--accent); padding: 4px 10px 8px; }
+.bar .more.open .more-p { opacity: 1; visibility: visible; transform: none; transition: opacity .2s, transform .25s var(--ease); }
+.bar .more-p a { padding: 10px 10px; border-radius: 6px; }
+.bar .burger { display: none; font: 600 11.5px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink); background: linear-gradient(180deg, var(--stone-a), var(--stone-b)); border: 1px solid var(--line); border-radius: 4px; padding: 9px 12px; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,.1); }
+.bar .mint-cta { padding: 9px 14px; flex: none; }
+@media (max-width: 1240px) { .bar .left span { display: none; } }
+@media (max-width: 1060px) {
+  .bar .burger { display: inline-block; margin-left: auto; }
+  .bar .links { display: none; position: absolute; left: 0; right: 0; top: calc(100% + 9px); flex-direction: column; align-items: stretch; gap: 0; padding: 10px 12px 16px; background: linear-gradient(180deg, var(--bg2), var(--bg)); border-bottom: 1px solid var(--line); box-shadow: 0 30px 50px -20px rgba(0,0,0,.6); max-height: calc(100vh - 90px); overflow: auto; }
+  .bar .links.open { display: flex; }
+  .bar .links a { padding: 12px 12px; border-radius: 6px; }
+  .bar .links a::before { opacity: 1; transform: none; }
+  .bar .more { display: block; }
+  .bar .more-b { display: none; }
+  .bar .more-p { position: static; min-width: 0; display: flex; flex-direction: column; opacity: 1; visibility: visible; transform: none; background: none; border: 0; box-shadow: none; padding: 6px 0 0; }
+  .bar .more-p::before { display: none; }
+  .bar .more-p small { padding: 12px 12px 6px; }
+}
+@media (max-width: 560px) { .bar .mint-cta { font-size: 11px; padding: 8px 10px; } .bar .wrap { gap: 10px; } }
+
+/* ---------- a wall label (card) with a sun shadow ---------- */
+.ml-card { position: relative; isolation: isolate; overflow: hidden; --mx: 50%; --my: 0%; border: 1px solid var(--line); border-radius: 5px; background: linear-gradient(180deg, var(--bg2), var(--bg));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 1px 0 rgba(0,0,0,.2);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s, background-color 2.4s ease; }
+.ml-card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(260px 200px at var(--mx) var(--my), color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%); }
+.ml-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--accent) 60%, transparent), calc(var(--sdx) * 1px) calc(var(--sdy) * 1px) calc(var(--slen) * 1px) -10px rgba(var(--shadow-ink),.7); }
+.ml-card:hover::after { opacity: 1; }
