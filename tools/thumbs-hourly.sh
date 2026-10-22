@@ -14,6 +14,15 @@ ADDR=0x4504570d25b710942BeE78b7Ff5720950c1FC02D
 echo "=== $(date -u +%FT%TZ)"
 git pull --ff-only -q || echo "git pull failed (continuing)"
 node tools/thumbs.mjs --chain ethereum --address $ADDR --from-block 26133300 --date 2026-10-06 || { echo "thumbs failed"; exit 1; }
+# holders: owners, names and pictures for /holders/ (the page also reads owners live; this keeps
+# first paint, stills and new collectors' ENS current). Commit and publish only when something changed.
+node tools/holders.mjs && python3 tools/holders-media.py && {
+  git add proposal-site/data/holders.json proposal-site/holders/pfp proposal-site/tokens/1/s
+  if ! git diff --cached --quiet; then
+    git commit -q -m "Holders: $(node -e 'const d=require("./proposal-site/data/holders.json");console.log(d.supply+" of "+d.max+" minted, "+d.holders.length+" holders")')"
+    npm run publish:site || echo "publish failed"
+  fi
+} || echo "holders failed (continuing)"
 # all minted and every one rendered: the job is finished
 DONE=$(node -e '
   const fs=require("fs"); const t=JSON.parse(fs.readFileSync("thumbs/1-'"${ADDR:l}"'.json","utf8"));

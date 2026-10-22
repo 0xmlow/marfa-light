@@ -1,0 +1,20 @@
+/* The collectors page. Objects come from ../ui/kit.css and ../ui/collection.css; this is layout. */
+body { font-size: 18px; }
+main { padding-bottom: 40px; }
+.hd { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 32px 56px; align-items: center; padding-block: 48px 40px; }
+.hd h1 { font: 800 clamp(60px, 9vw, 132px)/.84 var(--display); margin: 14px 0 20px; }
+.lede { font-weight: 300; font-size: 20px; line-height: 1.5; margin: 0 0 26px; }
+.hd .cx-stats { margin-bottom: 16px; }
+.cx-stat .v.small { font-size: clamp(22px, 2.4vw, 30px); padding-top: 8px; }
+.cx-stat .v a { text-decoration: none; }
+.sec { padding-block: 56px 8px; }
+.sec-h { display: flex; justify-content: space-between; align-items: end; gap: 14px 40px; flex-wrap: wrap; margin: 0 0 24px; }
+.sec-h h2 { font-size: clamp(40px, 5.4vw, 72px); margin-top: 8px; }
+.sec-h .note { font-size: 15px; max-width: 34em; }
+footer { padding-block: 56px 48px; }
+footer .ticks-rule { margin-bottom: 18px; }
+footer p { font: 400 13px/1.6 var(--mono); color: var(--muted); max-width: none; }
+@media (max-width: 900px) {
+  .hd { grid-template-columns: 1fr; padding-top: 28px; }
+  .cx-dial { max-width: 380px; grid-row: 1; }
+}

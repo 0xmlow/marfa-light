@@ -1,0 +1,146 @@
+/* The collection (ui/collection.js): the edition dial, the collectors' faces, the leaderboard and
+   the edition wall. Same objects as the kit: brass for what is minted, stone for what waits,
+   wall labels for people. Colours are the kit's tokens, so the sky still lights it. */
+
+/* ---------- the edition dial ---------- */
+.cx-dial { position: relative; width: 100%; max-width: 460px; aspect-ratio: 1; margin: 0 auto; }
+.cx-dial svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.cx-dial .face { fill: color-mix(in srgb, var(--bg2) 70%, transparent); stroke: var(--line); }
+.cx-dial .ring { fill: none; stroke: var(--tick); stroke-width: 1; opacity: .6; }
+.cx-dial line { stroke-linecap: round; transition: stroke-width .2s; }
+.cx-dial line.on { stroke: url(#cxBrass); stroke-width: 5; filter: drop-shadow(0 0 3px color-mix(in srgb, var(--accent) 45%, transparent));
+  animation: cxTick .5s var(--ease) both; animation-delay: calc(var(--i) * 9ms); }
+.cx-dial line.off { stroke: var(--tick); stroke-width: 2; opacity: .45; }
+.cx-dial line.next { stroke: var(--warm); opacity: 1; stroke-width: 4; animation: cxNext 1.6s ease-in-out infinite; }
+.cx-dial line:hover { stroke-width: 8; }
+@keyframes cxTick { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cxNext { 50% { opacity: .35; } }
+.cx-dial .nums text { font: 500 12px var(--mono); fill: var(--muted); text-anchor: middle; letter-spacing: .08em; }
+.cx-dial .hand { transform-origin: 200px 200px; transition: transform 1.6s var(--ease); }
+.cx-dial .hand line { stroke: var(--warm); stroke-width: 3; }
+.cx-dial .hand circle { fill: url(#cxBrass); stroke: rgba(70,45,10,.6); }
+.cx-dial-c { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; pointer-events: none; }
+.cx-dial-c b { font: 800 clamp(72px, 13vw, 132px)/.8 var(--display); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.cx-dial-c span { font: 500 12px var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
+.cx-dial-c em { font: 700 clamp(22px, 3vw, 30px)/1 var(--display); font-style: normal; text-transform: uppercase; color: var(--accent); margin-top: 10px; letter-spacing: .04em; }
+
+/* ---------- the stat plates beside the dial ---------- */
+.cx-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.cx-stat { padding: 16px 18px 18px; }
+.cx-stat .k { font: 500 10.5px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.cx-stat .v { font: 700 clamp(34px, 4vw, 48px)/1 var(--display); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.cx-stat .s { font: 400 12px/1.4 var(--mono); color: var(--muted); margin-top: 6px; }
+.cx-fill { height: 10px; border-radius: 5px; background: color-mix(in srgb, var(--ink) 10%, transparent); overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,.3); }
+.cx-fill i { display: block; height: 100%; width: 0; border-radius: 5px; background: url(brass.webp) 0 0/512px 96px; box-shadow: inset 0 1px 0 rgba(255,250,230,.6); transition: width 1.4s var(--ease); }
+.cx-live { display: inline-flex; align-items: center; gap: 8px; font: 500 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.cx-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+.cx-live.on::before { background: #6FBF8A; box-shadow: 0 0 0 0 rgba(111,191,138,.6); animation: cxPulse 2s infinite; }
+@keyframes cxPulse { 70% { box-shadow: 0 0 0 8px rgba(111,191,138,0); } 100% { box-shadow: 0 0 0 0 rgba(111,191,138,0); } }
+
+/* ---------- avatars ---------- */
+.cx-av { position: relative; display: block; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; flex: none;
+  box-shadow: 0 0 0 1px var(--line), 0 6px 14px -8px rgba(var(--shadow-ink),.8); }
+.cx-av img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.cx-av.big { width: 64px; height: 64px; }
+.hon .cx-av, .cx-row .cx-av.big:has(img[src*="holders/pfp"]) { box-shadow: 0 0 0 2px #DCB27B, 0 0 0 3px rgba(70,45,10,.5), 0 8px 18px -8px rgba(var(--shadow-ink),.8); }
+
+/* ---------- the faces: everyone who holds one ---------- */
+.cx-faces { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 18px 10px; }
+.cx-face { display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none; color: var(--ink); min-width: 0; }
+.cx-face .cx-av { width: 72px; height: 72px; transition: transform .35s var(--ease), box-shadow .35s; }
+.cx-face:hover .cx-av { transform: translateY(-4px) scale(1.06); }
+.cx-face span:last-child { font: 500 11px var(--mono); letter-spacing: .04em; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.cx-face:hover span:last-child { color: var(--accent); }
+
+/* ---------- the leaderboard ---------- */
+.cx-board { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.cx-row { display: grid; grid-template-columns: 56px 64px minmax(0, 1.3fr) 84px minmax(0, 2fr); align-items: center; gap: 16px 20px; padding: 14px 18px; scroll-margin-top: 100px; }
+.cx-row:target { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.cx-rank { font: 700 30px/1 var(--display); color: var(--muted); font-variant-numeric: tabular-nums; }
+.cx-artist { display: inline-block; font: 600 10px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #2A1C08; padding: 5px 7px; border-radius: 3px;
+  background: url(brass.webp) 0 0/512px 96px; box-shadow: inset 0 1px 0 rgba(255,250,230,.7), 0 1px 0 #7A5522; }
+.cx-who { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.cx-who b { font: 700 26px/1 var(--display); text-transform: uppercase; letter-spacing: .02em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cx-links { font: 400 12.5px var(--mono); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cx-links i { font-style: normal; margin: 0 7px; opacity: .6; }
+.cx-links a { text-decoration: none; } .cx-links a:hover { text-decoration: underline; }
+.cx-hon { align-self: flex-start; font: 500 10px var(--mono); letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: var(--accent); margin-top: 3px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); padding: 3px 7px; border-radius: 999px; }
+.cx-hon:hover { background: var(--accent); color: var(--on-accent); }
+.cx-count { text-align: center; }
+.cx-count b { display: block; font: 800 44px/.9 var(--display); font-variant-numeric: tabular-nums; }
+.cx-count span { font: 500 10px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.cx-pieces { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.cx-piece { position: relative; width: 88px; flex: none; text-decoration: none; color: var(--ink); }
+.cx-piece img { width: 88px; height: 88px; object-fit: cover; display: block; border-radius: 3px; background: var(--screen); box-shadow: 0 0 0 1px var(--line); transition: transform .3s var(--ease), box-shadow .3s; }
+.cx-piece:hover img { transform: translateY(-3px); box-shadow: 0 0 0 1px var(--accent), 0 12px 20px -10px rgba(var(--shadow-ink),.9); }
+.cx-piece span { display: block; font: 400 10px/1.3 var(--mono); color: var(--muted); margin-top: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cx-piece span b { color: var(--ink); font-weight: 500; margin-right: 5px; }
+.is-artist .cx-pieces .cx-piece { width: 64px; } .is-artist .cx-pieces .cx-piece img { width: 64px; height: 64px; }
+.is-artist .cx-piece span { display: none; }
+@media (max-width: 900px) {
+  .cx-row { grid-template-columns: 40px 56px minmax(0, 1fr) 64px; padding: 14px; gap: 12px 14px; }
+  .cx-av.big { width: 56px; height: 56px; }
+  .cx-rank { font-size: 22px; }
+  .cx-count b { font-size: 34px; }
+  .cx-pieces { grid-column: 1 / -1; justify-content: flex-start; }
+  .cx-who b { font-size: 22px; }
+}
+
+/* collector cards: the clock they hold, then the wall label with who they are */
+.cx-board { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+.cx-board .cx-row { grid-column: 1 / -1; }
+.cx-card { display: flex; flex-direction: column; scroll-margin-top: 100px; }
+.cx-card:target { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.cx-art { position: relative; display: block; aspect-ratio: 1; overflow: hidden; background: var(--screen); }
+.cx-art img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s var(--ease); }
+.cx-card:hover .cx-art img { transform: scale(1.05); }
+.cx-no { position: absolute; left: 10px; top: 10px; font: 600 10.5px var(--mono); letter-spacing: .12em; color: #2A1C08; padding: 4px 7px; border-radius: 3px;
+  background: url(brass.webp) 0 0/512px 96px; box-shadow: inset 0 1px 0 rgba(255,250,230,.7), 0 1px 0 #7A5522, 0 4px 10px -4px rgba(0,0,0,.5); }
+.cx-n { position: absolute; right: 10px; top: 10px; font: 600 10.5px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: #F3EADB; padding: 4px 7px; border-radius: 3px; background: rgba(10,8,6,.7); }
+.cx-extra { display: flex; gap: 4px; padding: 4px 4px 0; }
+.cx-extra a { flex: 1; max-width: 25%; } .cx-extra img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; display: block; border-radius: 2px; }
+.cx-label { display: flex; align-items: center; gap: 12px; padding: 14px 14px 6px; margin-top: -30px; position: relative; }
+.cx-label .cx-av { width: 52px; height: 52px; box-shadow: 0 0 0 3px var(--bg2), 0 8px 16px -8px rgba(var(--shadow-ink),.9); }
+.cx-card.hon .cx-label .cx-av { box-shadow: 0 0 0 3px var(--bg2), 0 0 0 5px #DCB27B, 0 8px 16px -8px rgba(var(--shadow-ink),.9); }
+.cx-label .cx-who { padding-top: 26px; }
+.cx-card .cx-who b { font-size: 22px; }
+.cx-card .cx-links { font-size: 11.5px; }
+.cx-meta { display: flex; flex-direction: column; gap: 8px; padding: 6px 14px 16px; font: 400 11.5px/1.4 var(--mono); color: var(--muted); margin-top: auto; }
+.cx-meta b { color: var(--ink); font-weight: 500; }
+.cx-meta .cx-hon { margin-top: 0; }
+
+/* ---------- the edition wall: 111 places ---------- */
+.cx-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 8px; }
+.cx-cell { position: relative; aspect-ratio: 1; border-radius: 3px; overflow: hidden; display: block; text-decoration: none; color: #F3EADB; background: var(--screen);
+  box-shadow: 0 0 0 1px var(--line); transition: transform .3s var(--ease), box-shadow .3s; }
+.cx-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s var(--ease); }
+.cx-cell:hover { transform: translateY(-3px); z-index: 2; box-shadow: 0 0 0 1px var(--accent), 0 16px 28px -14px rgba(var(--shadow-ink),.9); }
+.cx-cell:hover img { transform: scale(1.06); }
+.cx-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 8px 6px; font: 400 10.5px/1.25 var(--mono); background: linear-gradient(transparent, rgba(8,6,4,.78));
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cx-cap b { font-weight: 500; margin-right: 6px; }
+/* a place still waiting: an engraved stone with its number */
+.cx-cell.empty { color: var(--muted); background: linear-gradient(180deg, var(--stone-a), var(--stone-b)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), inset 0 -1px 0 rgba(0,0,0,.2), 0 0 0 1px var(--line); }
+.cx-cell.empty::before { content: ""; position: absolute; left: 8px; right: 8px; top: 6px; height: 1px; background: var(--stone-rule); opacity: .6; }
+.cx-num { position: absolute; inset: 0; display: grid; place-items: center; font: 700 34px var(--display); letter-spacing: .02em; opacity: .55;
+  text-shadow: 0 1px 0 rgba(255,255,255,.18), 0 -1px 0 rgba(0,0,0,.35); }
+.cx-cell.empty .cx-cap { background: none; text-align: center; letter-spacing: .14em; text-transform: uppercase; font-size: 9.5px; }
+.cx-cell.empty:hover .cx-num { opacity: 1; color: var(--accent); }
+.cx-cell.next { box-shadow: 0 0 0 2px var(--warm), 0 0 24px -6px var(--warm); }
+.cx-cell.next .cx-num, .cx-cell.next .cx-cap { color: var(--warm); opacity: 1; }
+@media (max-width: 560px) { .cx-wall { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 6px; } .cx-num { font-size: 26px; } .cx-cap { font-size: 9.5px; } }
+@media (prefers-reduced-motion: reduce) { .cx-dial line.on, .cx-dial line.next { animation: none; } }
+@media (max-width: 560px) {
+  .cx-board { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .cx-label { padding: 10px 10px 4px; gap: 8px; margin-top: -24px; }
+  .cx-label .cx-av { width: 42px; height: 42px; }
+  .cx-label .cx-who { padding-top: 22px; }
+  .cx-card .cx-who b { font-size: 17px; }
+  .cx-card .cx-links i, .cx-card .cx-links a + i + a { display: none; }
+  .cx-meta { padding: 4px 10px 12px; font-size: 10.5px; }
+  .cx-hon { font-size: 8.5px; letter-spacing: .08em; }
+  .cx-faces { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 14px 6px; }
+  .cx-face .cx-av { width: 54px; height: 54px; }
+  .cx-face span:last-child { font-size: 9.5px; }
+}

@@ -34,9 +34,13 @@ h2 { font: 700 34px var(--display); text-transform: uppercase; margin: 0; letter
 .minted-head .eyebrow { color: var(--muted); }
 .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
 .tile { display: block; text-decoration: none; color: var(--ink); padding-bottom: 8px; }
-.tile img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--screen); }
+.tile img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; display: block; background: var(--screen); }
 .tile span { font: 500 12px var(--mono); display: block; padding: 8px 10px 0; }
 footer { margin-top: 64px; }
 footer .ticks-rule { margin-bottom: 20px; }
 footer p { font: 400 13px/1.6 var(--mono); color: var(--muted); max-width: none; }
 @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .stat .v { font-size: 34px; } }
+.stat .v a { text-decoration: none; }
+.split { font: 400 12px/1.5 var(--mono); color: var(--muted); margin: -12px 0 20px; }
+.tile span b { font-weight: 500; margin-right: 4px; }
+.tile span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
