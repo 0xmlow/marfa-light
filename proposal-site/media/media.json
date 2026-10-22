@@ -1,0 +1,156 @@
+{
+ "posters": [
+  {
+   "id": "01-light-is-the-measure",
+   "w": 720,
+   "h": 900
+  },
+  {
+   "id": "02-marfa-time",
+   "w": 720,
+   "h": 405
+  },
+  {
+   "id": "03-time-has-gravity",
+   "w": 720,
+   "h": 720
+  },
+  {
+   "id": "04-stay-a-little-longer",
+   "w": 563,
+   "h": 1000
+  },
+  {
+   "id": "05-every-grain",
+   "w": 720,
+   "h": 900
+  },
+  {
+   "id": "06-read-the-night",
+   "w": 563,
+   "h": 1000
+  },
+  {
+   "id": "07-time-flows",
+   "w": 720,
+   "h": 720
+  },
+  {
+   "id": "08-one-minute",
+   "w": 720,
+   "h": 900
+  },
+  {
+   "id": "09-keeps-watch",
+   "w": 720,
+   "h": 720
+  },
+  {
+   "id": "10-take-your-time",
+   "w": 720,
+   "h": 405
+  },
+  {
+   "id": "11-seconds-bloom",
+   "w": 667,
+   "h": 1000
+  },
+  {
+   "id": "12-now-departing",
+   "w": 667,
+   "h": 1000
+  },
+  {
+   "id": "13-between-ticks",
+   "w": 667,
+   "h": 1000
+  },
+  {
+   "id": "14-borrowed-sky",
+   "w": 667,
+   "h": 1000
+  },
+  {
+   "id": "15-town-keeps-time",
+   "w": 667,
+   "h": 1000
+  },
+  {
+   "id": "16-shadow-arrives",
+   "w": 667,
+   "h": 1000
+  },
+  {
+   "id": "17-earth-turns",
+   "w": 667,
+   "h": 1000
+  },
+  {
+   "id": "18-burn-brightly",
+   "w": 667,
+   "h": 1000
+  },
+  {
+   "id": "19-nothing-but-time",
+   "w": 667,
+   "h": 1000
+  },
+  {
+   "id": "20-wind-remembers",
+   "w": 667,
+   "h": 1000
+  }
+ ],
+ "panoramas": [
+  {
+   "id": "21-shadow-job",
+   "w": 1800,
+   "h": 735
+  },
+  {
+   "id": "22-departure-denied",
+   "w": 1800,
+   "h": 735
+  },
+  {
+   "id": "23-clock-said",
+   "w": 1800,
+   "h": 735
+  },
+  {
+   "id": "24-pins-and-needles",
+   "w": 1800,
+   "h": 735
+  },
+  {
+   "id": "25-solar-powered",
+   "w": 1800,
+   "h": 735
+  },
+  {
+   "id": "26-loud-noon",
+   "w": 1800,
+   "h": 735
+  },
+  {
+   "id": "27-cloud-excuse",
+   "w": 1800,
+   "h": 735
+  },
+  {
+   "id": "28-flexible-hours",
+   "w": 1800,
+   "h": 735
+  },
+  {
+   "id": "29-train-of-thought",
+   "w": 1800,
+   "h": 735
+  },
+  {
+   "id": "30-extra-time",
+   "w": 1800,
+   "h": 735
+  }
+ ]
+}
