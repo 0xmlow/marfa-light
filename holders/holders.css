@@ -18,3 +18,5 @@ footer p { font: 400 13px/1.6 var(--mono); color: var(--muted); max-width: none;
   .hd { grid-template-columns: 1fr; padding-top: 28px; }
   .cx-dial { max-width: 380px; grid-row: 1; }
 }
+.live-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #3F9D63; margin-right: 8px; vertical-align: 1px; animation: mbPulse 2s infinite; }
+.bar .mint-cta { font-size: 12.5px; padding: 10px 16px; }

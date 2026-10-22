@@ -313,3 +313,9 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px 32px; fl
 .col-new { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; }
 .mint-line .mint-count { display: block; margin-top: 12px; }
 @media (max-width: 900px) { .col-grid { grid-template-columns: 1fr; } .col-grid .cx-dial { max-width: 380px; } .col-new { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.live-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #3F9D63; margin-right: 8px; vertical-align: 1px; animation: mbPulse 2s infinite; }
+.bar .mint-cta { font-size: 12.5px; padding: 10px 16px; }
+.hero-sky { position: relative; }
+@media (max-width: 760px) { #homeStickers .sticker { --w: 72px !important; } }
+.mint-line .mint-xl { min-height: 64px; }

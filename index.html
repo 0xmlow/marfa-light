@@ -16,22 +16,23 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300;500;700;800&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <link rel="stylesheet" href="ui/kit.css?v=1">
 <link rel="stylesheet" href="ui/collection.css?v=1">
+<link rel="stylesheet" href="ui/fx.css?v=1">
 <link rel="stylesheet" href="site.css?v=2">
 
 <header class="bar">
   <div class="wrap">
     <div class="left"><a href="#top" aria-label="Marfa Light, top"><img src="img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
     <nav aria-label="Sections" class="links" id="links">
-      <a href="#collection">Collection</a><a href="holders/">Collectors</a><a href="#token">Token</a><a href="#clocks">Clocks</a><a href="#film">Film</a><a href="#calendar">Calendar</a><a href="arcade/">Arcade</a>
+      <a href="mint/">Mint</a><a href="#collection">Collection</a><a href="holders/">Collectors</a><a href="about/">About</a><a href="#token">Token</a><a href="#clocks">Clocks</a><a href="#film">Film</a><a href="arcade/">Arcade</a>
       <div class="more">
         <button type="button" class="more-b" aria-expanded="false" aria-controls="moreBoard">More <i></i></button>
         <div class="more-p" id="moreBoard"><small>Also on the dial</small>
-          <a href="#draws">Twelve draws</a><a href="#sky">The sky over Marfa</a><a href="#idea">The idea</a><a href="#day">A day at one dial</a><a href="#places">Where they stand</a><a href="#layer">The generative layer</a><a href="#eggs">Look closer</a><a href="#memories">Memories</a><a href="#ledger">Computed, and not yet</a><a href="#residency">Four weeks in Marfa</a><a href="#artist">The artist</a><a href="studies/">Studies</a><a href="mint/">Mint page</a>
+          <a href="#draws">Twelve draws</a><a href="#calendar">The calendar</a><a href="#sky">The sky over Marfa</a><a href="#idea">The idea</a><a href="#day">A day at one dial</a><a href="#places">Where they stand</a><a href="#layer">The generative layer</a><a href="#eggs">Look closer</a><a href="#memories">Memories</a><a href="#ledger">Computed, and not yet</a><a href="#residency">Four weeks in Marfa</a><a href="#artist">The artist</a><a href="studies/">Studies</a><a href="mint/">Mint page</a>
         </div>
       </div>
     </nav>
     <button type="button" class="burger" aria-expanded="false" aria-controls="links">Menu</button>
-    <a class="btn solid mint-cta" href="mint/">Mint · 0.069 ETH</a>
+    <a class="btn solid mint-cta" href="mint/"><i class="live-dot"></i>Mint · <span data-count="left">42</span> left</a>
   </div>
 </header>
 
@@ -45,6 +46,10 @@
   </div>
 </section>
 
+  <div class="sticker-layer" id="homeStickers">
+    <div class="sticker" style="--w:130px;right:6%;top:8%" data-r="8" data-cursor="Drag"><img src="media/stickers/motel.webp" alt="The 317 Motel sign sticker" draggable="false"></div>
+    <div class="sticker" style="--w:110px;right:20%;top:30%" data-r="-10" data-cursor="Drag"><img src="media/stickers/orbital.webp" alt="Orbital clock sticker" draggable="false"></div>
+  </div>
   <div class="wrap hero">
     <div class="hero-top">
       <div class="clockface"><span id="bigTime">--:--</span><span class="sec" id="bigSec">00</span></div>
@@ -64,11 +69,12 @@
         <span class="eyebrow">Now live on Ethereum</span>
         <h1>Marfa Light</h1>
       </div>
-      <div><p class="thesis">Every token is a working clock for Marfa, Texas. The hash chooses the clock, how it is made, and where it stands. <em>The minute comes from the sky.</em></p><p class="mint-line"><a class="btn solid" href="mint/">Now minting on Ethereum · 0.069 ETH</a><span class="mono muted mint-count" id="heroCount">69 of 111 minted · 42 left</span></p></div>
+      <div><p class="thesis">Every token is a working clock for Marfa, Texas. The hash chooses the clock, how it is made, and where it stands. <em>The minute comes from the sky.</em></p><p class="mint-line"><a class="btn solid mint-xl" href="mint/" data-magnetic data-cursor="Mint">Mint a clock <small>0.069 ETH</small></a><span class="mono muted mint-count" id="heroCount">69 of 111 minted · 42 left</span></p></div>
     </div>
 
   </div>
 </div>
+  <div class="marquee" aria-hidden="true"><div class="mq"><span>Light is the measure</span><span>Somewhere it is Marfa time</span><span>Time has gravity</span><span>Read the night</span><span>Every grain is a moment</span><span>Take your time</span><span>Seconds bloom</span><span>The shadow gets here first</span><span>Light is the measure</span><span>Somewhere it is Marfa time</span><span>Time has gravity</span><span>Read the night</span><span>Every grain is a moment</span><span>Take your time</span><span>Seconds bloom</span><span>The shadow gets here first</span></div></div>
   <section id="collection" class="wrap collection">
     <div class="sec-head">
       <span class="eyebrow"><span class="cx-live" id="cLive">The collection</span></span>
@@ -350,14 +356,14 @@
         <div><b>50</b><span>exhibitions</span></div>
         <div><b>13</b><span>countries shown</span></div>
         <div><b>5,000+</b><span>NYC taxis carrying the work</span></div>
-        <div><b>7,541</b><span>painted characters in NEW YORKERS</span></div>
+        <div><b>7,500+</b><span>characters in NEW YORKERS</span></div>
       </div>
       <div class="lists">
       <ul class="works" aria-label="Selected work">
         <li><span>2026</span><span><a href="https://thesoftconspiracy.com">The Soft Conspiracy</a>, with Andrés Del Vecchio. 5,299 pieces curated from a 12,020-image pool.</span></li>
         <li><span>2026</span><span>Memories. Open source onchain renderer system, 612 directions in 87 families.</span></li>
         <li><span>Ongoing</span><span><a href="https://mlow.nyc">The Salon</a>. A walkable 3D gallery of 22+ rooms, built in three.js.</span></li>
-        <li><span>Ongoing</span><span><a href="https://n3wyorkers.com">NEW YORKERS</a>. A painted census of New York and a walkable museum of 136 rooms.</span></li>
+        <li><span>Ongoing</span><span><a href="https://n3wyorkers.com">NEW YORKERS</a>. A census of New York in 7,500+ characters and a walkable museum of 183 rooms.</span></li>
         <li><span>2024</span><span>Squiggles mobile game at MONA, made with Art Blocks, Snowfro and Tom Sachs Rocket Factory.</span></li>
         <li><span>2025</span><span><a href="https://gamma.io/ordinals/collections/unchained/items">Unchained</a>. Inscribed on Bitcoin.</span></li>
         <li><span>2023</span><span><a href="https://stacks.transientlabs.xyz/featured/nervous-breakdown">Nervous Breakdown</a>. Twelve artists, one dynamic token.</span></li>
@@ -394,8 +400,14 @@
 </footer>
 
 <dialog id="referenceDialog" aria-labelledby="referenceTitle"><div class="ref-head"><h3 id="referenceTitle">Art Blocks reference</h3><button class="btn" id="referenceClose">Close</button></div><iframe id="referenceFrame" title="Original Art Blocks artwork" allow="autoplay; fullscreen"></iframe><p id="referenceCredit"></p><p><a id="referenceDirect" target="_blank" rel="noopener">Open the player directly</a> · <a id="referenceToken" target="_blank" rel="noopener">View on Art Blocks</a> · <button class="btn" id="referenceRetry">Restart piece</button></p><p>Some pieces need time or a click to begin. While the artwork has keyboard focus, use the Close button to return.</p></dialog>
+<div id="mintbar" role="region" aria-label="Mint">
+  <i class="mb-dot"></i><span class="mb-k"><b data-count="left">42</b> of <span data-count="max">111</span> left<span class="opt"> · 0.069 ETH</span></span>
+  <a class="btn solid" href="mint/" data-magnetic>Mint <span data-count="next">#69</span></a>
+</div>
+<script>document.addEventListener('DOMContentLoaded', function () { window.MLFX && MLFX.mintbar(document.querySelector('.hero-sky')); MLFX.stickers(document.getElementById('homeStickers')); });</script>
 <script>window.MARFA_SKY_OWNER = true;</script>
 <script src="ui/kit.js?v=1"></script>
+<script src="ui/fx.js?v=1"></script>
 <script type="module">
   import { loadCollection, renderDial, renderFaces, still, liveUrl, nameOf } from './ui/collection.js?v=1';
   const $ = (id) => document.getElementById(id);
@@ -412,6 +424,7 @@
     $('cNewest').textContent = last ? '#' + last.id : '';
     $('cNewestS').textContent = last ? (last.clock || 'Rendering') + (lastWho ? ', kept by ' + nameOf(lastWho) : '') : '';
     $('cBar').style.width = (col.supply / col.max * 100).toFixed(1) + '%';
+    window.MLFX && MLFX.count({ supply: col.supply, max: col.max, left: col.available });
     $('heroCount').textContent = col.supply + ' of ' + col.max + ' minted · ' + col.available + ' left';
     if (!col.available) { $('cMint').textContent = 'Sold out · see OpenSea'; $('cMint').href = 'https://opensea.io/assets/ethereum/' + col.token.toLowerCase(); }
     $('cLive').textContent = col.live ? 'Live from Ethereum' : 'The collection';

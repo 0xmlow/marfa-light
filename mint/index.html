@@ -2,76 +2,212 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Mint Marfa Light</title>
-<meta name="description" content="Mint Marfa Light by MLow on Ethereum. 0.069 ETH. Every token is a working clock for Marfa, Texas.">
+<meta name="description" content="Mint Marfa Light by MLow on Ethereum. 0.069 ETH. 111 working clocks for Marfa, Texas, drawn live from code stored onchain.">
 <link rel="canonical" href="https://marfalight.art/mint/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Mint Marfa Light">
-<meta property="og:description" content="Mint Marfa Light by MLow on Ethereum. 0.069 ETH. Every token is a working clock for Marfa, Texas.">
+<meta property="og:description" content="111 working clocks for Marfa, Texas. The first generative art project deployed on ABX on Ethereum. 0.069 ETH.">
 <meta property="og:url" content="https://marfalight.art/mint/">
 <meta property="og:image" content="https://marfalight.art/img/film-poster.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@degens">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+<link rel="preload" as="image" href="../media/sky/golden.webp">
 <link rel="stylesheet" href="../ui/kit.css?v=1">
-<link rel="stylesheet" href="mint.css?v=2">
+<link rel="stylesheet" href="../ui/collection.css?v=2">
+<link rel="stylesheet" href="../ui/fx.css?v=1">
+<link rel="stylesheet" href="mint.css?v=3">
 </head>
-<body>
+<body class="mint-page">
+<div id="preload" aria-hidden="true"><div class="pl-in"><span class="pl-n">000</span><span class="pl-k">clocks already keeping Marfa time</span><div class="pl-bar"></div></div></div>
+
 <header class="bar">
   <div class="wrap">
     <div class="left"><a href="../" aria-label="Marfa Light home"><img src="../img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
     <nav aria-label="Sections" class="links" id="links">
-      <a href="../#collection">Collection</a><a href="../holders/">Collectors</a><a href="../#token">Token</a><a href="../#clocks">Clocks</a><a href="../#film">Film</a><a href="../#calendar">Calendar</a><a href="../arcade/">Arcade</a>
+      <a href="../">The clocks</a><a href="#how">How it works</a><a href="#posters">Posters</a><a href="../holders/">Collectors</a><a href="../about/">About</a><a href="#faq">FAQ</a>
     </nav>
     <button type="button" class="burger" aria-expanded="false" aria-controls="links">Menu</button>
-    <a class="btn solid mint-cta" href="#mint">Mint · 0.069 ETH</a>
+    <a class="btn solid mint-cta" href="#mint-dock"><i class="live-dot"></i>Mint · <span data-count="left">42</span> left</a>
   </div>
 </header>
-<main class="page">
-  <section class="first-band" aria-label="Milestone">
-    <div class="plaque">
-      <p class="first-kicker mono">October 6, 2026</p>
-      <p class="first-line">The first generative art project deployed on ABX on Ethereum.</p>
+
+<main>
+  <!-- ============ HERO: the real sky over Marfa, the mint in your hand ============ -->
+  <section class="m-hero" id="top">
+    <div class="m-sky" aria-hidden="true" data-depth="0.25">
+      <img class="plate p-night" src="../media/sky/night.webp" alt="" width="1344" height="768">
+      <img class="plate p-twilight" src="../media/sky/dawn.webp" alt="" width="1344" height="768">
+      <img class="plate p-golden" src="../media/sky/golden.webp" alt="" width="1344" height="768" fetchpriority="high">
+      <img class="plate p-day" src="../media/sky/noon.webp" alt="" width="1344" height="768">
     </div>
-  </section>
-  <div class="head">
-    <div><h1>Marfa Light</h1><p class="by">By MLow · V1 <span class="net" id="net">Ethereum</span></p></div>
-    <p class="eyebrow" id="headLine">111 tokens · 0.069 ETH each · one per transaction</p>
-  </div>
-  <div class="grid">
-    <img class="hero" id="hero" src="../tokens/1/0.gif" alt="Marfa Light #0, a day in Marfa, Texas, from midnight to midnight">
-    <div>
-      <p class="lede">Every token is a working clock for Marfa, Texas. The sun, the moon and the stars are computed for Marfa and for the minute you are looking. <em>The program lives on Ethereum</em>, with three.js from the Art Blocks dependency registry.</p>
-      <div class="ml-card sale" id="sale">
-        <div class="stats">
-          <div class="stat"><div class="k">Price</div><div class="v" id="price">&hellip;</div></div>
-          <div class="stat"><div class="k">Minted</div><div class="v" id="sold">&hellip;</div></div>
-          <div class="stat"><div class="k">Still available</div><div class="v" id="left">&hellip;</div></div>
-          <div class="stat"><div class="k">Collectors</div><div class="v"><a href="../holders/" id="holders">&hellip;</a></div></div>
+    <div class="m-shade" aria-hidden="true"></div>
+    <div class="sticker-layer" id="heroStickers">
+      <div class="sticker" style="--w:150px;left:6%;top:21%" data-r="-9" data-cursor="Drag"><img src="../media/stickers/motel.webp" alt="The 317 Motel sign sticker" draggable="false"></div>
+      <div class="sticker" style="--w:120px;left:44%;top:12%" data-r="7" data-cursor="Drag"><img src="../media/stickers/armillary.webp" alt="Armillary sphere sticker" draggable="false"></div>
+      <div class="sticker" style="--w:96px;left:52%;top:70%" data-r="-14" data-cursor="Drag"><img src="../media/stickers/take-your-time.webp" alt="Take your time sticker" draggable="false"></div>
+      <div class="sticker hide-sm" style="--w:110px;left:27%;top:8%" data-r="12" data-cursor="Drag"><img src="../media/stickers/watertower.webp" alt="Marfa water tower clock sticker" draggable="false"></div>
+    </div>
+    <div class="wrap m-hero-in">
+      <div class="m-title">
+        <p class="m-live"><span class="cx-live on">Live on Ethereum</span><span><b data-count="supply">69</b> of <b data-count="max">111</b> minted</span></p>
+        <h1 data-split>Marfa Light</h1>
+        <p class="m-lede" data-reveal>111 working clocks for Marfa, Texas. Each one reads the real sun, moon and stars over the high desert, and the code that draws it lives on Ethereum. <em>You do not choose your clock. The block does.</em></p>
+        <p class="m-plaque mono" data-reveal>The first generative art project deployed on ABX on Ethereum · October 6, 2026</p>
+      </div>
+
+      <div class="m-dock" id="mint-dock">
+        <div class="m-port">
+          <img id="hero" src="../tokens/developing.gif" alt="The newest Marfa Light, a day in Marfa from midnight to midnight" width="540" height="540">
+          <span class="m-port-tag mono" id="portTag">Newest mint</span>
         </div>
-        <div class="fill"><i id="bar"></i></div>
-        <p class="split" id="split"></p>
-        <button class="btn" id="connect" type="button">Connect wallet</button>
-        <button class="btn solid" id="mint" type="button" disabled>Mint</button>
-        <p class="msg" id="msg"></p>
-        <p class="fine">One token per transaction. You pay the price above plus gas; the sale contract refuses any other amount.<br>
-          Contract <a id="tokenLink" target="_blank" rel="noopener"><code id="tokenAddr"></code></a></p>
+        <div class="m-dock-body" id="sale">
+          <div class="stats">
+            <div class="stat"><div class="k">Price</div><div class="v" id="price">0.069 ETH</div></div>
+            <div class="stat"><div class="k">Left</div><div class="v"><span id="left">42</span><small> / 111</small></div></div>
+          </div>
+          <div class="fill"><i id="bar"></i></div>
+          <p class="split" id="split"></p>
+          <button class="btn solid mint-xl" id="mint" type="button" data-magnetic data-cursor="Mint">Mint</button>
+          <button class="btn connect" id="connect" type="button">Connect wallet</button>
+          <p class="msg" id="msg" aria-live="polite"></p>
+          <p class="fine">One per transaction, 0.069 ETH plus gas. The sale contract refuses any other amount. <span class="mono"><span id="net">Ethereum</span> · <a id="tokenLink" target="_blank" rel="noopener"><code id="tokenAddr"></code></a> · <a href="../holders/"><span id="holders">55</span> collectors</a></span></p>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="minted-head"><h2>Minted</h2><span class="eyebrow">Newest first · each opens its live view · <a href="../holders/">who holds which</a></span></div>
-  <div class="tiles" id="tiles"></div>
+    <a class="m-cue mono" href="#how" aria-label="Scroll to how it works"><span>Scroll</span><i></i></a>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div class="mq" id="mq"></div></div>
+
+  <!-- ============ HOW A CLOCK IS BORN: pinned, four steps ============ -->
+  <section class="pin how" id="how">
+    <div class="stage-sticky">
+      <div class="wrap how-in">
+        <div class="how-text">
+          <span class="eyebrow">How a clock is born</span>
+          <ol class="how-steps" id="howSteps">
+            <li class="on"><b>01</b><h3>You mint.</h3><p>One transaction, 0.069 ETH. Your wallet signs, a block lands, and a token number is yours.</p></li>
+            <li><b>02</b><h3>The block rolls the dice.</h3><p>The token gets a hash nobody can predict, not even MLow. Sixty four hex digits decide everything that follows.</p></li>
+            <li><b>03</b><h3>The hash builds a clock.</h3><p>One of 29 kinds, from sundials to a noon cannon, set in one of 22 places around Marfa, with about 44 traits: stone, sky, wind, film, visitors.</p></li>
+            <li><b>04</b><h3>It keeps Marfa time, forever.</h3><p>The sun, the moon and the stars are computed for Marfa and for the minute you look. Shadows are real. Once a year the sun keeps one appointment with your clock.</p></li>
+          </ol>
+        </div>
+        <div class="how-vis" aria-hidden="true">
+          <div class="hv hv-0 on"><img src="../media/sky/wall.webp" alt="" width="1344" height="768"><span class="hv-cap mono">Block 26,1xx,xxx · pending</span></div>
+          <div class="hv hv-1"><div class="hash mono" id="hashRoll">0x0000000000000000000000000000000000000000000000000000000000000000</div></div>
+          <div class="hv hv-2"><img id="howClock" src="../img/clock-18-heliochronometer.jpg" alt="" width="1200" height="1200"><span class="hv-cap mono" id="howClockCap">Heliochronometer · Chinati Field</span></div>
+          <div class="hv hv-3"><img src="../media/sky/sundial.webp" alt="" width="1344" height="768"><span class="hv-cap mono">The shadow is real</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PULL THE LEVER ============ -->
+  <section class="slot wrap" id="slot">
+    <div class="sec-h">
+      <div><span class="eyebrow">Feeling lucky</span><h2 data-split>Pull the lever.</h2></div>
+      <p class="muted">A taste of the odds. Spin the three reels to see the kind of clock, the place and the light a hash can draw. The real roll happens onchain, at mint.</p>
+    </div>
+    <div class="slot-machine ml-card">
+      <div class="reels">
+        <div class="reel" id="reelClock"><span class="lab">Clock</span><div class="win"><div class="strip"></div></div></div>
+        <div class="reel" id="reelPlace"><span class="lab">Place</span><div class="win"><div class="strip"></div></div></div>
+        <div class="reel" id="reelLight"><span class="lab">Light</span><div class="win"><div class="strip"></div></div></div>
+      </div>
+      <div class="slot-out">
+        <div class="slot-card" id="slotCard"><img id="slotSky" src="../media/sky/golden-s.webp" alt="" width="800" height="457"><img id="slotClock" class="sc-clock" src="../img/clock-01-horizontal-sundial.jpg" alt="" width="1200" height="1200"><span id="slotLabel" class="mono">Horizontal Sundial · Highway 90 · Golden hour</span></div>
+        <div class="slot-ctl">
+          <button class="btn lever" id="lever" type="button" data-magnetic data-cursor="Spin"><span>Pull</span></button>
+          <p class="mono muted" id="slotOdds">29 clocks × 22 places × every minute of the year</p>
+          <a class="btn solid" href="#mint-dock">Let the block decide · Mint</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE POSTER CORRIDOR ============ -->
+  <section class="pin corridor" id="posters">
+    <div class="stage-sticky">
+      <div class="cor-hud"><h2 data-split>Every hour has a poster.</h2><span class="cor-count">01 / 20</span></div>
+      <div class="cor-world" id="corWorld"></div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTERS, SIDEWAYS ============ -->
+  <section class="pin sideways" id="chapters">
+    <div class="stage-sticky">
+      <div class="side-track" id="sideTrack">
+        <div class="side-intro"><span class="eyebrow">Ten lines from the campaign</span><h2>Time, told sideways.</h2><p>MLow's campaign for the clocks, one panorama at a time. Keep scrolling; the desert moves.</p></div>
+      </div>
+      <div class="side-prog"><i></i></div>
+    </div>
+  </section>
+
+  <!-- ============ KEPT BY ============ -->
+  <section class="wrap kept" id="kept">
+    <div class="sec-h">
+      <div><span class="eyebrow">In the wallets of</span><h2 data-split>Already keeping time.</h2></div>
+      <p class="muted"><span id="keptNames">Snowfro, Beeple, XCOPY, Tyler Hobbs and Gary Vaynerchuk</span> each hold one. A gold ring marks an honorary NEW YORKER. <a href="../holders/">See who holds which</a>.</p>
+    </div>
+    <div class="cx-faces" id="faces"></div>
+  </section>
+
+  <!-- ============ THE MINTED WALL ============ -->
+  <section class="wrap minted">
+    <div class="sec-h">
+      <div><span class="eyebrow">Newest first</span><h2 data-split>Minted so far.</h2></div>
+      <p class="muted">Hover a clock to play its day, midnight to midnight. Each one opens its live 3D view.</p>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="wrap faq" id="faq">
+    <div class="sec-h"><div><span class="eyebrow">Questions</span><h2 data-split>Before you mint.</h2></div></div>
+    <div class="faq-list">
+      <details open><summary>What am I minting?</summary><p>One of 111 Marfa Light tokens: a working clock in 3D for Marfa, Texas, drawn live in your browser by a program stored on Ethereum, with three.js from the Art Blocks dependency registry. It is art, not an investment.</p></details>
+      <details><summary>Who decides which clock I get?</summary><p>The token's hash, fixed when your transaction lands. It chooses the clock (29 kinds), where it stands (22 places), its materials, the sky and about 44 traits in all. Nobody chooses it, MLow included.</p></details>
+      <details><summary>What does it cost?</summary><p>0.069 ETH plus gas, one token per transaction. The price on the button is the most the contract will take; if the terms change, the transaction fails and nothing is charged.</p></details>
+      <details><summary>Does it change after I mint?</summary><p>It keeps Marfa time. The sun, the moon and the stars move with the real sky over Marfa, shadows read the hour, and the calendar arrives on its own: fireworks on the Fourth of July, the lights of Hanukkah, the Marfa lights over Labor Day weekend.</p></details>
+      <details><summary>Where can I see it?</summary><p>Every token opens a live 3D view, linked from the gallery above, from <a href="../holders/">the collectors page</a> and from OpenSea. Its day GIF thumbnail appears within the hour.</p></details>
+      <details><summary>Who made it?</summary><p>MLow, a New York artist, with written permission from Snowfro, Alexis André and Bryan Brinkman for the Art Blocks works that appear inside the clocks. <a href="../about/">Read the story</a>.</p></details>
+    </div>
+  </section>
+
+  <!-- ============ LAST CALL ============ -->
+  <section class="last" id="last">
+    <img src="../media/sky/sundial.webp" alt="" width="1344" height="768" data-depth="-0.08">
+    <div class="last-in wrap">
+      <h2 data-split>The shadow gets here first.</h2>
+      <p><span data-count="left">42</span> clocks are still waiting for a keeper.</p>
+      <a class="btn solid mint-xl" href="#mint-dock" data-magnetic data-cursor="Mint">Mint <small>0.069 ETH</small></a>
+    </div>
+  </section>
 </main>
-<footer>
+
+<footer class="wrap foot">
   <div class="ticks-rule" aria-hidden="true"></div>
-  <div class="page" style="padding-top:0;padding-bottom:40px"><p>Marfa Light // By MLow, V1. Live on Ethereum since October 6, 2026. <a href="../">Back to the clocks</a> · <a href="https://x.com/degens">@degens</a></p></div>
+  <p>Marfa Light // By MLow, V1. Live on Ethereum since October 6, 2026. <a href="../">The clocks</a> · <a href="../holders/">Collectors</a> · <a href="../about/">About</a> · <a href="https://x.com/degens">@degens</a>. Art, not an investment.</p>
 </footer>
+
+<div id="mintbar" role="region" aria-label="Mint">
+  <i class="mb-dot"></i><span class="mb-k"><b data-count="left">42</b> of <span data-count="max">111</span> left<span class="opt"> · 0.069 ETH</span></span>
+  <a class="btn solid" href="#mint-dock" data-magnetic>Mint <span data-count="next">#69</span></a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="../ui/kit.js?v=1"></script>
+<script src="../ui/fx.js?v=1"></script>
+<script src="mint.js?v=1"></script>
 <script type="module">
   import { createPublicClient, createWalletClient, custom, http, fallback, parseAbi, formatEther } from 'https://cdn.jsdelivr.net/npm/viem@2.21.0/+esm';
   import { mainnet, sepolia } from 'https://cdn.jsdelivr.net/npm/viem@2.21.0/chains/+esm';
+  import { loadCollection, renderFaces } from '../ui/collection.js?v=2';
 
   // ?chain=sepolia runs the page against the rehearsal contract
   const NETS = {
@@ -84,6 +220,7 @@
   const NET = NETS[key];
   const MINTER = '0xfb5C61274a3A7dA83CcDD88DdEC914438244E2c9';
   const TOKEN = NET.token;
+  const ARTIST = '0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788';
   const ZERO = '0x0000000000000000000000000000000000000000';
   const minterAbi = parseAbi([
     'function sales(address token) view returns (bool configured, address paymentToken, uint256 price, uint256 allocation, uint256 sold)',
@@ -99,28 +236,35 @@
   const $ = (id) => document.getElementById(id);
   const say = (t, kind) => { $('msg').textContent = t; $('msg').className = 'msg' + (kind ? ' ' + kind : ''); };
   const thumb = (id) => '../tokens/' + NET.chain.id + '/' + id + '.gif';
+  const FX = window.MLFX;
+
   // small stills (tools/holders-media.py) for the gallery; the day GIF plays on hover
   let snap = null;
   const still = (id) => (snap && snap.tokens[id] && snap.tokens[id].rendered) ? '../tokens/1/s/' + id + '.jpg' : '../tokens/developing.gif';
   const names = new Map();
   const loadSnap = key === 'ethereum' ? fetch('../data/holders.json', { cache: 'no-cache' }).then((r) => r.json()).then((d) => {
-    snap = d; for (const h of d.holders) names.set(h.address, h.name || h.ens || ''); }).catch(() => {}) : Promise.resolve();
+    snap = d; for (const h of d.holders) names.set(h.address, h.name || h.ens || '');
+    FX.preload(d.supply);
+    FX.count({ supply: d.supply, max: d.max, left: d.available });
+    window.MLSlot && window.MLSlot.places(d.tokens);
+  }).catch(() => { FX.preload(0); }) : Promise.resolve(FX.preload(0));
 
   $('net').textContent = NET.chain.name;
   $('tokenAddr').textContent = TOKEN.slice(0, 6) + '…' + TOKEN.slice(-4);
   $('tokenLink').href = NET.scan + '/address/' + TOKEN;
-  $('hero').src = thumb(0);
 
   let sale = null, supply = 0, max = 111, account = '', busy = false, shown = -1, owners = [];
+  const state = { paused: true };
 
   function gate() {
     // sold out when the edition is full, whichever runs out first: the 111 cap or the sale allocation
     const soldOut = sale && (supply >= max || sale.sold >= sale.allocation);
     const open = sale && sale.configured && !state.paused && !soldOut && sale.paymentToken === ZERO;
     $('mint').disabled = busy || !open;
-    $('mint').textContent = soldOut ? 'Sold out' : state.paused ? 'Sale paused' : account ? 'Mint for ' + formatEther(sale ? sale.price : 0n) + ' ETH' : 'Mint';
+    const price = formatEther(sale ? sale.price : 69000000000000000n);
+    $('mint').innerHTML = soldOut ? 'Sold out' : state.paused ? 'Sale paused' : busy ? 'Minting…' : 'Mint #' + supply + ' <small>' + price + ' ETH</small>';
+    $('connect').hidden = !!account;
   }
-  const state = { paused: true };
 
   async function refresh() {
     const [s, ts, pz, mx] = await Promise.all([
@@ -135,24 +279,26 @@
     const left = Math.max(0, Math.min(max - supply, Number(sale.allocation - sale.sold)));
     owners = await Promise.all(Array.from({ length: supply }, (_, id) => pub.readContract({ address: TOKEN, abi: tokenAbi, functionName: 'ownerOf', args: [BigInt(id)] }).then((a) => a.toLowerCase()).catch(() => '')));
     $('price').textContent = formatEther(sale.price) + ' ETH';
-    $('sold').textContent = supply + ' / ' + max;
     $('left').textContent = left;
-    // collectors, not counting the artist's own wallet
-    $('holders').textContent = new Set(owners.filter((o) => o && o !== '0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788')).size;
-    $('headLine').textContent = max + ' tokens · ' + supply + ' minted · ' + left + ' left · ' + formatEther(sale.price) + ' ETH each';
-    $('split').textContent = sale.sold + ' bought in the public sale, ' + (supply - Number(sale.sold)) + ' placed by the artist.';
+    $('holders').textContent = new Set(owners.filter((o) => o && o !== ARTIST)).size;
+    $('split').textContent = supply + ' of ' + max + ' minted: ' + sale.sold + ' bought in the public sale, ' + (supply - Number(sale.sold)) + ' placed by the artist.';
     $('bar').style.width = (supply / max * 100).toFixed(1) + '%';
+    FX.count({ supply, max, left });
     if (supply - 1 !== shown) drawTiles();
     gate();
   }
 
   function drawTiles() {
     shown = supply - 1;
+    // the porthole shows the newest clock that has its day rendered
+    let newest = supply - 1;
+    while (newest > 0 && key === 'ethereum' && snap && !(snap.tokens[newest] && snap.tokens[newest].rendered)) newest--;
+    $('hero').src = thumb(Math.max(0, newest)); $('portTag').textContent = 'Newest · #' + Math.max(0, newest);
     const box = $('tiles'); box.textContent = '';
     for (let id = supply - 1; id >= 0; id--) {
       const a = document.createElement('a');
       a.className = 'tile ml-card'; a.target = '_blank'; a.rel = 'noopener';
-      a.href = liveUrl(id);
+      a.href = liveUrl(id); a.setAttribute('data-cursor', 'Enter');
       const img = document.createElement('img');
       img.loading = 'lazy'; img.src = key === 'ethereum' ? still(id) : thumb(id); img.alt = 'Marfa Light #' + id;
       img.width = 360; img.height = 360;
@@ -189,7 +335,7 @@
       account = accts[0] || '';
       try { await eth.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x' + NET.chain.id.toString(16) }] }); }
       catch (e) { say('Switch your wallet to ' + NET.chain.name + ' to mint.', 'bad'); }
-      $('connect').textContent = account.slice(0, 6) + '…' + account.slice(-4);
+      if (account) say('Connected ' + account.slice(0, 6) + '…' + account.slice(-4) + '.');
       gate();
     } catch (e) { say(e && e.message ? e.message : String(e), 'bad'); }
   }
@@ -208,6 +354,8 @@
       say('Minting… ' + hash.slice(0, 10) + '…');
       const r = await pub.waitForTransactionReceipt({ hash });
       if (r.status !== 'success') throw new Error('The transaction reverted. Nothing was minted.');
+      const b = $('mint').getBoundingClientRect();
+      FX.burst(b.left + b.width / 2, b.top + b.height / 2, ['../media/stickers/sundial.webp', '../media/stickers/orbital.webp', '../media/stickers/hourglass.webp', '../media/stickers/windmill.webp']);
       await refresh();
       waitForLive(supply - 1);
     } catch (e) {
@@ -220,9 +368,16 @@
 
   $('connect').addEventListener('click', connect);
   $('mint').addEventListener('click', mint);
-  if (window.ethereum) window.ethereum.on && window.ethereum.on('accountsChanged', (a) => { account = a[0] || ''; $('connect').textContent = account ? account.slice(0, 6) + '…' + account.slice(-4) : 'Connect wallet'; gate(); });
+  if (window.ethereum) window.ethereum.on && window.ethereum.on('accountsChanged', (a) => { account = a[0] || ''; gate(); });
   refresh().catch((e) => say('Could not read the sale: ' + (e.shortMessage || e.message || e), 'bad'));
-  setInterval(() => { if (!busy) refresh().catch(() => {}); }, 20000);
+  setInterval(() => { if (!busy && !document.hidden) refresh().catch(() => {}); }, 20000);
+
+  // the faces of everyone already keeping time
+  if (key === 'ethereum') loadCollection({ base: '../', live: false, onUpdate(col) {
+    renderFaces($('faces'), col);
+    const famous = ['Snowfro', 'Beeple', 'XCOPY', 'Tyler Hobbs', 'Gary Vaynerchuk', 'Claire Silver', 'Matt Kane', 'Jack Butcher'].filter((n) => col.holders.some((h) => h.name === n));
+    if (famous.length > 2) $('keptNames').textContent = famous.slice(0, -1).join(', ') + ' and ' + famous.slice(-1);
+  } }).catch(() => {});
 </script>
 </body>
 </html>

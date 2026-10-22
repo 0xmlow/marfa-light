@@ -18,17 +18,18 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
 <link rel="stylesheet" href="../ui/kit.css?v=1">
 <link rel="stylesheet" href="../ui/collection.css?v=1">
-<link rel="stylesheet" href="holders.css?v=1">
+<link rel="stylesheet" href="../ui/fx.css?v=1">
+<link rel="stylesheet" href="holders.css?v=2">
 </head>
 <body>
 <header class="bar">
   <div class="wrap">
     <div class="left"><a href="../" aria-label="Marfa Light home"><img src="../img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
     <nav aria-label="Sections" class="links" id="links">
-      <a href="../#collection">Collection</a><a href="./" class="on">Collectors</a><a href="../#token">Token</a><a href="../#clocks">Clocks</a><a href="../#film">Film</a><a href="../#calendar">Calendar</a><a href="../arcade/">Arcade</a>
+      <a href="../mint/">Mint</a><a href="../#collection">Collection</a><a href="./" class="on">Collectors</a><a href="../about/">About</a><a href="../#clocks">Clocks</a><a href="../arcade/">Arcade</a>
     </nav>
     <button type="button" class="burger" aria-expanded="false" aria-controls="links">Menu</button>
-    <a class="btn solid mint-cta" href="../mint/">Mint · 0.069 ETH</a>
+    <a class="btn solid mint-cta" href="../mint/"><i class="live-dot"></i>Mint · <span data-count="left">42</span> left</a>
   </div>
 </header>
 
@@ -74,6 +75,7 @@
 </footer>
 
 <script src="../ui/kit.js?v=1"></script>
+<script src="../ui/fx.js?v=1"></script>
 <script type="module">
   import { loadCollection, renderDial, renderBoard, renderWall } from '../ui/collection.js?v=1';
   const $ = (id) => document.getElementById(id);
@@ -84,6 +86,7 @@
     $('sMinted').textContent = col.supply + ' / ' + col.max;
     $('sMintedS').textContent = col.sale.sold + ' bought in the sale, ' + (col.supply - col.sale.sold) + ' placed by the artist';
     $('sLeft').textContent = col.available;
+    window.MLFX && MLFX.count({ supply: col.supply, max: col.max, left: col.available });
     const collectors = col.holders.filter((h) => !h.artist);
     $('sHolders').textContent = collectors.length;
     $('sHon').textContent = collectors.filter((h) => h.honorary).length + ' honorary NEW YORKERS';
