@@ -2660,5 +2660,183 @@
    "trait_type": "Egg Count",
    "value": 2
   }
+ ],
+ "15": [
+  {
+   "trait_type": "Clock",
+   "value": "Water Clock"
+  },
+  {
+   "trait_type": "Vessel",
+   "value": "Tiered Basins"
+  },
+  {
+   "trait_type": "Water",
+   "value": "Clear"
+  },
+  {
+   "trait_type": "Keeps Time By",
+   "value": "Water"
+  },
+  {
+   "trait_type": "Place",
+   "value": "Rodeo Arena"
+  },
+  {
+   "trait_type": "Material",
+   "value": "Concrete"
+  },
+  {
+   "trait_type": "Sky",
+   "value": "Clear"
+  },
+  {
+   "trait_type": "Wind",
+   "value": "Gusty"
+  },
+  {
+   "trait_type": "Film",
+   "value": "Clean"
+  },
+  {
+   "trait_type": "Tag",
+   "value": "\"SHADOW\""
+  },
+  {
+   "trait_type": "Lens",
+   "value": "50mm"
+  },
+  {
+   "trait_type": "Framing",
+   "value": "Centered"
+  },
+  {
+   "trait_type": "Condition",
+   "value": "Pristine"
+  },
+  {
+   "trait_type": "Ground Bloom",
+   "value": "None"
+  },
+  {
+   "trait_type": "Visitors",
+   "value": "Empty"
+  },
+  {
+   "trait_type": "Light Work",
+   "value": "Fluorescent Barrier"
+  },
+  {
+   "trait_type": "Birds",
+   "value": "Swallows"
+  },
+  {
+   "trait_type": "Sky Event",
+   "value": "None"
+  },
+  {
+   "trait_type": "Anomaly",
+   "value": "None"
+  },
+  {
+   "trait_type": "Alignment",
+   "value": "Spring Equinox Sunset, MAR 20 19:39"
+  },
+  {
+   "trait_type": "Alignment Gate",
+   "value": "Twin Stones"
+  },
+  {
+   "trait_type": "Ground Work",
+   "value": "Stone Line"
+  },
+  {
+   "trait_type": "Palette",
+   "value": "PURP"
+  },
+  {
+   "trait_type": "Palette Source",
+   "value": "Friendship Bracelets, Alexis André"
+  },
+  {
+   "trait_type": "Barrier Form",
+   "value": "Squiggle"
+  },
+  {
+   "trait_type": "Label Tie",
+   "value": "Woven, Meridian #0 / Shore"
+  },
+  {
+   "trait_type": "Pigment Palette",
+   "value": "Meridian #0 / Shore"
+  },
+  {
+   "trait_type": "Pigment Source",
+   "value": "Meridian #0 / Matt DesLauriers / sampled preview"
+  },
+  {
+   "trait_type": "Landscape Score",
+   "value": "Recursive Terraces"
+  },
+  {
+   "trait_type": "Score Reference",
+   "value": "Archetype / Kjetil Golid"
+  },
+  {
+   "trait_type": "Score Density",
+   "value": "Measured"
+  },
+  {
+   "trait_type": "Score Scale",
+   "value": "Field"
+  },
+  {
+   "trait_type": "Score Composition",
+   "value": "Counterpoint"
+  },
+  {
+   "trait_type": "Pigment Rhythm",
+   "value": "Grouped"
+  },
+  {
+   "trait_type": "Clock Accent",
+   "value": "Tidal Bands"
+  },
+  {
+   "trait_type": "Accent Finish",
+   "value": "Chalk Wash"
+  },
+  {
+   "trait_type": "Atmospheric Depth",
+   "value": "High Desert"
+  },
+  {
+   "trait_type": "Mineral Cut",
+   "value": "Close Grain"
+  },
+  {
+   "trait_type": "Surface Grain",
+   "value": "Fine"
+  },
+  {
+   "trait_type": "Tie Weave",
+   "value": "Chevron"
+  },
+  {
+   "trait_type": "Alignment Register",
+   "value": "Sixty Petals"
+  },
+  {
+   "trait_type": "Alignment Approach",
+   "value": "Twelve minute stations"
+  },
+  {
+   "trait_type": "Easter Eggs",
+   "value": "Dossier Cabinet · Roadrunner"
+  },
+  {
+   "trait_type": "Egg Count",
+   "value": 2
+  }
  ]
 }
