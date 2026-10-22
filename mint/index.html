@@ -16,14 +16,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
 <link rel="stylesheet" href="../ui/kit.css?v=1">
-<link rel="stylesheet" href="mint.css?v=1">
+<link rel="stylesheet" href="mint.css?v=2">
 </head>
 <body>
 <header class="bar">
   <div class="wrap">
     <div class="left"><a href="../" aria-label="Marfa Light home"><img src="../img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
     <nav aria-label="Sections" class="links" id="links">
-      <a href="../#token">Token</a><a href="../#clocks">Clocks</a><a href="../#draws">Draws</a><a href="../#film">Film</a><a href="../#calendar">Calendar</a><a href="../arcade/">Arcade</a>
+      <a href="../#collection">Collection</a><a href="../holders/">Collectors</a><a href="../#token">Token</a><a href="../#clocks">Clocks</a><a href="../#film">Film</a><a href="../#calendar">Calendar</a><a href="../arcade/">Arcade</a>
     </nav>
     <button type="button" class="burger" aria-expanded="false" aria-controls="links">Menu</button>
     <a class="btn solid mint-cta" href="#mint">Mint · 0.069 ETH</a>
@@ -38,7 +38,7 @@
   </section>
   <div class="head">
     <div><h1>Marfa Light</h1><p class="by">By MLow · V1 <span class="net" id="net">Ethereum</span></p></div>
-    <p class="eyebrow">111 tokens · 0.069 ETH each · one per transaction</p>
+    <p class="eyebrow" id="headLine">111 tokens · 0.069 ETH each · one per transaction</p>
   </div>
   <div class="grid">
     <img class="hero" id="hero" src="../tokens/1/0.gif" alt="Marfa Light #0, a day in Marfa, Texas, from midnight to midnight">
@@ -47,9 +47,12 @@
       <div class="ml-card sale" id="sale">
         <div class="stats">
           <div class="stat"><div class="k">Price</div><div class="v" id="price">&hellip;</div></div>
-          <div class="stat"><div class="k">Minted in sale</div><div class="v" id="sold">&hellip;</div></div>
+          <div class="stat"><div class="k">Minted</div><div class="v" id="sold">&hellip;</div></div>
+          <div class="stat"><div class="k">Still available</div><div class="v" id="left">&hellip;</div></div>
+          <div class="stat"><div class="k">Collectors</div><div class="v"><a href="../holders/" id="holders">&hellip;</a></div></div>
         </div>
         <div class="fill"><i id="bar"></i></div>
+        <p class="split" id="split"></p>
         <button class="btn" id="connect" type="button">Connect wallet</button>
         <button class="btn solid" id="mint" type="button" disabled>Mint</button>
         <p class="msg" id="msg"></p>
@@ -58,7 +61,7 @@
       </div>
     </div>
   </div>
-  <div class="minted-head"><h2>Minted</h2><span class="eyebrow">Newest first · each opens its live view</span></div>
+  <div class="minted-head"><h2>Minted</h2><span class="eyebrow">Newest first · each opens its live view · <a href="../holders/">who holds which</a></span></div>
   <div class="tiles" id="tiles"></div>
 </main>
 <footer>
@@ -90,21 +93,29 @@
     'function totalSupply() view returns (uint256)',
     'function maxInvocations() view returns (uint256)',
     'function paused() view returns (bool)',
+    'function ownerOf(uint256) view returns (address)',
   ]);
-  const pub = createPublicClient({ chain: NET.chain, transport: fallback(NET.rpc.map((u) => http(u))) });
+  const pub = createPublicClient({ chain: NET.chain, batch: { multicall: true }, transport: fallback(NET.rpc.map((u) => http(u))) });
   const $ = (id) => document.getElementById(id);
   const say = (t, kind) => { $('msg').textContent = t; $('msg').className = 'msg' + (kind ? ' ' + kind : ''); };
   const thumb = (id) => '../tokens/' + NET.chain.id + '/' + id + '.gif';
+  // small stills (tools/holders-media.py) for the gallery; the day GIF plays on hover
+  let snap = null;
+  const still = (id) => (snap && snap.tokens[id] && snap.tokens[id].rendered) ? '../tokens/1/s/' + id + '.jpg' : '../tokens/developing.gif';
+  const names = new Map();
+  const loadSnap = key === 'ethereum' ? fetch('../data/holders.json', { cache: 'no-cache' }).then((r) => r.json()).then((d) => {
+    snap = d; for (const h of d.holders) names.set(h.address, h.name || h.ens || ''); }).catch(() => {}) : Promise.resolve();
 
   $('net').textContent = NET.chain.name;
   $('tokenAddr').textContent = TOKEN.slice(0, 6) + '…' + TOKEN.slice(-4);
   $('tokenLink').href = NET.scan + '/address/' + TOKEN;
   $('hero').src = thumb(0);
 
-  let sale = null, supply = 0, account = '', busy = false, shown = -1;
+  let sale = null, supply = 0, max = 111, account = '', busy = false, shown = -1, owners = [];
 
   function gate() {
-    const soldOut = sale && sale.sold >= sale.allocation;
+    // sold out when the edition is full, whichever runs out first: the 111 cap or the sale allocation
+    const soldOut = sale && (supply >= max || sale.sold >= sale.allocation);
     const open = sale && sale.configured && !state.paused && !soldOut && sale.paymentToken === ZERO;
     $('mint').disabled = busy || !open;
     $('mint').textContent = soldOut ? 'Sold out' : state.paused ? 'Sale paused' : account ? 'Mint for ' + formatEther(sale ? sale.price : 0n) + ' ETH' : 'Mint';
@@ -112,16 +123,25 @@
   const state = { paused: true };
 
   async function refresh() {
-    const [s, ts, pz] = await Promise.all([
+    const [s, ts, pz, mx] = await Promise.all([
       pub.readContract({ address: MINTER, abi: minterAbi, functionName: 'sales', args: [TOKEN] }),
       pub.readContract({ address: TOKEN, abi: tokenAbi, functionName: 'totalSupply' }),
       pub.readContract({ address: TOKEN, abi: tokenAbi, functionName: 'paused' }),
+      pub.readContract({ address: TOKEN, abi: tokenAbi, functionName: 'maxInvocations' }),
+      loadSnap,
     ]);
     sale = { configured: s[0], paymentToken: s[1], price: s[2], allocation: s[3], sold: s[4] };
-    supply = Number(ts); state.paused = pz;
+    supply = Number(ts); max = Number(mx); state.paused = pz;
+    const left = Math.max(0, Math.min(max - supply, Number(sale.allocation - sale.sold)));
+    owners = await Promise.all(Array.from({ length: supply }, (_, id) => pub.readContract({ address: TOKEN, abi: tokenAbi, functionName: 'ownerOf', args: [BigInt(id)] }).then((a) => a.toLowerCase()).catch(() => '')));
     $('price').textContent = formatEther(sale.price) + ' ETH';
-    $('sold').textContent = sale.sold + ' / ' + sale.allocation;
-    $('bar').style.width = (sale.allocation ? Number(sale.sold * 100n / sale.allocation) : 0) + '%';
+    $('sold').textContent = supply + ' / ' + max;
+    $('left').textContent = left;
+    // collectors, not counting the artist's own wallet
+    $('holders').textContent = new Set(owners.filter((o) => o && o !== '0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788')).size;
+    $('headLine').textContent = max + ' tokens · ' + supply + ' minted · ' + left + ' left · ' + formatEther(sale.price) + ' ETH each';
+    $('split').textContent = sale.sold + ' bought in the public sale, ' + (supply - Number(sale.sold)) + ' placed by the artist.';
+    $('bar').style.width = (supply / max * 100).toFixed(1) + '%';
     if (supply - 1 !== shown) drawTiles();
     gate();
   }
@@ -134,8 +154,14 @@
       a.className = 'tile ml-card'; a.target = '_blank'; a.rel = 'noopener';
       a.href = liveUrl(id);
       const img = document.createElement('img');
-      img.loading = 'lazy'; img.src = thumb(id); img.alt = 'Marfa Light #' + id;
-      const cap = document.createElement('span'); cap.textContent = '#' + id + '  live view ↗';
+      img.loading = 'lazy'; img.src = key === 'ethereum' ? still(id) : thumb(id); img.alt = 'Marfa Light #' + id;
+      img.width = 360; img.height = 360;
+      if (key === 'ethereum' && still(id).endsWith('.jpg')) {
+        a.addEventListener('pointerenter', () => { img.src = thumb(id); }, { once: true });
+      }
+      const cap = document.createElement('span');
+      const who = names.get(owners[id]) || (owners[id] ? owners[id].slice(0, 6) + '…' + owners[id].slice(-4) : '');
+      cap.innerHTML = '<b>#' + id + '</b> ' + who.replace(/[<>&"]/g, '');
       a.append(img, cap); box.append(a);
     }
   }

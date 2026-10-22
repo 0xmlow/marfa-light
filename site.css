@@ -300,3 +300,16 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px 32px; fl
   .facts { grid-template-columns: minmax(0, 1fr); }
   .facts div:nth-child(even) { padding-left: 0; border-left: 0; }
 }
+
+/* ---------- the collection (live counts, ui/collection.js) ---------- */
+.collection .sec-head h2 .accent { color: var(--accent); display: block; }
+.col-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 32px 64px; align-items: center; }
+.col-side .cx-stats { margin-bottom: 16px; }
+.col-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+.col-cta .btn { font-size: 13px; padding: 14px 20px; }
+.col-cta .btn.solid { font: 700 20px/1 var(--display); letter-spacing: .05em; padding: 14px 22px; }
+.col-sub { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 56px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.col-sub a { text-decoration: none; color: var(--accent); }
+.col-new { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; }
+.mint-line .mint-count { display: block; margin-top: 12px; }
+@media (max-width: 900px) { .col-grid { grid-template-columns: 1fr; } .col-grid .cx-dial { max-width: 380px; } .col-new { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

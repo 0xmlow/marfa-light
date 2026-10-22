@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Marfa Light Collectors</title>
+<meta name="description" content="Who holds Marfa Light by MLow: every collector, every clock they hold, read live from Ethereum.">
+<link rel="canonical" href="https://marfalight.art/holders/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Marfa Light Collectors">
+<meta property="og:description" content="Every collector of Marfa Light by MLow and the clocks they hold, read live from Ethereum.">
+<meta property="og:url" content="https://marfalight.art/holders/">
+<meta property="og:image" content="https://marfalight.art/img/film-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@degens">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+<link rel="stylesheet" href="../ui/kit.css?v=1">
+<link rel="stylesheet" href="../ui/collection.css?v=1">
+<link rel="stylesheet" href="holders.css?v=1">
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <div class="left"><a href="../" aria-label="Marfa Light home"><img src="../img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
+    <nav aria-label="Sections" class="links" id="links">
+      <a href="../#collection">Collection</a><a href="./" class="on">Collectors</a><a href="../#token">Token</a><a href="../#clocks">Clocks</a><a href="../#film">Film</a><a href="../#calendar">Calendar</a><a href="../arcade/">Arcade</a>
+    </nav>
+    <button type="button" class="burger" aria-expanded="false" aria-controls="links">Menu</button>
+    <a class="btn solid mint-cta" href="../mint/">Mint · 0.069 ETH</a>
+  </div>
+</header>
+
+<main>
+  <section class="wrap hd">
+    <div class="hd-text">
+      <span class="eyebrow"><span class="cx-live" id="live">Snapshot</span></span>
+      <h1>The collectors</h1>
+      <p class="lede">Everyone who keeps a Marfa Light, and the clocks they keep. Owners are read from Ethereum as the page opens, so a sale or a transfer shows here at once.</p>
+      <div class="cx-stats">
+        <div class="cx-stat ml-card"><div class="k">Minted</div><div class="v" id="sMinted">&hellip;</div><div class="s" id="sMintedS"></div></div>
+        <div class="cx-stat ml-card"><div class="k">Still available</div><div class="v" id="sLeft">&hellip;</div><div class="s"><a href="../mint/">Mint one · 0.069 ETH</a></div></div>
+        <div class="cx-stat ml-card"><div class="k">Collectors</div><div class="v" id="sHolders">&hellip;</div><div class="s" id="sHon"></div></div>
+        <div class="cx-stat ml-card"><div class="k">Contract</div><div class="v small"><a href="https://etherscan.io/address/0x4504570d25b710942BeE78b7Ff5720950c1FC02D" target="_blank" rel="noopener">0x4504…C02D</a></div><div class="s"><a href="https://opensea.io/assets/ethereum/0x4504570d25b710942bee78b7ff5720950c1fc02d" target="_blank" rel="noopener" id="osLink">OpenSea</a> · Ethereum</div></div>
+      </div>
+      <div class="cx-fill"><i id="bar"></i></div>
+    </div>
+    <div class="cx-dial" id="dial"></div>
+  </section>
+
+  <div class="wrap"><div class="ticks-rule" aria-hidden="true"></div></div>
+
+  <section class="wrap sec">
+    <div class="sec-h">
+      <div><span class="eyebrow">Leaderboard</span><h2>Who holds which</h2></div>
+      <p class="muted note">Ordered by pieces held, then by who collected first. A gold ring marks an honorary NEW YORKER, painted by MLow; each opens on <a href="https://n3wyorkers.com/honoraries" target="_blank" rel="noopener">n3wyorkers.com</a>. Every clock opens its live 3D view.</p>
+    </div>
+    <ol class="cx-board" id="board"></ol>
+  </section>
+
+  <section class="wrap sec">
+    <div class="sec-h">
+      <div><span class="eyebrow">All 111</span><h2>The edition</h2></div>
+      <p class="muted note">Every place in the edition, numbered. The stones are still waiting for a clock; the lit one is next.</p>
+    </div>
+    <div class="cx-wall" id="wall"></div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="ticks-rule" aria-hidden="true"></div>
+  <p>Marfa Light // By MLow, V1. Live on Ethereum since October 6, 2026. <a href="../">Back to the clocks</a> · <a href="../mint/">Mint</a> · <a href="https://x.com/degens">@degens</a> · <span id="updated"></span></p>
+</footer>
+
+<script src="../ui/kit.js?v=1"></script>
+<script type="module">
+  import { loadCollection, renderDial, renderBoard, renderWall } from '../ui/collection.js?v=1';
+  const $ = (id) => document.getElementById(id);
+  loadCollection({ base: '../', onUpdate(col) {
+    renderDial($('dial'), col);
+    renderBoard($('board'), col);
+    renderWall($('wall'), col, { mintHref: 'mint/' });
+    $('sMinted').textContent = col.supply + ' / ' + col.max;
+    $('sMintedS').textContent = col.sale.sold + ' bought in the sale, ' + (col.supply - col.sale.sold) + ' placed by the artist';
+    $('sLeft').textContent = col.available;
+    const collectors = col.holders.filter((h) => !h.artist);
+    $('sHolders').textContent = collectors.length;
+    $('sHon').textContent = collectors.filter((h) => h.honorary).length + ' honorary NEW YORKERS';
+    $('bar').style.width = (col.supply / col.max * 100).toFixed(1) + '%';
+    $('live').textContent = col.live ? 'Live from Ethereum' : 'Snapshot ' + new Date(col.updated).toLocaleString();
+    $('live').classList.toggle('on', !!col.live);
+    $('updated').textContent = 'Names and pictures updated ' + new Date(col.updated).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    if (location.hash && !col._jumped) { col._jumped = true; const t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
+  } }).catch((e) => { $('live').textContent = 'Could not load the collection'; console.error(e); });
+</script>
+</body>
+</html>
