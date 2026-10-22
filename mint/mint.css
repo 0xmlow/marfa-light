@@ -17,9 +17,10 @@ body.mint-page { font-size: 18px; overflow-x: clip; }
               radial-gradient(ellipse at 85% 85%, rgba(8,7,10,.5), transparent 55%); }
 .m-hero-in { position: relative; z-index: 6; width: 100%; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, 440px); gap: 32px 56px; align-items: end; padding-block: 40px clamp(40px, 7vh, 80px); }
 .m-live { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; font: 500 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: rgba(247,240,226,.85); margin: 0 0 14px; }
+.m-live > span:last-child { padding: 6px 11px; border-radius: 999px; background: rgba(10,8,6,.45); border: 1px solid rgba(247,240,226,.25); backdrop-filter: blur(6px); }
 .m-live .cx-live { color: #F7F0E2; padding: 6px 11px; border-radius: 999px; background: rgba(10,8,6,.45); border: 1px solid rgba(247,240,226,.25); backdrop-filter: blur(6px); }
 .m-live b { color: #E9CC98; font-weight: 600; }
-.m-hero h1 { font: 900 clamp(84px, 15.5vw, 252px)/.8 var(--display); letter-spacing: -.012em; margin: 0 0 22px; text-shadow: 0 4px 40px rgba(0,0,0,.35); }
+.m-hero h1 { font: 900 clamp(84px, 15.5vw, 252px)/.8 var(--display); letter-spacing: -.012em; margin: 0 0 22px; filter: drop-shadow(0 4px 30px rgba(0,0,0,.35)); }
 .m-lede { font-weight: 300; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.5; max-width: 32em; color: rgba(247,240,226,.92); text-shadow: 0 1px 14px rgba(0,0,0,.5); }
 .m-lede em { color: #E9CC98; font-style: italic; }
 .m-plaque { margin-top: 18px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(247,240,226,.7); }
@@ -160,7 +161,7 @@ body.mint-page { font-size: 18px; overflow-x: clip; }
 .last { position: relative; min-height: 92vh; margin-top: clamp(80px, 11vw, 140px); display: grid; place-items: center; overflow: hidden; color: #F7F0E2; text-align: center; isolation: isolate; }
 .last > img { position: absolute; inset: -8% 0; width: 100%; height: 116%; object-fit: cover; z-index: -2; }
 .last::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 55%, rgba(8,6,4,.25), rgba(8,6,4,.78)); }
-.last-in h2 { font-size: clamp(60px, 11vw, 180px); max-width: 9em; margin: 0 auto 20px; text-shadow: 0 4px 40px rgba(0,0,0,.4); }
+.last-in h2 { font-size: clamp(60px, 11vw, 180px); max-width: 9em; margin: 0 auto 20px; filter: drop-shadow(0 4px 30px rgba(0,0,0,.4)); }
 .last-in p { margin: 0 auto 34px; font-size: 20px; color: rgba(247,240,226,.9); }
 .last-in p span { color: #E9CC98; font-weight: 600; }
 .foot { padding-block: 40px 110px; }
