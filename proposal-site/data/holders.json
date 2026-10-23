@@ -1,11 +1,11 @@
 {
- "updated": "2026-10-23T02:01:52.556Z",
+ "updated": "2026-10-23T02:11:16.285Z",
  "chainId": 1,
  "token": "0x4504570d25b710942BeE78b7Ff5720950c1FC02D",
  "minter": "0xfb5C61274a3A7dA83CcDD88DdEC914438244E2c9",
- "supply": 69,
+ "supply": 77,
  "max": 111,
- "available": 42,
+ "available": 34,
  "sale": {
   "price": "69000000000000000",
   "allocation": 97,
@@ -494,6 +494,62 @@
    "clock": "Orbital",
    "place": "Artillery Shed",
    "rendered": true
+  },
+  {
+   "id": 69,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Orbital",
+   "place": "Meridian Cloister",
+   "rendered": true
+  },
+  {
+   "id": 70,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Analemmatic Sundial",
+   "place": "Highway 90",
+   "rendered": true
+  },
+  {
+   "id": 71,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Nocturnal",
+   "place": "Marfa Lights Viewing Area",
+   "rendered": true
+  },
+  {
+   "id": 72,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Word Clock",
+   "place": "Meridian Cloister",
+   "rendered": true
+  },
+  {
+   "id": 73,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Heliochronometer",
+   "place": "Adobe Courtyard",
+   "rendered": true
+  },
+  {
+   "id": 74,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Candle Clock",
+   "place": "Empty Pool",
+   "rendered": true
+  },
+  {
+   "id": 75,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Wall Dial",
+   "place": "Mesa Rim",
+   "rendered": true
+  },
+  {
+   "id": 76,
+   "owner": "0x2e4c4d5c775625a6684e093c92a3a85f532235e2",
+   "clock": "Scoreboard",
+   "place": "Marfa Lights Viewing Area",
+   "rendered": true
   }
  ],
  "holders": [
@@ -513,9 +569,16 @@
     10,
     11,
     12,
-    13
+    13,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75
    ],
-   "count": 14,
+   "count": 21,
    "name": "MLow",
    "x": "degens",
    "ens": "mlow.eth",
@@ -1417,6 +1480,24 @@
    "artist": false,
    "honorary": null,
    "avatar": ""
+  },
+  {
+   "address": "0x2e4c4d5c775625a6684e093c92a3a85f532235e2",
+   "ids": [
+    76
+   ],
+   "count": 1,
+   "name": "dimmadomegallery.eth",
+   "x": "dimmadomecrypto",
+   "ens": "dimmadomegallery.eth",
+   "artist": false,
+   "honorary": {
+    "id": "doug-dimmadome",
+    "title": "The Hat at Rockefeller Center",
+    "src": "doug-dimmadome-2332c4a0s.jpg",
+    "url": "https://n3wyorkers.com/h/doug-dimmadome"
+   },
+   "avatar": "https://euc.li/dimmadomegallery.eth"
   }
  ]
 }
