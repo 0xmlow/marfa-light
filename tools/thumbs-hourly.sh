@@ -1,7 +1,7 @@
 #!/bin/zsh
-# Hourly during the Ethereum sale (launchd: ~/Library/LaunchAgents/com.mlow.marfa-thumbs.plist).
-# Renders day GIFs + traits for any newly minted token, publishes them, and unloads itself
-# once all 111 are minted and rendered.
+# Every 10 minutes during the Ethereum sale (launchd: ~/Library/LaunchAgents/com.mlow.marfa-thumbs.plist,
+# StartInterval 600). Renders day GIFs + traits for any newly minted token, publishes them, asks
+# OpenSea to re-read them, and unloads itself once all 111 are minted, rendered and refreshed.
 #   install:   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.mlow.marfa-thumbs.plist
 #   run now:   launchctl kickstart gui/$(id -u)/com.mlow.marfa-thumbs
 #   stop:      launchctl bootout gui/$(id -u)/com.mlow.marfa-thumbs
@@ -23,11 +23,19 @@ node tools/holders.mjs && python3 tools/holders-media.py && {
     npm run publish:site || echo "publish failed"
   fi
 } || echo "holders failed (continuing)"
-# all minted and every one rendered: the job is finished
+# OpenSea grabs a token's image minutes after the mint, often before the GIF above exists, and then
+# keeps the "developing" placeholder. Ask it to re-read every token whose real GIF GitHub Pages (the
+# onchain image URL) now serves; if Pages is still building, wait once and try again.
+OS=$(node tools/opensea-refresh.mjs --address $ADDR 2>&1); print -r -- "$OS"
+if print -r -- "$OS" | grep -q "not live on GitHub Pages"; then
+  sleep 120; node tools/opensea-refresh.mjs --address $ADDR 2>&1 || echo "opensea refresh failed (continuing)"
+fi
+# all minted, rendered and refreshed on OpenSea: the job is finished
 DONE=$(node -e '
-  const fs=require("fs"); const t=JSON.parse(fs.readFileSync("thumbs/1-'"${ADDR:l}"'.json","utf8"));
-  console.log(Object.keys(t).length>=111 ? "yes" : "no");' 2>/dev/null)
+  const fs=require("fs"), a="'"${ADDR:l}"'";
+  const n=f=>{try{return Object.keys(JSON.parse(fs.readFileSync(f,"utf8"))).length}catch{return 0}};
+  console.log(n("thumbs/1-"+a+".json")>=111 && n("thumbs/opensea-1-"+a+".json")>=111 ? "yes" : "no");' 2>/dev/null)
 if [ "$DONE" = yes ]; then
-  echo "all 111 rendered; unloading the hourly job"
+  echo "all 111 rendered and refreshed; unloading the job"
   launchctl bootout gui/$(id -u)/com.mlow.marfa-thumbs
 fi

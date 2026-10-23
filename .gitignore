@@ -17,3 +17,5 @@
 .DS_Store
 *.log
 tools/blender/out/
+# local OpenSea refresh progress (each clone keeps its own)
+/thumbs/opensea-*.json
