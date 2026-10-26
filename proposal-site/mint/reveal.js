@@ -230,7 +230,7 @@ export function createReveal({ base = '../', chainId = 1, token, snapshot = () =
     step(state.demo ? `Demo · Marfa Light #${id}` : `Marfa Light #${id} is yours`);
     title(f.Clock);
     status('');
-    q('.rv-pulled').innerHTML = `${state.demo ? 'This pull drew' : 'You pulled'} a <b>${esc(f.Clock)}</b> at <b>${esc(f.Place)}</b>, under a ${esc(String(f.Sky).toLowerCase())} sky. It is drawing itself live, right now, for this minute in Marfa. Drag to look around.`;
+    q('.rv-pulled').innerHTML = `${state.demo ? 'This pull drew' : 'You pulled'} ${/^[aeiou]/i.test(f.Clock) ? 'an' : 'a'} <b>${esc(f.Clock)}</b> at <b>${esc(f.Place)}</b>, under a ${esc(String(f.Sky).toLowerCase())} sky. It is drawing itself live, right now, for this minute in Marfa. Drag to look around.`;
     q('.rv-rarity').textContent = rarity(f);
     const show = ['Material', 'Film', 'Visitors', 'Sky Event', 'Anomaly', 'Birds', 'Light Work', 'Easter Eggs', 'Alignment'];
     q('.rv-traits').innerHTML = show.filter((k) => f[k] != null && f[k] !== 'None').map((k) => `<li><span>${esc(k)}</span><b>${esc(f[k])}</b></li>`).join('');
@@ -239,7 +239,7 @@ export function createReveal({ base = '../', chainId = 1, token, snapshot = () =
     const live = `https://resolver.abx.io/a/${chainId}/${String(token).toLowerCase()}/${id}`;
     q('.rv-live').href = live;
     const os = `https://opensea.io/item/ethereum/${String(token).toLowerCase()}/${id}`;
-    const text = `${state.demo ? 'Watched' : 'Just pulled'} Marfa Light #${id} by @degens: a ${f.Clock} at ${f.Place}. Blind mint, drawn live from code on Ethereum.`;
+    const text = `${state.demo ? 'Watched' : 'Just pulled'} Marfa Light #${id} by @degens: ${/^[aeiou]/i.test(f.Clock) ? 'an' : 'a'} ${f.Clock} at ${f.Place}. Blind mint, drawn live from code on Ethereum.`;
     q('.rv-share').href = 'https://x.com/intent/post?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(chainId === 1 ? os : 'https://marfalight.art/mint/');
     q('.rv-fine').textContent = state.demo ? (owner ? 'Held by ' + owner + '. ' : '') + 'Mint your own and the reels stop on yours.' : 'Its day GIF lands on OpenSea and marfalight.art within the hour.';
     q('.rv-again').textContent = state.demo ? 'Mint my own' : 'Pull again';
