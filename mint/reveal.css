@@ -87,7 +87,9 @@ html.rv-open, html.rv-open body { overflow: hidden; }
 .rv-traits b { display: block; font: 500 13.5px/1.35 var(--mono); color: #EFE8DA; margin-top: 3px; }
 .rv-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .rv-actions .btn { margin: 0; width: 100%; text-align: center; text-decoration: none; font-size: 12.5px; padding: 13px 10px; }
-.rv-actions .btn:not(.solid) { color: #EFE8DA; }
+.rv-actions .btn:not(.solid) { color: #EFE8DA !important; background: rgba(255,255,255,.05) !important; border: 1px solid rgba(239,232,218,.22) !important; box-shadow: none !important; }
+.rv-actions .btn:not(.solid)::before { display: none; }
+.rv-actions .btn:not(.solid):hover { border-color: #E9CC98 !important; color: #E9CC98 !important; }
 .rv-actions .rv-again { grid-column: 1 / -1; font: 800 22px/1 var(--display); letter-spacing: .06em; text-transform: uppercase; padding: 16px; }
 .rv-fine { font-size: 11px; color: #8C8577; margin: 14px 0 0; }
 
