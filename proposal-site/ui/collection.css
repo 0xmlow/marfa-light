@@ -123,6 +123,8 @@
 .cx-dl a { font: 600 9.5px/1 var(--mono); letter-spacing: .08em; text-decoration: none; color: #2A1C08; padding: 4px 5px; border-radius: 2px;
   background: linear-gradient(180deg, #F3E2B8, #DCB27B 55%, #AE7431); box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 1px 2px rgba(0,0,0,.4); }
 .cx-dl a:hover, .cx-dl a:focus-visible { filter: brightness(1.12); }
+.cx-dl a.busy { cursor: progress; filter: saturate(.4); }
+.cx-cell .cx-dl:has(.busy) { opacity: 1; }
 .cx-cell .cx-dl { position: absolute; top: 5px; right: 5px; z-index: 1; opacity: 0; transition: opacity .2s; }
 .cx-cell:hover .cx-dl, .cx-cell:focus-within .cx-dl { opacity: 1; }
 @media (hover: none) { .cx-cell .cx-dl { opacity: 1; } .cx-cell .cx-dl a { padding: 3px 4px; font-size: 8.5px; } }

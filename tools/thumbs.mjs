@@ -38,7 +38,11 @@ fs.mkdirSync(path.dirname(traitsFile), { recursive: true });
 const traits = fs.existsSync(traitsFile) ? JSON.parse(fs.readFileSync(traitsFile, 'utf8')) : {};
 
 // minted ids, straight from the contract
-const minted = JSON.parse(abx('tokens', address, '--json')).tokens.map((t) => String(t.tokenId));
+const onchain = JSON.parse(abx('tokens', address, '--json')).tokens;
+const minted = onchain.map((t) => String(t.tokenId));
+// every token's seed, so the site can rebuild any piece in the visitor's browser (GLB download)
+if (chainId === 1) fs.writeFileSync(path.join(ROOT, 'proposal-site/data/seeds.json'),
+  JSON.stringify(Object.fromEntries(onchain.map((t) => [t.tokenId, t.seed])), null, 1) + '\n');
 let ids = arg('ids') ? arg('ids').split(',').map((s) => s.trim()) : minted;
 ids = ids.filter((id) => minted.includes(id));
 if (!flag('force') && !arg('ids')) ids = ids.filter((id) => !traits[id] || !fs.existsSync(path.join(outDir, id + '.gif')));

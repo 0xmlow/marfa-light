@@ -29,7 +29,11 @@ const save = () => fs.writeFileSync(stateFile, JSON.stringify(state, null, 1) + 
 if (arg('init')) { for (const id of range(arg('init'))) state[id] ??= 'init'; save(); console.log(`marked ${arg('init')} as already refreshed`); process.exit(0); }
 
 const rendered = fs.existsSync(thumbsFile) ? Object.keys(JSON.parse(fs.readFileSync(thumbsFile, 'utf8'))).map(Number) : [];
-const want = arg('ids') ? range(arg('ids')) : rendered.filter(id => !(id in state)).sort((a, b) => a - b);
+// A first refresh can still catch the placeholder (GitHub Pages' CDN keeps serving it for a few
+// minutes after a publish; #72 and #74 stuck that way on Oct 23), so every id is refreshed a
+// second time 30+ minutes after the first. Second refreshes are stored as "twice:<ISO time>".
+const due = (v) => v === undefined || (/^\d{4}-/.test(v) && Date.now() - Date.parse(v) > 30 * 60 * 1000);
+const want = arg('ids') ? range(arg('ids')) : rendered.filter(id => due(state[id])).sort((a, b) => a - b);
 if (!want.length) { console.log('opensea: nothing to refresh'); process.exit(0); }
 
 // only once the URL OpenSea reads (the onchain url-template on GitHub Pages) serves the real GIF
@@ -71,7 +75,7 @@ for (const id of ready) {
     let res = '';
     for (let t = 0; t < 3 && res !== 'queued'; t++) { if (t) { await page.keyboard.press('Escape'); await page.waitForTimeout(2000); } res = await page.evaluate(CLICK); }
     console.log(`opensea: #${id} ${res}`);
-    if (res === 'queued') { state[id] = new Date().toISOString(); ok++; save(); }
+    if (res === 'queued') { state[id] = (state[id] && !arg('ids') ? 'twice:' : '') + new Date().toISOString(); ok++; save(); }
   } catch (e) { console.log(`opensea: #${id} failed: ${e.message.split('\n')[0]}`); }
 }
 await browser.close();

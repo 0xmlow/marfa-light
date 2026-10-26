@@ -92,7 +92,7 @@
     if (world) {
       world.innerHTML = m.posters.map(function (p) {
         var t = p.id.replace(/^\d+-/, '').replace(/-/g, ' ');
-        return '<figure class="cor-item"><img src="../media/posters/' + p.id + '.webp" alt="Marfa Light poster: ' + t + '" loading="lazy" width="' + p.w + '" height="' + p.h + '"><figcaption>' + p.id.slice(0, 2) + ' · ' + t + '</figcaption></figure>';
+        return '<figure class="cor-item"><img src="../media/posters/' + p.id + '.webp" alt="Marfa Light poster: ' + t + '" loading="lazy" width="' + p.w + '" height="' + p.h + '"><figcaption>' + p.id.slice(0, 2) + ' · ' + t + ' <a class="cor-dl" href="../media/dl/marfa-light-' + p.id + '.jpg" download>Download ↓</a></figcaption></figure>';
       }).join('');
       FX.corridor($('posters'));
     }
@@ -106,7 +106,7 @@
         var d = document.createElement('figure'); d.className = 'side-card';
         d.style.width = 'calc(var(--ph) * ' + (p.w / p.h).toFixed(3) + ')';
         d.innerHTML = '<img src="../media/pano/' + p.id + '.webp" alt="' + (caps[k] || k) + '" loading="lazy" width="' + p.w + '" height="' + p.h + '">' +
-          '<figcaption class="side-cap"><span class="k">' + String(i + 1).padStart(2, '0') + ' / ' + m.panoramas.length + '</span></figcaption>';
+          '<figcaption class="side-cap"><span class="k">' + String(i + 1).padStart(2, '0') + ' / ' + m.panoramas.length + '</span> <a class="cor-dl" href="../media/dl/marfa-light-' + p.id + '.jpg" download>Download ↓</a></figcaption>';
         track.appendChild(d);
       });
       FX.sideways($('chapters'));
