@@ -13844,5 +13844,187 @@
    "trait_type": "Egg Count",
    "value": 6
   }
+ ],
+ "77": [
+  {
+   "trait_type": "Clock",
+   "value": "Noon Cannon"
+  },
+  {
+   "trait_type": "Carriage",
+   "value": "Stone Saddles"
+  },
+  {
+   "trait_type": "Barrel",
+   "value": "Blackened Iron"
+  },
+  {
+   "trait_type": "Motto",
+   "value": "NOON HERE IS NOT NOON THERE"
+  },
+  {
+   "trait_type": "Keeps Time By",
+   "value": "Burning Glass"
+  },
+  {
+   "trait_type": "Place",
+   "value": "Observatory Ridge"
+  },
+  {
+   "trait_type": "Material",
+   "value": "Terrazzo"
+  },
+  {
+   "trait_type": "Sky",
+   "value": "Clear"
+  },
+  {
+   "trait_type": "Wind",
+   "value": "Calm"
+  },
+  {
+   "trait_type": "Film",
+   "value": "Kodachrome"
+  },
+  {
+   "trait_type": "Tag",
+   "value": "\"WAIT\""
+  },
+  {
+   "trait_type": "Lens",
+   "value": "28mm"
+  },
+  {
+   "trait_type": "Framing",
+   "value": "Low Angle"
+  },
+  {
+   "trait_type": "Condition",
+   "value": "Weathered"
+  },
+  {
+   "trait_type": "Ground Bloom",
+   "value": "None"
+  },
+  {
+   "trait_type": "Visitors",
+   "value": "Empty"
+  },
+  {
+   "trait_type": "Light Work",
+   "value": "Fluorescent Barrier"
+  },
+  {
+   "trait_type": "Birds",
+   "value": "Vultures"
+  },
+  {
+   "trait_type": "Sky Event",
+   "value": "None"
+  },
+  {
+   "trait_type": "Anomaly",
+   "value": "None"
+  },
+  {
+   "trait_type": "Alignment",
+   "value": "Autumn Equinox Sunrise, SEP 22 08:48"
+  },
+  {
+   "trait_type": "Alignment Gate",
+   "value": "Oculus"
+  },
+  {
+   "trait_type": "Ground Work",
+   "value": "Stone Line"
+  },
+  {
+   "trait_type": "Palette",
+   "value": "NimTeens"
+  },
+  {
+   "trait_type": "Palette Source",
+   "value": "NimTeens, Bryan Brinkman"
+  },
+  {
+   "trait_type": "Barrier Form",
+   "value": "Squiggle"
+  },
+  {
+   "trait_type": "Label Tie",
+   "value": "Woven, Fidenza #0 / Golf Socks"
+  },
+  {
+   "trait_type": "Pigment Palette",
+   "value": "Fidenza #0 / Golf Socks"
+  },
+  {
+   "trait_type": "Pigment Source",
+   "value": "Fidenza #0 / Tyler Hobbs / sampled preview"
+  },
+  {
+   "trait_type": "Landscape Score",
+   "value": "Recursive Terraces"
+  },
+  {
+   "trait_type": "Score Reference",
+   "value": "Archetype / Kjetil Golid"
+  },
+  {
+   "trait_type": "Score Density",
+   "value": "Abundant"
+  },
+  {
+   "trait_type": "Score Scale",
+   "value": "Intimate"
+  },
+  {
+   "trait_type": "Score Composition",
+   "value": "Open Arc"
+  },
+  {
+   "trait_type": "Pigment Rhythm",
+   "value": "Alternating"
+  },
+  {
+   "trait_type": "Clock Accent",
+   "value": "Vertical Seams"
+  },
+  {
+   "trait_type": "Accent Finish",
+   "value": "Mineral Inlay"
+  },
+  {
+   "trait_type": "Atmospheric Depth",
+   "value": "Copper Veil"
+  },
+  {
+   "trait_type": "Mineral Cut",
+   "value": "Close Grain"
+  },
+  {
+   "trait_type": "Surface Grain",
+   "value": "Balanced"
+  },
+  {
+   "trait_type": "Tie Weave",
+   "value": "Three Strand"
+  },
+  {
+   "trait_type": "Alignment Register",
+   "value": "Braided Halo"
+  },
+  {
+   "trait_type": "Alignment Approach",
+   "value": "Twelve minute stations"
+  },
+  {
+   "trait_type": "Easter Eggs",
+   "value": "Marfa Lights · Marfa Blimp · Evil Eye · New Yorker · Waiting Room"
+  },
+  {
+   "trait_type": "Egg Count",
+   "value": 5
+  }
  ]
 }
