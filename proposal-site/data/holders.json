@@ -1,15 +1,15 @@
 {
- "updated": "2026-10-26T21:38:57.699Z",
+ "updated": "2026-10-26T21:50:09.305Z",
  "chainId": 1,
  "token": "0x4504570d25b710942BeE78b7Ff5720950c1FC02D",
  "minter": "0xfb5C61274a3A7dA83CcDD88DdEC914438244E2c9",
- "supply": 77,
+ "supply": 78,
  "max": 111,
- "available": 34,
+ "available": 33,
  "sale": {
   "price": "69000000000000000",
   "allocation": 97,
-  "sold": 4
+  "sold": 5
  },
  "tokens": [
   {
@@ -549,6 +549,13 @@
    "owner": "0x2e4c4d5c775625a6684e093c92a3a85f532235e2",
    "clock": "Scoreboard",
    "place": "Marfa Lights Viewing Area",
+   "rendered": true
+  },
+  {
+   "id": 77,
+   "owner": "0x63a9dbce75413036b2b778e670aabd4493aaf9f3",
+   "clock": "Noon Cannon",
+   "place": "Observatory Ridge",
    "rendered": true
   }
  ],
@@ -1498,6 +1505,19 @@
     "url": "https://n3wyorkers.com/h/doug-dimmadome"
    },
    "avatar": "https://euc.li/dimmadomegallery.eth"
+  },
+  {
+   "address": "0x63a9dbce75413036b2b778e670aabd4493aaf9f3",
+   "ids": [
+    77
+   ],
+   "count": 1,
+   "name": "natealex.eth",
+   "x": "",
+   "ens": "natealex.eth",
+   "artist": false,
+   "honorary": null,
+   "avatar": ""
   }
  ]
 }
