@@ -64,6 +64,17 @@ export function still(col, id) {
   const t = col.tokens[id];
   return col.base + (t && t.rendered ? 'tokens/1/s/' + id + '.jpg' : 'tokens/developing.gif');
 }
+// the files a collector can keep: the day GIF the token shows on OpenSea, and its still
+export function files(col, id) {
+  const t = col.tokens[id];
+  if (!t || !t.rendered) return null;
+  return { gif: col.base + 'tokens/1/' + id + '.gif', jpg: col.base + 'tokens/1/s/' + id + '.jpg' };
+}
+function dlLinks(col, id, cls = 'cx-dl', numbered = false) {
+  const f = files(col, id);
+  if (!f) return '';
+  return `<span class="${cls}">${numbered ? `<b>#${id}</b>` : ''}<a href="${f.gif}" download="marfa-light-${id}-day.gif" title="Download #${id}, the day GIF">GIF ↓</a><a href="${f.jpg}" download="marfa-light-${id}.jpg" title="Download #${id}, the thumbnail">JPG ↓</a></span>`;
+}
 export function pfp(col, h) {
   if (h.honorary) return col.base + 'holders/pfp/' + h.honorary.id + '.jpg';
   if (h.avatar) return h.avatar;
@@ -148,7 +159,7 @@ export function renderBoard(el, col) {
         <span class="cx-no">No. ${String(++n).padStart(2, '0')}</span>${h.count > 1 ? `<span class="cx-n">${h.count} pieces</span>` : ''}</a>
       ${extra}
       <div class="cx-label">${avatar(col, h)}<div class="cx-who"><b>${esc(nameOf(h))}</b><span class="cx-links">${whoLinks(h)}</span></div></div>
-      <div class="cx-meta"><span><b>#${first}</b> ${esc(pieceLabel(col, first))}</span>${honChip(h)}</div>
+      <div class="cx-meta"><span><b>#${first}</b> ${esc(pieceLabel(col, first))}</span>${ids.map((id) => dlLinks(col, id, 'cx-dl inline', ids.length > 1)).join('')}${honChip(h)}</div>
     </li>`;
   }).join('');
 }
@@ -160,7 +171,7 @@ export function renderWall(el, col, { mintHref = 'mint/' } = {}) {
     const t = col.tokens[id];
     if (t) {
       const h = col.byOwner.get(t.owner);
-      cells.push(`<a class="cx-cell" href="${liveUrl(id)}" target="_blank" rel="noopener"><img src="${still(col, id)}" alt="Marfa Light #${id}" loading="lazy" width="360" height="360"><span class="cx-cap"><b>#${id}</b>${esc(h ? nameOf(h) : '')}</span></a>`);
+      cells.push(`<div class="cx-cell"><a class="cx-hit" href="${liveUrl(id)}" target="_blank" rel="noopener"><img src="${still(col, id)}" alt="Marfa Light #${id}" loading="lazy" width="360" height="360"><span class="cx-cap"><b>#${id}</b>${esc(h ? nameOf(h) : '')}</span></a>${dlLinks(col, id)}</div>`);
     } else {
       const next = id === col.supply;
       cells.push(`<a class="cx-cell empty${next ? ' next' : ''}" href="${col.base}${mintHref}"><span class="cx-num">${id}</span><span class="cx-cap">${next ? 'Next to mint' : 'Available'}</span></a>`);

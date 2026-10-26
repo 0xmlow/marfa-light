@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300;500;700;800&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <link rel="stylesheet" href="ui/kit.css?v=1">
-<link rel="stylesheet" href="ui/collection.css?v=1">
+<link rel="stylesheet" href="ui/collection.css?v=3">
 <link rel="stylesheet" href="ui/fx.css?v=1">
 <link rel="stylesheet" href="site.css?v=2">
 
@@ -409,7 +409,7 @@
 <script src="ui/kit.js?v=1"></script>
 <script src="ui/fx.js?v=1"></script>
 <script type="module">
-  import { loadCollection, renderDial, renderFaces, still, liveUrl, nameOf } from './ui/collection.js?v=1';
+  import { loadCollection, renderDial, renderFaces, still, liveUrl, nameOf } from './ui/collection.js?v=3';
   const $ = (id) => document.getElementById(id);
   loadCollection({ base: '', onUpdate(col) {
     renderDial($('cDial'), col); renderFaces($('cFaces'), col);

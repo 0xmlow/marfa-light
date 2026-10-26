@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
 <link rel="stylesheet" href="../ui/kit.css?v=1">
-<link rel="stylesheet" href="../ui/collection.css?v=1">
+<link rel="stylesheet" href="../ui/collection.css?v=3">
 <link rel="stylesheet" href="../ui/fx.css?v=1">
 <link rel="stylesheet" href="holders.css?v=2">
 </head>
@@ -63,7 +63,7 @@
   <section class="wrap sec">
     <div class="sec-h">
       <div><span class="eyebrow">All 111</span><h2>The edition</h2></div>
-      <p class="muted note">Every place in the edition, numbered. The stones are still waiting for a clock; the lit one is next.</p>
+      <p class="muted note">Every place in the edition, numbered. Each minted clock carries its day GIF and its thumbnail to download. The stones are still waiting for a clock; the lit one is next.</p>
     </div>
     <div class="cx-wall" id="wall"></div>
   </section>
@@ -77,7 +77,7 @@
 <script src="../ui/kit.js?v=1"></script>
 <script src="../ui/fx.js?v=1"></script>
 <script type="module">
-  import { loadCollection, renderDial, renderBoard, renderWall } from '../ui/collection.js?v=1';
+  import { loadCollection, renderDial, renderBoard, renderWall } from '../ui/collection.js?v=3';
   const $ = (id) => document.getElementById(id);
   loadCollection({ base: '../', onUpdate(col) {
     renderDial($('dial'), col);
