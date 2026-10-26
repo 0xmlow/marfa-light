@@ -15,15 +15,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300;500;700;800&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <link rel="stylesheet" href="ui/kit.css?v=1">
-<link rel="stylesheet" href="ui/collection.css?v=3">
+<link rel="stylesheet" href="ui/collection.css?v=4">
 <link rel="stylesheet" href="ui/fx.css?v=1">
-<link rel="stylesheet" href="site.css?v=2">
+<link rel="stylesheet" href="site.css?v=4">
 
 <header class="bar">
   <div class="wrap">
     <div class="left"><a href="#top" aria-label="Marfa Light, top"><img src="img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
     <nav aria-label="Sections" class="links" id="links">
-      <a href="mint/">Mint</a><a href="#collection">Collection</a><a href="holders/">Collectors</a><a href="about/">About</a><a href="#token">Token</a><a href="#clocks">Clocks</a><a href="#film">Film</a><a href="arcade/">Arcade</a>
+      <a href="mint/">Mint</a><a href="#collection">Collection</a><a href="holders/">Collectors</a><a href="posters/">Posters</a><a href="about/">About</a><a href="#token">Token</a><a href="#clocks">Clocks</a><a href="#film">Film</a><a href="arcade/">Arcade</a>
       <div class="more">
         <button type="button" class="more-b" aria-expanded="false" aria-controls="moreBoard">More <i></i></button>
         <div class="more-p" id="moreBoard"><small>Also on the dial</small>
@@ -32,7 +32,7 @@
       </div>
     </nav>
     <button type="button" class="burger" aria-expanded="false" aria-controls="links">Menu</button>
-    <a class="btn solid mint-cta" href="mint/"><i class="live-dot"></i>Mint · <span data-count="left">42</span> left</a>
+    <a class="btn solid mint-cta" href="mint/"><i class="live-dot"></i>Blind mint · <span data-count="left">34</span> left</a>
   </div>
 </header>
 
@@ -42,7 +42,8 @@
   <div class="plaque">
     <p class="first-kicker mono">October 6, 2026</p>
     <p class="first-line">The first generative art project deployed on ABX on Ethereum.</p>
-    <p class="first-proof mono"><a href="https://etherscan.io/address/0x4504570d25b710942BeE78b7Ff5720950c1FC02D" target="_blank" rel="noopener">Contract 0x4504…C02D</a> · <a href="mint/">Mint · 0.069 ETH</a></p>
+    <p class="first-proof mono"><a href="https://etherscan.io/address/0x4504570d25b710942BeE78b7Ff5720950c1FC02D" target="_blank" rel="noopener">Contract 0x4504…C02D</a> · <span data-count="left">34</span> of 111 still unrevealed</p>
+    <a class="btn solid plaque-mint" href="mint/" data-magnetic data-cursor="Pull">Blind mint <span data-count="next">#78</span> <small>0.069 ETH</small></a>
   </div>
 </section>
 
@@ -69,7 +70,7 @@
         <span class="eyebrow">Now live on Ethereum</span>
         <h1>Marfa Light</h1>
       </div>
-      <div><p class="thesis">Every token is a working clock for Marfa, Texas. The hash chooses the clock, how it is made, and where it stands. <em>The minute comes from the sky.</em></p><p class="mint-line"><a class="btn solid mint-xl" href="mint/" data-magnetic data-cursor="Mint">Mint a clock <small>0.069 ETH</small></a><span class="mono muted mint-count" id="heroCount">69 of 111 minted · 42 left</span></p></div>
+      <div><p class="thesis">Every token is a working clock for Marfa, Texas. The hash chooses the clock, how it is made, and where it stands. <em>The minute comes from the sky.</em></p><p class="mint-line"><a class="btn solid mint-xl mint-home" id="heroMint" href="mint/" data-magnetic data-cursor="Pull">Blind mint <span data-count="next">#78</span> <small>0.069 ETH · it draws itself the second your block lands</small></a><span class="mono muted mint-count" id="heroCount">69 of 111 minted · 42 left</span></p></div>
     </div>
 
   </div>
@@ -91,7 +92,7 @@
           <div class="cx-stat ml-card"><div class="k">Newest</div><div class="v" id="cNewest">&hellip;</div><div class="s" id="cNewestS"></div></div>
         </div>
         <div class="cx-fill"><i id="cBar"></i></div>
-        <div class="col-cta"><a class="btn solid" href="mint/" id="cMint">Mint · 0.069 ETH</a><a class="btn" href="holders/">See who holds which</a></div>
+        <div class="col-cta"><a class="btn solid" href="mint/" id="cMint">Blind mint · 0.069 ETH</a><a class="btn" href="holders/">See who holds which</a></div>
       </div>
     </div>
     <div class="col-sub"><span class="eyebrow">Kept by</span><a class="mono" href="holders/">The leaderboard →</a></div>
@@ -407,9 +408,14 @@
 <script>document.addEventListener('DOMContentLoaded', function () { window.MLFX && MLFX.mintbar(document.querySelector('.hero-sky')); MLFX.stickers(document.getElementById('homeStickers')); });</script>
 <script>window.MARFA_SKY_OWNER = true;</script>
 <script src="ui/kit.js?v=1"></script>
+<div id="mintbar" role="region" aria-label="Mint">
+  <i class="mb-dot"></i><span class="mb-k"><b data-count="left">34</b> of <span data-count="max">111</span> left<span class="opt"> · blind mint · 0.069 ETH</span></span>
+  <a class="btn solid" href="mint/" data-magnetic>Pull <span data-count="next">#78</span></a>
+</div>
 <script src="ui/fx.js?v=1"></script>
+<script>window.MLFX && MLFX.mintbar(document.getElementById('heroMint'));</script>
 <script type="module">
-  import { loadCollection, renderDial, renderFaces, still, liveUrl, nameOf } from './ui/collection.js?v=3';
+  import { loadCollection, renderDial, renderFaces, still, liveUrl, nameOf } from './ui/collection.js?v=4';
   const $ = (id) => document.getElementById(id);
   loadCollection({ base: '', onUpdate(col) {
     renderDial($('cDial'), col); renderFaces($('cFaces'), col);

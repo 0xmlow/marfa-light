@@ -18,9 +18,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
 <link rel="preload" as="image" href="../media/sky/golden.webp">
 <link rel="stylesheet" href="../ui/kit.css?v=1">
-<link rel="stylesheet" href="../ui/collection.css?v=3">
+<link rel="stylesheet" href="../ui/collection.css?v=4">
 <link rel="stylesheet" href="../ui/fx.css?v=1">
 <link rel="stylesheet" href="mint.css?v=3">
+<link rel="stylesheet" href="reveal.css?v=1">
 </head>
 <body class="mint-page">
 <div id="preload" aria-hidden="true"><div class="pl-in"><span class="pl-n">000</span><span class="pl-k">clocks already keeping Marfa time</span><div class="pl-bar"></div></div></div>
@@ -29,10 +30,10 @@
   <div class="wrap">
     <div class="left"><a href="../" aria-label="Marfa Light home"><img src="../img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
     <nav aria-label="Sections" class="links" id="links">
-      <a href="../">The clocks</a><a href="#how">How it works</a><a href="#posters">Posters</a><a href="../holders/">Collectors</a><a href="../about/">About</a><a href="#faq">FAQ</a>
+      <a href="../">The clocks</a><a href="#how">How it works</a><a href="../posters/">Posters</a><a href="../holders/">Collectors</a><a href="../about/">About</a><a href="#faq">FAQ</a>
     </nav>
     <button type="button" class="burger" aria-expanded="false" aria-controls="links">Menu</button>
-    <a class="btn solid mint-cta" href="#mint-dock"><i class="live-dot"></i>Mint · <span data-count="left">42</span> left</a>
+    <a class="btn solid mint-cta" href="#mint-dock"><i class="live-dot"></i>Blind mint · <span data-count="left">34</span> left</a>
   </div>
 </header>
 
@@ -61,19 +62,21 @@
       </div>
 
       <div class="m-dock" id="mint-dock">
-        <div class="m-port">
-          <img id="hero" src="../tokens/developing.gif" alt="The newest Marfa Light, a day in Marfa from midnight to midnight" width="540" height="540">
-          <span class="m-port-tag mono" id="portTag">Newest mint</span>
+        <div class="m-port mystery" id="mystery">
+          <div class="mx-flick"><img id="flick" src="../tokens/1/s/0.jpg" alt="" width="360" height="360"></div>
+          <div class="mx-q"><b>?</b><span><span data-count="next">#78</span> · unrevealed</span></div>
         </div>
         <div class="m-dock-body" id="sale">
+          <button class="btn solid mint-xl mint-mega" id="mint" type="button" data-magnetic data-cursor="Pull">Blind mint</button>
+          <p class="mint-sub mono">One pull, one clock. <b>29</b> kinds, <b>22</b> places, about <b>44</b> traits. Nobody knows what comes out, MLow included. It draws itself live the second your block lands.</p>
           <div class="stats">
             <div class="stat"><div class="k">Price</div><div class="v" id="price">0.069 ETH</div></div>
             <div class="stat"><div class="k">Left</div><div class="v"><span id="left">42</span><small> / 111</small></div></div>
           </div>
           <div class="fill"><i id="bar"></i></div>
           <p class="split" id="split"></p>
-          <button class="btn solid mint-xl" id="mint" type="button" data-magnetic data-cursor="Mint">Mint</button>
-          <button class="btn connect" id="connect" type="button">Connect wallet</button>
+          <div class="dock-row"><button class="btn connect" id="connect" type="button">Connect wallet</button><button class="btn" id="demo" type="button">Watch a reveal</button></div>
+          <p class="last-pull mono" id="lastPull"></p>
           <p class="msg" id="msg" aria-live="polite"></p>
           <p class="fine">One per transaction, 0.069 ETH plus gas. The sale contract refuses any other amount. <span class="mono"><span id="net">Ethereum</span> · <a id="tokenLink" target="_blank" rel="noopener"><code id="tokenAddr"></code></a> · <a href="../holders/"><span id="holders">55</span> collectors</a></span></p>
         </div>
@@ -124,7 +127,7 @@
         <div class="slot-ctl">
           <button class="btn lever" id="lever" type="button" data-magnetic data-cursor="Spin"><span>Pull</span></button>
           <p class="mono muted" id="slotOdds">29 clocks × 22 places × every minute of the year</p>
-          <a class="btn solid" href="#mint-dock">Let the block decide · Mint</a>
+          <a class="btn solid" href="#mint-dock">Let the block decide · Blind mint</a>
         </div>
       </div>
     </div>
@@ -133,7 +136,7 @@
   <!-- ============ THE POSTER CORRIDOR ============ -->
   <section class="pin corridor" id="posters">
     <div class="stage-sticky">
-      <div class="cor-hud"><h2 data-split>Every hour has a poster.</h2><span class="cor-count">01 / 20</span></div>
+      <div class="cor-hud"><h2 data-split>Every hour has a poster.</h2><span class="cor-count">01 / 20</span><a class="cor-all" href="../posters/">All 30 posters · download ↓</a></div>
       <div class="cor-world" id="corWorld"></div>
     </div>
   </section>
@@ -174,7 +177,8 @@
       <details><summary>Who decides which clock I get?</summary><p>The token's hash, fixed when your transaction lands. It chooses the clock (29 kinds), where it stands (22 places), its materials, the sky and about 44 traits in all. Nobody chooses it, MLow included.</p></details>
       <details><summary>What does it cost?</summary><p>0.069 ETH plus gas, one token per transaction. The price on the button is the most the contract will take; if the terms change, the transaction fails and nothing is charged.</p></details>
       <details><summary>Does it change after I mint?</summary><p>It keeps Marfa time. The sun, the moon and the stars move with the real sky over Marfa, shadows read the hour, and the calendar arrives on its own: fireworks on the Fourth of July, the lights of Hanukkah, the Marfa lights over Labor Day weekend.</p></details>
-      <details><summary>Where can I see it?</summary><p>Every token opens a live 3D view, linked from the gallery above, from <a href="../holders/">the collectors page</a> and from OpenSea. Its day GIF thumbnail appears within the hour.</p></details>
+      <details><summary>What happens when I press mint?</summary><p>Your wallet signs, the reels spin while the block is mined, and the moment it lands the page reads your token's hash from the chain. The reels stop on your clock, your place and your sky, and the clock draws itself right there, live, in 3D. Save a still, download the 3D model, or post it. Want to see it first? Press <a href="#mint-dock">Watch a reveal</a> to replay a pull that already happened.</p></details>
+      <details><summary>Where can I see it?</summary><p>Every token opens a live 3D view, linked from the gallery above, from <a href="../holders/">the collectors page</a> and from OpenSea. Its day GIF thumbnail appears within the hour, and the collectors page lets you download the GIF, a still and the 3D model (GLB).</p></details>
       <details><summary>Who made it?</summary><p>MLow, a New York artist, with written permission from Snowfro, Alexis André and Bryan Brinkman for the Art Blocks works that appear inside the clocks. <a href="../about/">Read the story</a>.</p></details>
     </div>
   </section>
@@ -185,7 +189,7 @@
     <div class="last-in wrap">
       <h2 data-split>The shadow gets here first.</h2>
       <p><span data-count="left">42</span> clocks are still waiting for a keeper.</p>
-      <a class="btn solid mint-xl" href="#mint-dock" data-magnetic data-cursor="Mint">Mint <small>0.069 ETH</small></a>
+      <a class="btn solid mint-xl" href="#mint-dock" data-magnetic data-cursor="Pull">Blind mint <small>0.069 ETH</small></a>
     </div>
   </section>
 </main>
@@ -197,7 +201,7 @@
 
 <div id="mintbar" role="region" aria-label="Mint">
   <i class="mb-dot"></i><span class="mb-k"><b data-count="left">42</b> of <span data-count="max">111</span> left<span class="opt"> · 0.069 ETH</span></span>
-  <a class="btn solid" href="#mint-dock" data-magnetic>Mint <span data-count="next">#69</span></a>
+  <a class="btn solid" href="#mint-dock" data-magnetic>Pull <span data-count="next">#78</span></a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
@@ -207,7 +211,8 @@
 <script type="module">
   import { createPublicClient, createWalletClient, custom, http, fallback, parseAbi, formatEther } from 'https://cdn.jsdelivr.net/npm/viem@2.21.0/+esm';
   import { mainnet, sepolia } from 'https://cdn.jsdelivr.net/npm/viem@2.21.0/chains/+esm';
-  import { loadCollection, renderFaces } from '../ui/collection.js?v=3';
+  import { loadCollection, renderFaces } from '../ui/collection.js?v=4';
+  import { createReveal } from './reveal.js?v=1';
 
   // ?chain=sepolia runs the page against the rehearsal contract
   const NETS = {
@@ -262,7 +267,7 @@
     const open = sale && sale.configured && !state.paused && !soldOut && sale.paymentToken === ZERO;
     $('mint').disabled = busy || !open;
     const price = formatEther(sale ? sale.price : 69000000000000000n);
-    $('mint').innerHTML = soldOut ? 'Sold out' : state.paused ? 'Sale paused' : busy ? 'Minting…' : 'Mint #' + supply + ' <small>' + price + ' ETH</small>';
+    $('mint').innerHTML = soldOut ? 'Sold out' : state.paused ? 'Sale paused' : busy ? 'Minting…' : 'Blind mint #' + supply + ' <small>' + price + ' ETH · press to pull</small>';
     $('connect').hidden = !!account;
   }
 
@@ -293,7 +298,10 @@
     // the porthole shows the newest clock that has its day rendered
     let newest = supply - 1;
     while (newest > 0 && key === 'ethereum' && snap && !(snap.tokens[newest] && snap.tokens[newest].rendered)) newest--;
-    $('hero').src = thumb(Math.max(0, newest)); $('portTag').textContent = 'Newest · #' + Math.max(0, newest);
+    flickIds = []; for (let i = 0; i < supply; i++) if (key !== 'ethereum' || (snap && snap.tokens[i] && snap.tokens[i].rendered)) flickIds.push(i);
+    const lt = snap && snap.tokens[supply - 1], lw = names.get(owners[supply - 1]) || '';
+    $('lastPull').innerHTML = 'Last pull: <a href="' + liveUrl(supply - 1) + '" target="_blank" rel="noopener">#' + (supply - 1) + '</a>' +
+      (lt && lt.clock ? ' · ' + lt.clock + ' at ' + lt.place : ' · still developing') + (lw ? ' · ' + lw.replace(/[<>&"]/g, '') : '');
     const box = $('tiles'); box.textContent = '';
     for (let id = supply - 1; id >= 0; id--) {
       const a = document.createElement('a');
@@ -311,6 +319,10 @@
       a.append(img, cap); box.append(a);
     }
   }
+
+  // the porthole flickers through every clock already minted; the next one is a question mark
+  let flickIds = [];
+  setInterval(() => { if (!flickIds.length || document.hidden) return; const id = flickIds[(Math.random() * flickIds.length) | 0]; $('flick').src = key === 'ethereum' ? still(id) : thumb(id); }, 140);
 
   const liveUrl = (id) => 'https://resolver.abx.io/a/' + NET.chain.id + '/' + TOKEN.toLowerCase() + '/' + id;
 
@@ -349,23 +361,33 @@
       const chainId = await wallet.getChainId();
       if (chainId !== NET.chain.id) throw new Error('Your wallet is on another network. Switch it to ' + NET.chain.name + ' and try again.');
       say('Confirm in your wallet…');
+      R.open();
       // the price this page shows is the most the buyer agrees to pay
       const hash = await wallet.writeContract({ address: MINTER, abi: minterAbi, functionName: 'purchase', args: [TOKEN, sale.paymentToken, sale.price], value: sale.price });
       say('Minting… ' + hash.slice(0, 10) + '…');
+      R.signed(hash);
       const r = await pub.waitForTransactionReceipt({ hash });
       if (r.status !== 'success') throw new Error('The transaction reverted. Nothing was minted.');
-      const b = $('mint').getBoundingClientRect();
-      FX.burst(b.left + b.width / 2, b.top + b.height / 2, ['../media/stickers/sundial.webp', '../media/stickers/orbital.webp', '../media/stickers/hourglass.webp', '../media/stickers/windmill.webp']);
+      // the token id from the Transfer the mint emitted (from the zero address)
+      const T = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+      const log = r.logs.find((l) => l.address.toLowerCase() === TOKEN.toLowerCase() && l.topics[0] === T && BigInt(l.topics[1]) === 0n);
       await refresh();
-      waitForLive(supply - 1);
+      const id = log ? Number(BigInt(log.topics[3])) : supply - 1;
+      R.landed(id);
+      waitForLive(id);
+      const seed = await R.waitSeed(id);
+      if (seed) await R.reveal(seed); else R.fail('Minted #' + id + ', but the chain was slow to answer. Your clock is safe; open it from the gallery below.');
     } catch (e) {
       const t = String((e && (e.shortMessage || e.message)) || e);
-      if (/SaleTermsChanged|WrongPayment/.test(String(e && (e.message || e)))) { await refresh().catch(() => {}); say('The sale terms changed, so nothing was charged. Check the price above and mint again.', 'bad'); }
-      else if (/User rejected|denied/i.test(t)) say('Cancelled in your wallet. Nothing was charged.');
-      else say(t, 'bad');
+      if (/SaleTermsChanged|WrongPayment/.test(String(e && (e.message || e)))) { await refresh().catch(() => {}); say('The sale terms changed, so nothing was charged. Check the price above and mint again.', 'bad'); R.fail('The sale terms changed. Check the price and pull again.'); }
+      else if (/User rejected|denied/i.test(t)) { say('Cancelled in your wallet. Nothing was charged.'); R.close(); }
+      else { say(t, 'bad'); R.fail(t); }
     } finally { busy = false; gate(); }
   }
 
+  const R = createReveal({ base: '../', chainId: NET.chain.id, token: TOKEN, snapshot: () => snap,
+    onMintAgain: (wasDemo) => { $('mint-dock').scrollIntoView({ behavior: 'smooth', block: 'center' }); if (!wasDemo) setTimeout(() => $('mint').focus(), 600); } });
+  $('demo').addEventListener('click', () => R.demo());
   $('connect').addEventListener('click', connect);
   $('mint').addEventListener('click', mint);
   if (window.ethereum) window.ethereum.on && window.ethereum.on('accountsChanged', (a) => { account = a[0] || ''; gate(); });

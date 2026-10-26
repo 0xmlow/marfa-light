@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Marfa Light Posters</title>
+<meta name="description" content="The Marfa Light poster campaign by MLow: 30 posters and panoramas, free to download at full size.">
+<link rel="canonical" href="https://marfalight.art/posters/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Marfa Light Posters">
+<meta property="og:description" content="30 posters and panoramas for Marfa Light by MLow. Download any of them, or all of them.">
+<meta property="og:url" content="https://marfalight.art/posters/">
+<meta property="og:image" content="https://marfalight.art/media/dl/marfa-light-12-now-departing.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@degens">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+<link rel="stylesheet" href="../ui/kit.css?v=1">
+<link rel="stylesheet" href="../ui/collection.css?v=4">
+<link rel="stylesheet" href="../ui/fx.css?v=1">
+<link rel="stylesheet" href="../holders/holders.css?v=2">
+<style>
+  .pg { columns: 3 300px; column-gap: 18px; }
+  .pg figure { break-inside: avoid; margin: 0 0 18px; padding: 0; overflow: hidden; }
+  .pg img { display: block; width: 100%; height: auto; background: var(--screen); cursor: zoom-in; }
+  .pg figcaption { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 12px 12px; font: 400 12px/1.4 var(--mono); color: var(--muted); }
+  .pg figcaption b { color: var(--ink); font-weight: 500; text-transform: capitalize; }
+  .pg .cx-dl a { font-size: 10px; padding: 6px 8px; }
+  .all { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .all .btn { text-decoration: none; }
+  #lb { position: fixed; inset: 0; z-index: 90; background: rgba(6,5,4,.92); display: none; place-items: center; padding: 24px; cursor: zoom-out; }
+  #lb.on { display: grid; }
+  #lb img { max-width: 100%; max-height: 86vh; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+  #lb .cx-dl { position: absolute; top: 18px; right: 18px; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <div class="left"><a href="../" aria-label="Marfa Light home"><img src="../img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
+    <nav aria-label="Sections" class="links" id="links">
+      <a href="../mint/">Mint</a><a href="../#collection">Collection</a><a href="../holders/">Collectors</a><a href="./" class="on">Posters</a><a href="../about/">About</a><a href="../#clocks">Clocks</a>
+    </nav>
+    <button type="button" class="burger" aria-expanded="false" aria-controls="links">Menu</button>
+    <a class="btn solid mint-cta" href="../mint/"><i class="live-dot"></i>Blind mint · <span data-count="left">34</span> left</a>
+  </div>
+</header>
+
+<main>
+  <section class="wrap sec">
+    <div class="sec-h">
+      <div><span class="eyebrow">The campaign · 30 pieces</span><h1 style="font:800 clamp(56px,8vw,120px)/.86 var(--display);margin:12px 0 0">Posters</h1></div>
+      <div>
+        <p class="muted note">Ten marketing posters, ten hour posters and ten panoramas MLow made for the clocks. Every one downloads at full size. Print them, post them, set them as your lock screen.</p>
+        <div class="all"><a class="btn solid" href="../media/dl/marfa-light-posters.zip" download>Download all 30 · zip, 17 MB</a><a class="btn" href="../mint/">Mint a clock</a></div>
+      </div>
+    </div>
+    <div class="pg" id="pg"></div>
+  </section>
+</main>
+
+<div id="lb" role="dialog" aria-label="Poster"><img alt=""><span class="cx-dl"><a download>Download ↓</a></span></div>
+
+<footer class="wrap">
+  <div class="ticks-rule" aria-hidden="true"></div>
+  <p>Marfa Light // By MLow, V1. Posters by MLow, free to share with credit. <a href="../">The clocks</a> · <a href="../mint/">Mint</a> · <a href="../holders/">Collectors</a> · <a href="https://x.com/degens">@degens</a></p>
+</footer>
+
+<script src="../ui/kit.js?v=1"></script>
+<script src="../ui/fx.js?v=1"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var title = function (id) { return id.replace(/^\d+-/, '').replace(/-/g, ' '); };
+  fetch('../media/media.json').then(function (r) { return r.json(); }).then(function (m) {
+    var all = m.posters.map(function (p) { return { id: p.id, w: p.w, h: p.h, src: '../media/posters/' + p.id + '.webp' }; })
+      .concat(m.panoramas.map(function (p) { return { id: p.id, w: p.w, h: p.h, src: '../media/pano/' + p.id + '.webp' }; }));
+    $('pg').innerHTML = all.map(function (p) {
+      var full = '../media/dl/marfa-light-' + p.id + '.jpg';
+      return '<figure class="ml-card"><img src="' + p.src + '" data-full="' + full + '" alt="Marfa Light poster: ' + title(p.id) + '" loading="lazy" width="' + p.w + '" height="' + p.h + '">' +
+        '<figcaption><span>' + p.id.slice(0, 2) + ' · <b>' + title(p.id) + '</b></span><span class="cx-dl"><a href="' + full + '" download>JPG ↓</a></span></figcaption></figure>';
+    }).join('');
+  });
+  var lb = $('lb');
+  $('pg').addEventListener('click', function (e) {
+    var img = e.target.closest('img[data-full]'); if (!img) return;
+    lb.querySelector('img').src = img.getAttribute('data-full'); lb.querySelector('img').alt = img.alt;
+    lb.querySelector('a').href = img.getAttribute('data-full'); lb.classList.add('on');
+  });
+  lb.addEventListener('click', function (e) { if (!e.target.closest('a')) lb.classList.remove('on'); });
+  addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.classList.remove('on'); });
+  fetch('../data/holders.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
+    window.MLFX && MLFX.count && MLFX.count({ supply: d.supply, max: d.max, left: d.available });
+  }).catch(function () {});
+})();
+</script>
+</body>
+</html>
