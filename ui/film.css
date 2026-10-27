@@ -1,0 +1,17 @@
+/* The hype film, featured (2026-10-26). Markup: .film-hero > .fh-frame > video.fh-video[data-wide][data-tall] + button.fh-sound */
+.film-hero { padding-block: clamp(48px, 8vw, 96px) 24px; }
+.film-hero .fh-head { display: flex; justify-content: space-between; align-items: end; gap: 12px 40px; flex-wrap: wrap; margin-bottom: 20px; }
+.film-hero h2 { font: 800 clamp(44px, 7vw, 104px)/.86 var(--display); text-transform: uppercase; margin: 10px 0 0; }
+.film-hero .fh-head p { max-width: 30em; margin: 0; color: var(--muted); }
+.fh-frame { position: relative; border-radius: 16px; overflow: hidden; padding: 8px; background: url(brass.webp) 0 0/512px 96px;
+  box-shadow: inset 0 1px 0 rgba(255,250,230,.7), 0 40px 90px -40px rgba(var(--shadow-ink, 0,0,0), .9); }
+.fh-video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; background: #06070C; cursor: pointer; }
+.fh-frame.tall .fh-video { aspect-ratio: 9 / 16; max-height: 82vh; margin: 0 auto; width: auto; max-width: 100%; }
+.fh-sound { position: absolute; left: 22px; bottom: 22px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer; padding: 11px 16px; border-radius: 999px;
+  font: 600 11px var(--mono); letter-spacing: .16em; text-transform: uppercase; color: #2A1C08; background: linear-gradient(180deg, #F3E2B8, #DCB27B 55%, #AE7431); box-shadow: 0 8px 24px rgba(0,0,0,.5); }
+.fh-sound i { width: 8px; height: 8px; border-radius: 50%; background: #2A1C08; }
+.fh-frame.loud .fh-sound i { background: #3F9D63; animation: mbPulse 1.6s infinite; }
+.fh-actions { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin-top: 18px; }
+.fh-actions .btn { text-decoration: none; }
+.fh-actions .fh-dl { font: 500 12px var(--mono); letter-spacing: .06em; color: var(--muted); }
+.fh-actions .fh-dl a { color: inherit; }
