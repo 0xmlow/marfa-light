@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="ui/collection.css?v=4">
 <link rel="stylesheet" href="ui/fx.css?v=1">
 <link rel="stylesheet" href="site.css?v=4">
+<link rel="stylesheet" href="ui/film.css?v=1">
 
 <header class="bar">
   <div class="wrap">
@@ -76,6 +77,22 @@
   </div>
 </div>
   <div class="marquee" aria-hidden="true"><div class="mq"><span>Light is the measure</span><span>Somewhere it is Marfa time</span><span>Time has gravity</span><span>Read the night</span><span>Every grain is a moment</span><span>Take your time</span><span>Seconds bloom</span><span>The shadow gets here first</span><span>Light is the measure</span><span>Somewhere it is Marfa time</span><span>Time has gravity</span><span>Read the night</span><span>Every grain is a moment</span><span>Take your time</span><span>Seconds bloom</span><span>The shadow gets here first</span></div></div>
+  <section class="wrap film-hero" id="film">
+    <div class="fh-head">
+      <div><span class="eyebrow"><b>66 seconds</b> · real engine frames · score on a 120 BPM grid</span><h2>Watch it come alive.</h2></div>
+      <p>Every shot is the engine drawing a token, cut to a score built on the same timeline. This is what a pull looks like after the block lands.</p>
+    </div>
+    <div class="fh-frame">
+      <video class="fh-video" muted loop playsinline preload="none" poster="media/film/poster-16x9.jpg" data-poster-tall="media/film/poster-9x16.jpg"
+        data-wide="media/film/marfa-light-hype-1080.mp4" data-tall="media/film/marfa-light-hype-9x16.mp4" aria-label="Marfa Light hype film"></video>
+      <button class="fh-sound" type="button"><i></i> Sound on</button>
+    </div>
+    <div class="fh-actions">
+      <a class="btn solid" href="mint/">Blind mint · 0.069 ETH</a>
+      <span class="fh-dl">Download the film: <a href="media/film/marfa-light-hype-1080.mp4" download>16:9 · 1080p</a> · <a href="media/film/marfa-light-hype-9x16.mp4" download>9:16 · for stories</a></span>
+    </div>
+  </section>
+
   <section id="collection" class="wrap collection">
     <div class="sec-head">
       <span class="eyebrow"><span class="cx-live" id="cLive">The collection</span></span>
@@ -228,13 +245,7 @@
     <div class="films" id="films"></div>
   </section>
 
-  <section id="film" class="wrap film">
-    <div class="sec-head">
-      <span class="eyebrow"><b>66 seconds</b> · real engine frames · score on a 120 BPM grid</span>
-      <h2>The film</h2>
-      <p>Every shot is the engine rendering a token, cut to a score synthesised on the same timeline. Sound plays when you press play.</p>
-    </div>
-    <video controls preload="none" playsinline poster="img/film-poster.jpg" src="img/film.mp4"></video>
+  <section id="loops" class="wrap film">
     <div class="loops">
       <figure><img src="img/noon-cannon-at-noon.gif" alt="Noon cannon firing at local noon" loading="lazy"><figcaption>Noon cannon at noon</figcaption></figure>
       <figure><img src="img/station-clock.gif" alt="Station clock loop" loading="lazy"><figcaption>Station clock</figcaption></figure>
@@ -413,6 +424,7 @@
   <a class="btn solid" href="mint/" data-magnetic>Pull <span data-count="next">#78</span></a>
 </div>
 <script src="ui/fx.js?v=1"></script>
+<script src="ui/film.js?v=4"></script>
 <script>window.MLFX && MLFX.mintbar(document.getElementById('heroMint'));</script>
 <script type="module">
   import { loadCollection, renderDial, renderFaces, still, liveUrl, nameOf } from './ui/collection.js?v=4';

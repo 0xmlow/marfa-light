@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="../ui/fx.css?v=1">
 <link rel="stylesheet" href="mint.css?v=3">
 <link rel="stylesheet" href="reveal.css?v=2">
+<link rel="stylesheet" href="../ui/film.css?v=1">
 </head>
 <body class="mint-page">
 <div id="preload" aria-hidden="true"><div class="pl-in"><span class="pl-n">000</span><span class="pl-k">clocks already keeping Marfa time</span><div class="pl-bar"></div></div></div>
@@ -30,7 +31,7 @@
   <div class="wrap">
     <div class="left"><a href="../" aria-label="Marfa Light home"><img src="../img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
     <nav aria-label="Sections" class="links" id="links">
-      <a href="../">The clocks</a><a href="#how">How it works</a><a href="../posters/">Posters</a><a href="../holders/">Collectors</a><a href="../about/">About</a><a href="#faq">FAQ</a>
+      <a href="../">The clocks</a><a href="#film">Film</a><a href="#how">How it works</a><a href="../posters/">Posters</a><a href="../holders/">Collectors</a><a href="../about/">About</a><a href="#faq">FAQ</a>
     </nav>
     <button type="button" class="burger" aria-expanded="false" aria-controls="links">Menu</button>
     <a class="btn solid mint-cta" href="#mint-dock"><i class="live-dot"></i>Blind mint · <span data-count="left">34</span> left</a>
@@ -86,6 +87,22 @@
   </section>
 
   <div class="marquee" aria-hidden="true"><div class="mq" id="mq"></div></div>
+
+  <section class="wrap film-hero" id="film">
+    <div class="fh-head">
+      <div><span class="eyebrow"><b>66 seconds</b> · real engine frames · score on a 120 BPM grid</span><h2>Watch it come alive.</h2></div>
+      <p>Every shot is the engine drawing a token, cut to a score built on the same timeline. This is what a pull looks like after the block lands.</p>
+    </div>
+    <div class="fh-frame">
+      <video class="fh-video" muted loop playsinline preload="none" poster="../media/film/poster-16x9.jpg" data-poster-tall="../media/film/poster-9x16.jpg"
+        data-wide="../media/film/marfa-light-hype-1080.mp4" data-tall="../media/film/marfa-light-hype-9x16.mp4" aria-label="Marfa Light hype film"></video>
+      <button class="fh-sound" type="button"><i></i> Sound on</button>
+    </div>
+    <div class="fh-actions">
+      <a class="btn solid" href="#mint-dock">Pull one · 0.069 ETH</a><button class="btn" type="button" onclick="document.getElementById('demo').click()">Watch a reveal</button>
+      <span class="fh-dl">Download the film: <a href="../media/film/marfa-light-hype-1080.mp4" download>16:9 · 1080p</a> · <a href="../media/film/marfa-light-hype-9x16.mp4" download>9:16 · for stories</a></span>
+    </div>
+  </section>
 
   <!-- ============ HOW A CLOCK IS BORN: pinned, four steps ============ -->
   <section class="pin how" id="how">
@@ -208,6 +225,7 @@
 <script src="../ui/kit.js?v=1"></script>
 <script src="../ui/fx.js?v=1"></script>
 <script src="mint.js?v=1"></script>
+<script src="../ui/film.js?v=4"></script>
 <script type="module">
   import { createPublicClient, createWalletClient, custom, http, fallback, parseAbi, formatEther } from 'https://cdn.jsdelivr.net/npm/viem@2.21.0/+esm';
   import { mainnet, sepolia } from 'https://cdn.jsdelivr.net/npm/viem@2.21.0/chains/+esm';
