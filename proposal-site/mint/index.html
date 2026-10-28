@@ -31,7 +31,7 @@
   <div class="wrap">
     <div class="left"><a href="../" aria-label="Marfa Light home"><img src="../img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
     <nav aria-label="Sections" class="links" id="links">
-      <a href="../">The clocks</a><a href="#film">Film</a><a href="#how">How it works</a><a href="../posters/">Posters</a><a href="../holders/">Collectors</a><a href="../watch/">Watch &amp; TV</a><a href="../about/">About</a><a href="#faq">FAQ</a>
+      <a href="../">The clocks</a><a href="#film">Film</a><a href="#how">How it works</a><a href="../posters/">Posters</a><a href="../holders/">Collectors</a><a href="../studio/">Studio</a><a href="../watch/">Watch &amp; TV</a><a href="../about/">About</a><a href="#faq">FAQ</a>
     </nav>
     <button type="button" class="burger" aria-expanded="false" aria-controls="links">Menu</button>
     <a class="btn solid mint-cta" href="#mint-dock"><i class="live-dot"></i>Blind mint · <span data-count="left">34</span> left</a>
@@ -229,8 +229,8 @@
 <script type="module">
   import { createPublicClient, createWalletClient, custom, http, fallback, parseAbi, formatEther } from 'https://cdn.jsdelivr.net/npm/viem@2.21.0/+esm';
   import { mainnet, sepolia } from 'https://cdn.jsdelivr.net/npm/viem@2.21.0/chains/+esm';
-  import { loadCollection, renderFaces } from '../ui/collection.js?v=4';
-  import { createReveal } from './reveal.js?v=2';
+  import { loadCollection, renderFaces } from '../ui/collection.js?v=5';
+  import { createReveal } from './reveal.js?v=3';
 
   // ?chain=sepolia runs the page against the rehearsal contract
   const NETS = {

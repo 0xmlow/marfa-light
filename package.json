@@ -25,7 +25,8 @@
     "publish:site": "git push origin main && git push -f origin $(git subtree split --prefix proposal-site main):refs/heads/gh-pages && npm run deploy:cf",
     "thumbs": "node tools/thumbs.mjs",
     "deploy:cf": "wrangler pages deploy proposal-site --project-name marfa-light --branch main --commit-dirty=true",
-    "watch:pack": "node tools/watch-pack.mjs"
+    "watch:pack": "node tools/watch-pack.mjs",
+    "studio": "node tools/build.js proposal-site/studio/engine.js studio-src/91-remix.js && ./node_modules/.bin/terser proposal-site/studio/engine.js -c passes=2 -m -o proposal-site/studio/engine.min.js && rm proposal-site/studio/engine.js"
   },
   "engines": {
     "node": ">=22"
