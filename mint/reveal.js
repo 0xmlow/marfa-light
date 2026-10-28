@@ -6,7 +6,7 @@
 //   const R = createReveal({ base: '../', chainId: 1, token, snapshot });
 //   R.open(); R.signed(txHash); R.landed(tokenId); await R.reveal(seed, { owner });  R.fail(msg)
 //   R.demo()  plays a reveal of a token that is already minted, so anyone can see what a pull feels like
-import { loadEngine, seedFromResolver, saveGLB, seedFor } from '../ui/marfa-live.js?v=1';
+import { loadEngine, seedFromResolver, saveGLB, seedFor } from '../ui/marfa-live.js?v=4';
 
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HEX = '0123456789abcdef';
@@ -98,6 +98,7 @@ export function createReveal({ base = '../', chainId = 1, token, snapshot = () =
           <ul class="rv-traits"></ul>
           <div class="rv-actions">
             <a class="btn solid rv-live" target="_blank" rel="noopener">Enter in 3D ↗</a>
+            <a class="btn rv-studio">Walk inside &amp; remix ↗</a>
             <button class="btn rv-png" type="button">Save still ↓</button>
             <button class="btn rv-glb" type="button">Download 3D ↓</button>
             <a class="btn rv-share" target="_blank" rel="noopener">Post it on X</a>
@@ -238,6 +239,7 @@ export function createReveal({ base = '../', chainId = 1, token, snapshot = () =
     q('.rv-badge').textContent = special; q('.rv-badge').hidden = !special;
     const live = `https://resolver.abx.io/a/${chainId}/${String(token).toLowerCase()}/${id}`;
     q('.rv-live').href = live;
+    q('.rv-studio').href = base + 'studio/?id=' + state.id;
     const os = `https://opensea.io/item/ethereum/${String(token).toLowerCase()}/${id}`;
     const text = `${state.demo ? 'Watched' : 'Just pulled'} Marfa Light #${id} by @degens: ${/^[aeiou]/i.test(f.Clock) ? 'an' : 'a'} ${f.Clock} at ${f.Place}. Blind mint, drawn live from code on Ethereum.`;
     q('.rv-share').href = 'https://x.com/intent/post?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(chainId === 1 ? os : 'https://marfalight.art/mint/');

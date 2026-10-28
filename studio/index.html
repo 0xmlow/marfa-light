@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B0D15">
+<title>Marfa Light Studio</title>
+<meta name="description" content="Walk inside any minted Marfa Light, change its clock, place, sky and colours, hang art in it, and take photos, videos, GIFs and 3D models. Drawn live in your browser from the token's seed.">
+<link rel="canonical" href="https://marfalight.art/studio/">
+<meta property="og:title" content="Marfa Light Studio">
+<meta property="og:description" content="Walk inside a Marfa Light. Remix it. Hang art. Take photos and video.">
+<meta property="og:image" content="https://marfalight.art/img/film-poster.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+<link rel="stylesheet" href="studio.css?v=3">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <a class="logo" href="../" aria-label="Marfa Light home"><img src="../img/logo_white.png" alt="MLOW" width="520" height="129"></a>
+    <div class="pick">
+      <button type="button" class="step" data-step="-1" aria-label="Previous token">&minus;</button>
+      <label class="sr" for="tokenSel">Token</label>
+      <select id="tokenSel" aria-label="Choose a minted token"></select>
+      <button type="button" class="step" data-step="1" aria-label="Next token">+</button>
+    </div>
+    <nav aria-label="Sections"><a href="../mint/">Mint</a><a href="../holders/">Collectors</a><a href="../watch/">Watch &amp; TV</a></nav>
+  </header>
+
+  <div class="stage" id="stage">
+    <canvas id="view" aria-label="The token, drawn live"></canvas>
+    <div class="overlay" id="overlay"></div>
+    <div class="hud" id="hud" aria-live="polite"></div>
+    <div class="cross" id="cross" hidden aria-hidden="true"></div>
+    <div class="joy" id="joy" hidden aria-hidden="true"><span></span></div>
+    <div class="hint" id="hint" hidden></div>
+    <div class="rec" id="rec" hidden><i></i><span id="recT">0:00</span><button type="button" id="recStop">Stop</button></div>
+    <p class="boot" id="boot">Loading the engine</p>
+  </div>
+
+  <aside class="panel" id="panel" aria-label="Studio controls">
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="remix">Remix</button>
+      <button role="tab" aria-selected="false" data-tab="time">Time</button>
+      <button role="tab" aria-selected="false" data-tab="camera">Camera</button>
+      <button role="tab" aria-selected="false" data-tab="hang">Hang art</button>
+      <button role="tab" aria-selected="false" data-tab="capture">Capture</button>
+    </div>
+
+    <section class="pane" data-pane="remix">
+      <p class="lede" id="lede">&nbsp;</p>
+      <p class="small">Change any part of the piece. Everything you leave alone stays as it was minted. A dot marks a change.</p>
+      <div class="fields" id="fields"></div>
+      <label class="field"><span>Museum label</span><input id="tagIn" maxlength="24" placeholder="as minted" autocomplete="off"></label>
+      <div class="row">
+        <button type="button" class="btn ghost" id="reset">Back to the minted piece</button>
+        <button type="button" class="btn ghost" id="copyLink">Copy link</button>
+      </div>
+      <details class="traits"><summary>Traits of this version</summary><dl id="spec"></dl></details>
+    </section>
+
+    <section class="pane" data-pane="time" hidden>
+      <div class="seg" id="modeSeg">
+        <button type="button" data-mode="live">Live in Marfa</button>
+        <button type="button" data-mode="held" aria-pressed="true">Held</button>
+        <button type="button" data-mode="lapse">Time-lapse</button>
+      </div>
+      <label class="field"><span>Time of day <b id="hourVal">--:--</b></span><input type="range" id="hour" min="0" max="23.99" step="0.01" value="13"></label>
+      <label class="field"><span>Date</span><input type="date" id="date"></label>
+      <label class="field"><span>Calendar</span><select id="cal"><option value="">Jump to a day…</option></select></label>
+      <label class="field"><span>Time-lapse speed <b id="speedVal">15 min a second</b></span><input type="range" id="speed" min="1" max="6" step="1" value="3"></label>
+      <p class="small" id="sunNote">&nbsp;</p>
+    </section>
+
+    <section class="pane" data-pane="camera" hidden>
+      <div class="seg" id="camSeg">
+        <button type="button" data-cam="orbit" aria-pressed="true">Orbit</button>
+        <button type="button" data-cam="walk">Walk</button>
+        <button type="button" data-cam="fly">Fly</button>
+      </div>
+      <p class="small" id="camHelp">Drag to turn around the clock. Scroll or pinch to move in and out.</p>
+      <div class="views" id="views"></div>
+      <label class="field"><span>Lens <b id="lensVal">auto</b></span><input type="range" id="lens" min="0" max="100" step="1" value="0"></label>
+      <label class="field"><span>Eye height <b id="eyeVal">1.7 m</b></span><input type="range" id="eye" min="0.3" max="12" step="0.1" value="1.7"></label>
+      <label class="field"><span>Walking speed <b id="walkVal">normal</b></span><input type="range" id="walk" min="1" max="5" step="1" value="2"></label>
+      <label class="check"><input type="checkbox" id="vibe"> Vibe out: slow drift around the clock</label>
+    </section>
+
+    <section class="pane" data-pane="hang" hidden>
+      <p class="small">Hang your own pictures or another Marfa Light in this world. Choose a work, then tap a wall, the ground or anything else to hang it there. In walk mode press H to hang it where you are looking.</p>
+      <div class="row">
+        <label class="btn" for="artFile">Add pictures</label>
+        <input type="file" id="artFile" accept="image/*" multiple hidden>
+        <button type="button" class="btn ghost" id="artToken">Add a Marfa Light</button>
+      </div>
+      <div class="shelf" id="shelf"></div>
+      <label class="field"><span>Size <b id="artSizeVal">1.2 m</b></span><input type="range" id="artSize" min="0.3" max="6" step="0.1" value="1.2"></label>
+      <label class="field"><span>Frame</span><select id="artFrame"><option value="black">Black</option><option value="brass">Brass</option><option value="white">White</option><option value="wood">Wood</option><option value="none">No frame</option></select></label>
+      <label class="check"><input type="checkbox" id="artLit" checked> Light the work so it shows at night</label>
+      <div class="hung" id="hung"></div>
+    </section>
+
+    <section class="pane" data-pane="capture" hidden>
+      <h3>Photo</h3>
+      <div class="row wrap">
+        <label class="field half"><span>Shape</span><select id="shotShape"><option value="screen">This screen</option><option value="1:1">Square</option><option value="4:5">Portrait 4:5</option><option value="9:16">Story 9:16</option><option value="16:9">Wide 16:9</option><option value="3:2">Print 3:2</option></select></label>
+        <label class="field half"><span>Size</span><select id="shotSize"><option value="2048">2K</option><option value="3072">3K</option><option value="4096">4K</option><option value="1080">1080</option></select></label>
+      </div>
+      <button type="button" class="btn" id="shot">Take a photo <kbd>P</kbd></button>
+
+      <h3>Video</h3>
+      <p class="small">Records the screen as you move. Turn on Time-lapse or Vibe out first for a moving sky.</p>
+      <div class="row wrap">
+        <label class="field half"><span>Length</span><select id="vidLen"><option value="0">Until I stop</option><option value="5">5 seconds</option><option value="10" selected>10 seconds</option><option value="20">20 seconds</option><option value="30">30 seconds</option></select></label>
+        <label class="field half"><span>Quality</span><select id="vidQ"><option value="8">High</option><option value="16">Very high</option><option value="4">Small file</option></select></label>
+      </div>
+      <button type="button" class="btn" id="vid">Record video <kbd>V</kbd></button>
+
+      <h3>GIF</h3>
+      <div class="row wrap">
+        <label class="field half"><span>Kind</span><select id="gifKind"><option value="moment">3 second loop</option><option value="day">The whole day</option></select></label>
+        <label class="field half"><span>Size</span><select id="gifSize"><option value="640">640</option><option value="800">800</option><option value="480">480 (small)</option><option value="1080">1080 (big)</option></select></label>
+      </div>
+      <button type="button" class="btn" id="gif">Make a GIF</button>
+
+      <h3>3D model</h3>
+      <p class="small">A GLB of this exact version, with your art on the walls. Look at it here first, or place it in your room on a phone.</p>
+      <label class="field"><span>Scene size</span><select id="glbR"><option value="25">Close, 25 m round the clock</option><option value="60" selected>The place, 60 m</option><option value="150">Wide, 150 m</option><option value="400">Everything to 400 m (big file)</option></select></label>
+      <div class="row wrap">
+        <button type="button" class="btn" id="glbScene">Whole scene</button>
+        <button type="button" class="btn ghost" id="glbClock">Clock only</button>
+      </div>
+      <p class="status" id="capMsg" aria-live="polite">&nbsp;</p>
+      <div class="tray" id="tray"></div>
+    </section>
+  </aside>
+</div>
+
+<dialog id="tokDlg" class="dlg">
+  <form method="dialog"><h2>Hang a Marfa Light</h2><p class="small">Drawn fresh at 1024 px from its seed.</p><div class="tokgrid" id="tokGrid"></div><button class="btn ghost" value="cancel">Close</button></form>
+</dialog>
+<dialog id="glbDlg" class="dlg wide">
+  <form method="dialog">
+    <h2 id="glbTitle">3D model</h2>
+    <div class="mv" id="mvBox"></div>
+    <p class="small" id="glbNote">&nbsp;</p>
+    <div class="row wrap"><button type="button" class="btn" id="glbSave">Download GLB</button><button class="btn ghost" value="cancel">Close</button></div>
+  </form>
+</dialog>
+
+<script src="../studies/three-r124.min.js"></script>
+<script type="module" src="studio.js?v=6"></script>
+</body>
+</html>

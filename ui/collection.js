@@ -73,7 +73,7 @@ export function files(col, id) {
 function dlLinks(col, id, cls = 'cx-dl', numbered = false) {
   const f = files(col, id);
   if (!f) return '';
-  return `<span class="${cls}">${numbered ? `<b>#${id}</b>` : ''}<a href="${f.gif}" download="marfa-light-${id}-day.gif" title="Download #${id}, the day GIF">GIF ↓</a><a href="${f.jpg}" download="marfa-light-${id}.jpg" title="Download #${id}, the thumbnail">JPG ↓</a><a href="#" data-glb="${id}" title="Download #${id} as a 3D model (GLB), built in your browser from its seed">3D ↓</a></span>`;
+  return `<span class="${cls}">${numbered ? `<b>#${id}</b>` : ''}<a href="${f.gif}" download="marfa-light-${id}-day.gif" title="Download #${id}, the day GIF">GIF ↓</a><a href="${f.jpg}" download="marfa-light-${id}.jpg" title="Download #${id}, the thumbnail">JPG ↓</a><a href="#" data-glb="${id}" title="Download #${id} as a 3D model (GLB), built in your browser from its seed">3D ↓</a><a href="${col.base}studio/?id=${id}" title="Walk inside #${id}, remix it, hang art, take photos and video">Studio ↗</a></span>`;
 }
 export function pfp(col, h) {
   if (h.honorary) return col.base + 'holders/pfp/' + h.honorary.id + '.jpg';

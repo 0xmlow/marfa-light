@@ -24,7 +24,7 @@
   <div class="wrap">
     <div class="left"><a href="#top" aria-label="Marfa Light, top"><img src="img/logo_white.png" alt="MLOW" width="520" height="129"></a><span class="mono muted" id="barSky">Marfa sky</span></div>
     <nav aria-label="Sections" class="links" id="links">
-      <a href="mint/">Mint</a><a href="#collection">Collection</a><a href="holders/">Collectors</a><a href="watch/">Watch &amp; TV</a><a href="posters/">Posters</a><a href="about/">About</a><a href="#token">Token</a><a href="#clocks">Clocks</a><a href="#film">Film</a><a href="arcade/">Arcade</a>
+      <a href="mint/">Mint</a><a href="#collection">Collection</a><a href="holders/">Collectors</a><a href="studio/">Studio</a><a href="watch/">Watch &amp; TV</a><a href="posters/">Posters</a><a href="about/">About</a><a href="#token">Token</a><a href="#clocks">Clocks</a><a href="#film">Film</a><a href="arcade/">Arcade</a>
       <div class="more">
         <button type="button" class="more-b" aria-expanded="false" aria-controls="moreBoard">More <i></i></button>
         <div class="more-p" id="moreBoard"><small>Also on the dial</small>
@@ -427,7 +427,7 @@
 <script src="ui/film.js?v=4"></script>
 <script>window.MLFX && MLFX.mintbar(document.getElementById('heroMint'));</script>
 <script type="module">
-  import { loadCollection, renderDial, renderFaces, still, liveUrl, nameOf } from './ui/collection.js?v=4';
+  import { loadCollection, renderDial, renderFaces, still, liveUrl, nameOf } from './ui/collection.js?v=5';
   const $ = (id) => document.getElementById(id);
   loadCollection({ base: '', onUpdate(col) {
     renderDial($('cDial'), col); renderFaces($('cFaces'), col);
