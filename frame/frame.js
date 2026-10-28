@@ -77,11 +77,19 @@ function renderScale() {
   const dpr = window.devicePixelRatio || 1;
   return Math.min(dpr, 1920 / Math.max(1, innerWidth));
 }
+// Match the drawing to the screen's shape whenever it changes (going full-screen, a toolbar
+// hiding, AirPlay). Checked every frame: some TV browsers never send a resize event.
+let fitW = 0, fitH = 0;
+function fit() {
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  if (w && h && (w !== fitW || h !== fitH)) { fitW = w; fitH = h; ctl.resize(); }
+}
 function loop(ms) {
   raf = requestAnimationFrame(loop);
   if (!ctl || ms - lastDraw < 1000 / state.fps - 2) return;
   const dt = lastMs ? Math.min((ms - lastMs) / 1000, 1) : 0;
   lastMs = ms; lastDraw = ms;
+  fit();
   ctl.setClock(keptUtc());
   ctl.renderOnce(dt);
   if (state.time || $('hud').classList.contains('on')) paintHud();
@@ -115,7 +123,7 @@ async function build() {
   $('hudName').textContent = [f.Clock, f.Place].filter(Boolean).join(' · ');
   document.title = 'Marfa Light #' + state.id + ' · Frame';
   paintHud(); showHud();
-  lastMs = 0; lastDraw = 0;
+  lastMs = 0; lastDraw = 0; fitW = fitH = 0;
   if (!raf) raf = requestAnimationFrame(loop);
 }
 
