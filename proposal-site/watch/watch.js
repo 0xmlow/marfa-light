@@ -22,6 +22,8 @@ function tick(ms) {
   raf = requestAnimationFrame(tick);
   if (!live || ms - last < 66) return; // about 15 fps is plenty for a preview
   const dt = last ? Math.min((ms - last) / 1000, 0.2) : 0; last = ms;
+  const c = $('live');
+  if (c.clientWidth && (c.clientWidth !== c._w || c.clientHeight !== c._h)) { c._w = c.clientWidth; c._h = c.clientHeight; live.resize(); }
   live.setClock(localUtc());
   live.renderOnce(dt);
   const d = new Date();
