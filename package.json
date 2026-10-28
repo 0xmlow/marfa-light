@@ -24,7 +24,8 @@
     "package": "node tools/package.js",
     "publish:site": "git push origin main && git push -f origin $(git subtree split --prefix proposal-site main):refs/heads/gh-pages && npm run deploy:cf",
     "thumbs": "node tools/thumbs.mjs",
-    "deploy:cf": "wrangler pages deploy proposal-site --project-name marfa-light --branch main --commit-dirty=true"
+    "deploy:cf": "wrangler pages deploy proposal-site --project-name marfa-light --branch main --commit-dirty=true",
+    "watch:pack": "node tools/watch-pack.mjs"
   },
   "engines": {
     "node": ">=22"

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06070C">
+<title>Marfa Light Wrist and Wall</title>
+<meta name="description" content="Wear a Marfa Light clock on an Apple Watch, or run it full-screen on a TV. Rendered in your own browser from the token's seed.">
+<link rel="canonical" href="https://marfalight.art/watch/">
+<meta property="og:title" content="Marfa Light on your wrist and your wall">
+<meta property="og:description" content="Apple Watch faces and a TV frame for every Marfa Light clock.">
+<meta property="og:image" content="https://marfalight.art/img/film-poster.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+<link rel="stylesheet" href="watch.css?v=1">
+</head>
+<body>
+<header class="top">
+  <a href="../" aria-label="Marfa Light home"><img src="../img/logo_white.png" alt="MLOW" width="520" height="129"></a>
+  <nav aria-label="Sections"><a href="../mint/">Mint</a><a href="../holders/">Collectors</a><a href="./" aria-current="page">Watch &amp; TV</a><a href="../frame/">Frame</a></nav>
+</header>
+
+<main>
+  <section class="intro">
+    <span class="eyebrow">Wrist and wall</span>
+    <h1>Every clock keeps time anywhere</h1>
+    <p>Each Marfa Light token is a working clock. Put yours on an Apple Watch or run it full-screen on a TV. Everything here is drawn in your own browser from the token's seed.</p>
+  </section>
+
+  <section class="tool" aria-labelledby="pickH">
+    <div class="controls">
+      <h2 id="pickH">1. Choose a clock</h2>
+      <label for="id">Token number</label>
+      <div class="row">
+        <button type="button" class="step" data-step="-1" aria-label="Previous token">&minus;</button>
+        <input id="id" type="number" inputmode="numeric" min="0" max="110" value="14">
+        <button type="button" class="step" data-step="1" aria-label="Next token">+</button>
+      </div>
+      <p class="name" id="name">&nbsp;</p>
+      <fieldset>
+        <legend>Framing</legend>
+        <label><input type="radio" name="view" value="Hero" checked> Whole scene</label>
+        <label><input type="radio" name="view" value="Close"> Close on the dial</label>
+      </fieldset>
+
+      <h2>2. Apple Watch</h2>
+      <div class="opt">
+        <h3>Photos face <span class="tag">any watch, two minutes</span></h3>
+        <p>Four stills of today's sun: dawn, midday, golden hour and night. Your watch draws the real time over them.</p>
+        <button type="button" class="btn" id="stillsBtn">Make the four stills</button>
+        <ol class="how">
+          <li>Open the stills on your iPhone and save them to a new album in Photos.</li>
+          <li>In the Watch app on the iPhone, open Face Gallery and choose Photos.</li>
+          <li>Under Content, pick that album, then tap Add.</li>
+        </ol>
+      </div>
+      <div class="opt">
+        <h3>Marfa Light watch app <span class="tag">moving hands</span></h3>
+        <p>A full day in 288 frames, one every five minutes. The app shows the frame for the minute you are in, so the hands, sun and shadows keep time on your wrist. About 11 MB, two or three minutes to make.</p>
+        <button type="button" class="btn ghost" id="dayBtn">Make the day pack</button>
+        <p class="small">The pack goes into the watch app's Frames folder. Re-make it every month or so: the sun moves with the seasons.</p>
+      </div>
+
+      <h2>3. TV</h2>
+      <div class="opt">
+        <p>Open this address in the TV's browser, or AirPlay a Mac or iPad to it. Left and right on the remote change the clock.</p>
+        <a class="btn" id="frameLink" href="../frame/?id=14">Open the frame</a>
+        <p class="small">Add <code>&amp;tz=local</code> for your own time, <code>&amp;time=1</code> to keep the time in the corner, <code>&amp;fps=5</code> for a slow TV.</p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="watch" aria-live="polite">
+        <div class="screen">
+          <canvas id="live" width="422" height="514" aria-label="The chosen clock, now"></canvas>
+          <span class="wtime" id="wtime">--:--</span>
+        </div>
+        <span class="crown" aria-hidden="true"></span>
+      </div>
+      <p class="status" id="status">Loading the engine</p>
+      <progress id="prog" max="1" value="0" hidden></progress>
+      <div class="stills" id="stills"></div>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="watch.js?v=1"></script>
+</body>
+</html>

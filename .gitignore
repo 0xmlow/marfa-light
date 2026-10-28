@@ -19,3 +19,6 @@
 tools/blender/out/
 # local OpenSea refresh progress (each clone keeps its own)
 /thumbs/opensea-*.json
+
+# watch app day packs: rendered, ~10 MB a token (tools/watch-pack.mjs)
+watch-app/MarfaLight/Frames/ml-*

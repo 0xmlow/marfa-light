@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06070C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Marfa Light Frame</title>
+<meta name="description" content="Run a Marfa Light clock full-screen on a TV or spare screen. It keeps real time, all day, every day.">
+<link rel="canonical" href="https://marfalight.art/frame/">
+<meta property="og:title" content="Marfa Light Frame">
+<meta property="og:description" content="Your Marfa Light clock, full-screen on the wall, keeping real time.">
+<meta property="og:image" content="https://marfalight.art/img/film-poster.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="frame.css?v=1">
+</head>
+<body>
+<canvas id="c" aria-label="Marfa Light clock"></canvas>
+
+<!-- the picker: shown when no token is chosen -->
+<section id="pick" hidden>
+  <div class="card">
+    <img src="../img/logo_white.png" alt="MLOW" width="260" height="65" class="logo">
+    <h1>Marfa Light Frame</h1>
+    <p class="lede">Put any Marfa Light clock on a TV or spare screen. It keeps real time, all day.</p>
+    <form id="pickForm" autocomplete="off">
+      <label for="pickId">Token number</label>
+      <div class="row">
+        <button type="button" class="step" data-step="-1" aria-label="Previous token">&minus;</button>
+        <input id="pickId" type="number" inputmode="numeric" min="0" max="110" value="0">
+        <button type="button" class="step" data-step="1" aria-label="Next token">+</button>
+      </div>
+      <fieldset>
+        <legend>Time</legend>
+        <label><input type="radio" name="tz" value="marfa" checked> Marfa time</label>
+        <label><input type="radio" name="tz" value="local"> My time</label>
+      </fieldset>
+      <button type="submit" class="go">Start the clock</button>
+    </form>
+    <p class="hint">On a TV remote: arrows change the token, OK starts it. On the frame: left and right change token, up and down change view, OK shows the label.</p>
+    <p class="hint">Bookmark the address once it starts, e.g. <code>marfalight.art/frame/?id=14</code></p>
+  </div>
+</section>
+
+<!-- the label, shown for a few seconds at start and on any key -->
+<aside id="hud" aria-live="polite">
+  <div class="hud-l">
+    <span class="num" id="hudNum">#0</span>
+    <span class="name" id="hudName">Marfa Light</span>
+  </div>
+  <div class="hud-r">
+    <span class="time" id="hudTime">--:--</span>
+    <span class="zone" id="hudZone">Marfa time</span>
+  </div>
+</aside>
+
+<div id="msg" hidden></div>
+
+<script type="module" src="frame.js?v=1"></script>
+</body>
+</html>
