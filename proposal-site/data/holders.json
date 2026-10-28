@@ -1,11 +1,11 @@
 {
- "updated": "2026-10-28T05:20:26.001Z",
+ "updated": "2026-10-28T05:29:02.055Z",
  "chainId": 1,
  "token": "0x4504570d25b710942BeE78b7Ff5720950c1FC02D",
  "minter": "0xfb5C61274a3A7dA83CcDD88DdEC914438244E2c9",
- "supply": 78,
+ "supply": 83,
  "max": 111,
- "available": 33,
+ "available": 28,
  "sale": {
   "price": "69000000000000000",
   "allocation": 97,
@@ -557,6 +557,41 @@
    "clock": "Noon Cannon",
    "place": "Observatory Ridge",
    "rendered": true
+  },
+  {
+   "id": 78,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Scoreboard",
+   "place": "Adobe Courtyard",
+   "rendered": true
+  },
+  {
+   "id": 79,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Candle Clock",
+   "place": "Artillery Shed",
+   "rendered": true
+  },
+  {
+   "id": 80,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Orbital",
+   "place": "Rodeo Arena",
+   "rendered": true
+  },
+  {
+   "id": 81,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Horizontal Sundial",
+   "place": "Aerostat Field",
+   "rendered": true
+  },
+  {
+   "id": 82,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Pumpjack",
+   "place": "Railroad Depot",
+   "rendered": true
   }
  ],
  "holders": [
@@ -583,9 +618,14 @@
     72,
     73,
     74,
-    75
+    75,
+    78,
+    79,
+    80,
+    81,
+    82
    ],
-   "count": 21,
+   "count": 26,
    "name": "MLow",
    "x": "degens",
    "ens": "mlow.eth",
