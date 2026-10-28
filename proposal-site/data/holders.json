@@ -1,11 +1,11 @@
 {
- "updated": "2026-10-28T20:19:04.960Z",
+ "updated": "2026-10-28T20:45:00.090Z",
  "chainId": 1,
  "token": "0x4504570d25b710942BeE78b7Ff5720950c1FC02D",
  "minter": "0xfb5C61274a3A7dA83CcDD88DdEC914438244E2c9",
- "supply": 84,
+ "supply": 94,
  "max": 111,
- "available": 27,
+ "available": 17,
  "sale": {
   "price": "69000000000000000",
   "allocation": 97,
@@ -599,6 +599,76 @@
    "clock": "Concourse Clock",
    "place": "Mesa Rim",
    "rendered": true
+  },
+  {
+   "id": 84,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Wall Dial",
+   "place": "Mesa Rim",
+   "rendered": true
+  },
+  {
+   "id": 85,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Pumpjack",
+   "place": "Chinati Field",
+   "rendered": true
+  },
+  {
+   "id": 86,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Motel Sign",
+   "place": "Highway 90",
+   "rendered": true
+  },
+  {
+   "id": 87,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Hourglass",
+   "place": "Highway 90",
+   "rendered": true
+  },
+  {
+   "id": 88,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Water Clock",
+   "place": "Ghost Town",
+   "rendered": true
+  },
+  {
+   "id": 89,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Windmill Clock",
+   "place": "Rodeo Arena",
+   "rendered": true
+  },
+  {
+   "id": 90,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Kinetic Pin Field",
+   "place": "Salt Playa",
+   "rendered": true
+  },
+  {
+   "id": 91,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Water Clock",
+   "place": "Highland Avenue",
+   "rendered": true
+  },
+  {
+   "id": 92,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Station Clock",
+   "place": "Arroyo",
+   "rendered": true
+  },
+  {
+   "id": 93,
+   "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
+   "clock": "Analemmatic Sundial",
+   "place": "Rodeo Arena",
+   "rendered": true
   }
  ],
  "holders": [
@@ -630,9 +700,19 @@
     79,
     80,
     81,
-    82
+    82,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93
    ],
-   "count": 26,
+   "count": 36,
    "name": "MLow",
    "x": "degens",
    "ens": "mlow.eth",
