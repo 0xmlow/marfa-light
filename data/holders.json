@@ -1,11 +1,11 @@
 {
- "updated": "2026-10-28T12:36:33.367Z",
+ "updated": "2026-10-28T12:45:34.396Z",
  "chainId": 1,
  "token": "0x4504570d25b710942BeE78b7Ff5720950c1FC02D",
  "minter": "0xfb5C61274a3A7dA83CcDD88DdEC914438244E2c9",
- "supply": 83,
+ "supply": 84,
  "max": 111,
- "available": 28,
+ "available": 27,
  "sale": {
   "price": "69000000000000000",
   "allocation": 97,
@@ -591,6 +591,13 @@
    "owner": "0xa8357ee17cb3ff5a6b9694ddc8fde0ed2ce9d788",
    "clock": "Pumpjack",
    "place": "Railroad Depot",
+   "rendered": true
+  },
+  {
+   "id": 83,
+   "owner": "0xaf785066250a0614a3154fa12ab9b2347d97f6b8",
+   "clock": "Concourse Clock",
+   "place": "Mesa Rim",
    "rendered": true
   }
  ],
@@ -1555,6 +1562,19 @@
    "name": "natealex.eth",
    "x": "",
    "ens": "natealex.eth",
+   "artist": false,
+   "honorary": null,
+   "avatar": ""
+  },
+  {
+   "address": "0xaf785066250a0614a3154fa12ab9b2347d97f6b8",
+   "ids": [
+    83
+   ],
+   "count": 1,
+   "name": "dorkian.eth",
+   "x": "",
+   "ens": "dorkian.eth",
    "artist": false,
    "honorary": null,
    "avatar": ""
