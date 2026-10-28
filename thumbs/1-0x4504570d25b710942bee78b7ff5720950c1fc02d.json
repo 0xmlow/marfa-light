@@ -14026,5 +14026,883 @@
    "trait_type": "Egg Count",
    "value": 5
   }
+ ],
+ "78": [
+  {
+   "trait_type": "Clock",
+   "value": "Scoreboard"
+  },
+  {
+   "trait_type": "Home",
+   "value": "PRONGHORNS"
+  },
+  {
+   "trait_type": "Paint",
+   "value": "Forest Green"
+  },
+  {
+   "trait_type": "Bulbs",
+   "value": "Amber"
+  },
+  {
+   "trait_type": "Keeps Time By",
+   "value": "Bulbs"
+  },
+  {
+   "trait_type": "Place",
+   "value": "Adobe Courtyard"
+  },
+  {
+   "trait_type": "Material",
+   "value": "Ink Black"
+  },
+  {
+   "trait_type": "Sky",
+   "value": "Clear"
+  },
+  {
+   "trait_type": "Wind",
+   "value": "Calm"
+  },
+  {
+   "trait_type": "Film",
+   "value": "Tri-X"
+  },
+  {
+   "trait_type": "Tag",
+   "value": "\"WAIT\""
+  },
+  {
+   "trait_type": "Lens",
+   "value": "35mm"
+  },
+  {
+   "trait_type": "Framing",
+   "value": "Right Third"
+  },
+  {
+   "trait_type": "Condition",
+   "value": "Weathered"
+  },
+  {
+   "trait_type": "Ground Bloom",
+   "value": "None"
+  },
+  {
+   "trait_type": "Visitors",
+   "value": "Empty"
+  },
+  {
+   "trait_type": "Light Work",
+   "value": "None"
+  },
+  {
+   "trait_type": "Birds",
+   "value": "None"
+  },
+  {
+   "trait_type": "Sky Event",
+   "value": "Contrail"
+  },
+  {
+   "trait_type": "Anomaly",
+   "value": "None"
+  },
+  {
+   "trait_type": "Alignment",
+   "value": "Summer Solstice Sunset, JUN 21 19:55"
+  },
+  {
+   "trait_type": "Alignment Gate",
+   "value": "Oculus"
+  },
+  {
+   "trait_type": "Ground Work",
+   "value": "None"
+  },
+  {
+   "trait_type": "Palette",
+   "value": "Marfa"
+  },
+  {
+   "trait_type": "Label Tie",
+   "value": "Safety Orange"
+  },
+  {
+   "trait_type": "Pigment Palette",
+   "value": "Marfa"
+  },
+  {
+   "trait_type": "Pigment Source",
+   "value": "Token palette"
+  },
+  {
+   "trait_type": "Landscape Score",
+   "value": "Peg Constellation"
+  },
+  {
+   "trait_type": "Score Reference",
+   "value": "Ringers / Dmitri Cherniak"
+  },
+  {
+   "trait_type": "Score Density",
+   "value": "Spare"
+  },
+  {
+   "trait_type": "Score Scale",
+   "value": "Expansive"
+  },
+  {
+   "trait_type": "Score Composition",
+   "value": "Solar Axis"
+  },
+  {
+   "trait_type": "Pigment Rhythm",
+   "value": "Grouped"
+  },
+  {
+   "trait_type": "Clock Accent",
+   "value": "Tidal Bands"
+  },
+  {
+   "trait_type": "Accent Finish",
+   "value": "Chalk Wash"
+  },
+  {
+   "trait_type": "Atmospheric Depth",
+   "value": "Blue Distance"
+  },
+  {
+   "trait_type": "Mineral Cut",
+   "value": "Cross Bedding"
+  },
+  {
+   "trait_type": "Surface Grain",
+   "value": "Coarse"
+  },
+  {
+   "trait_type": "Alignment Register",
+   "value": "Concentric Register"
+  },
+  {
+   "trait_type": "Alignment Approach",
+   "value": "Twelve minute stations"
+  },
+  {
+   "trait_type": "Easter Eggs",
+   "value": "Calcified Taxi · Pronghorn · New Yorker"
+  },
+  {
+   "trait_type": "Egg Count",
+   "value": 3
+  }
+ ],
+ "79": [
+  {
+   "trait_type": "Clock",
+   "value": "Candle Clock"
+  },
+  {
+   "trait_type": "Stand",
+   "value": "Ring"
+  },
+  {
+   "trait_type": "Wax",
+   "value": "Oxblood"
+  },
+  {
+   "trait_type": "Marks",
+   "value": "Quarters"
+  },
+  {
+   "trait_type": "Keeps Time By",
+   "value": "Fire"
+  },
+  {
+   "trait_type": "Place",
+   "value": "Artillery Shed"
+  },
+  {
+   "trait_type": "Material",
+   "value": "Ink Black"
+  },
+  {
+   "trait_type": "Sky",
+   "value": "Clear"
+  },
+  {
+   "trait_type": "Wind",
+   "value": "Breeze"
+  },
+  {
+   "trait_type": "Film",
+   "value": "Clean"
+  },
+  {
+   "trait_type": "Tag",
+   "value": "\"SHADOW\""
+  },
+  {
+   "trait_type": "Lens",
+   "value": "50mm"
+  },
+  {
+   "trait_type": "Framing",
+   "value": "Right Third"
+  },
+  {
+   "trait_type": "Condition",
+   "value": "Pristine"
+  },
+  {
+   "trait_type": "Ground Bloom",
+   "value": "None"
+  },
+  {
+   "trait_type": "Visitors",
+   "value": "Empty"
+  },
+  {
+   "trait_type": "Light Work",
+   "value": "None"
+  },
+  {
+   "trait_type": "Birds",
+   "value": "Swallows"
+  },
+  {
+   "trait_type": "Sky Event",
+   "value": "None"
+  },
+  {
+   "trait_type": "Anomaly",
+   "value": "Gilded"
+  },
+  {
+   "trait_type": "Alignment",
+   "value": "Winter Solstice Sunset, DEC 21 16:46"
+  },
+  {
+   "trait_type": "Alignment Gate",
+   "value": "None"
+  },
+  {
+   "trait_type": "Ground Work",
+   "value": "None"
+  },
+  {
+   "trait_type": "Palette",
+   "value": "Marfa Sunset"
+  },
+  {
+   "trait_type": "Palette Source",
+   "value": "Friendship Bracelets, Alexis André"
+  },
+  {
+   "trait_type": "Label Tie",
+   "value": "Woven, Marfa Sunset"
+  },
+  {
+   "trait_type": "Pigment Palette",
+   "value": "Marfa Sunset"
+  },
+  {
+   "trait_type": "Pigment Source",
+   "value": "Token palette"
+  },
+  {
+   "trait_type": "Landscape Score",
+   "value": "Chromie Trace"
+  },
+  {
+   "trait_type": "Score Reference",
+   "value": "Chromie Squiggle / Snowfro"
+  },
+  {
+   "trait_type": "Score Density",
+   "value": "Measured"
+  },
+  {
+   "trait_type": "Score Scale",
+   "value": "Interior"
+  },
+  {
+   "trait_type": "Score Composition",
+   "value": "Open Arc"
+  },
+  {
+   "trait_type": "Pigment Rhythm",
+   "value": "Single Accent"
+  },
+  {
+   "trait_type": "Clock Accent",
+   "value": "Basal Band"
+  },
+  {
+   "trait_type": "Accent Finish",
+   "value": "Chalk Wash"
+  },
+  {
+   "trait_type": "Atmospheric Depth",
+   "value": "High Desert"
+  },
+  {
+   "trait_type": "Mineral Cut",
+   "value": "Long Vein"
+  },
+  {
+   "trait_type": "Surface Grain",
+   "value": "Fine"
+  },
+  {
+   "trait_type": "Tie Weave",
+   "value": "Three Strand"
+  },
+  {
+   "trait_type": "Easter Eggs",
+   "value": "fLOWers Billboard · Eroded Eye · Chromie Squiggle · Marfa Blimp · Bodega Cat"
+  },
+  {
+   "trait_type": "Egg Count",
+   "value": 5
+  },
+  {
+   "trait_type": "Chromie Squiggle",
+   "value": "#95"
+  },
+  {
+   "trait_type": "Squiggle Type",
+   "value": "Normal"
+  },
+  {
+   "trait_type": "Squiggle Spectrum",
+   "value": "HyperRainbow"
+  }
+ ],
+ "80": [
+  {
+   "trait_type": "Clock",
+   "value": "Orbital"
+  },
+  {
+   "trait_type": "Core",
+   "value": "Evil Eye"
+  },
+  {
+   "trait_type": "Rings",
+   "value": "Graduated"
+  },
+  {
+   "trait_type": "Moons",
+   "value": "One"
+  },
+  {
+   "trait_type": "Keeps Time By",
+   "value": "Orbit"
+  },
+  {
+   "trait_type": "Place",
+   "value": "Rodeo Arena"
+  },
+  {
+   "trait_type": "Material",
+   "value": "Mill Aluminum"
+  },
+  {
+   "trait_type": "Sky",
+   "value": "Dust"
+  },
+  {
+   "trait_type": "Wind",
+   "value": "Calm"
+  },
+  {
+   "trait_type": "Film",
+   "value": "Polaroid"
+  },
+  {
+   "trait_type": "Tag",
+   "value": "\"TIME\""
+  },
+  {
+   "trait_type": "Lens",
+   "value": "35mm"
+  },
+  {
+   "trait_type": "Framing",
+   "value": "Centered"
+  },
+  {
+   "trait_type": "Condition",
+   "value": "Dusted"
+  },
+  {
+   "trait_type": "Ground Bloom",
+   "value": "Mixed Wildflowers"
+  },
+  {
+   "trait_type": "Visitors",
+   "value": "Empty"
+  },
+  {
+   "trait_type": "Light Work",
+   "value": "Searchlight"
+  },
+  {
+   "trait_type": "Birds",
+   "value": "None"
+  },
+  {
+   "trait_type": "Sky Event",
+   "value": "Contrail"
+  },
+  {
+   "trait_type": "Anomaly",
+   "value": "None"
+  },
+  {
+   "trait_type": "Alignment",
+   "value": "Residency Day Sunrise, APR 3 08:25"
+  },
+  {
+   "trait_type": "Alignment Gate",
+   "value": "None"
+  },
+  {
+   "trait_type": "Ground Work",
+   "value": "Stone Line"
+  },
+  {
+   "trait_type": "Palette",
+   "value": "Marfa"
+  },
+  {
+   "trait_type": "Label Tie",
+   "value": "Safety Orange"
+  },
+  {
+   "trait_type": "Pigment Palette",
+   "value": "Marfa"
+  },
+  {
+   "trait_type": "Pigment Source",
+   "value": "Token palette"
+  },
+  {
+   "trait_type": "Landscape Score",
+   "value": "Flow Ribbons"
+  },
+  {
+   "trait_type": "Score Reference",
+   "value": "Fidenza / Tyler Hobbs"
+  },
+  {
+   "trait_type": "Score Density",
+   "value": "Spare"
+  },
+  {
+   "trait_type": "Score Scale",
+   "value": "Field"
+  },
+  {
+   "trait_type": "Score Composition",
+   "value": "Open Arc"
+  },
+  {
+   "trait_type": "Pigment Rhythm",
+   "value": "Single Accent"
+  },
+  {
+   "trait_type": "Clock Accent",
+   "value": "Vertical Seams"
+  },
+  {
+   "trait_type": "Accent Finish",
+   "value": "Satin Enamel"
+  },
+  {
+   "trait_type": "Atmospheric Depth",
+   "value": "Copper Veil"
+  },
+  {
+   "trait_type": "Mineral Cut",
+   "value": "Close Grain"
+  },
+  {
+   "trait_type": "Surface Grain",
+   "value": "Coarse"
+  },
+  {
+   "trait_type": "Archetype Reference",
+   "value": "#29"
+  },
+  {
+   "trait_type": "Fidenza Reference",
+   "value": "#32"
+  },
+  {
+   "trait_type": "Easter Eggs",
+   "value": "Archetype Stack · Chromie Squiggle · Waiting Room · Fidenza Mural · Commute Sign"
+  },
+  {
+   "trait_type": "Egg Count",
+   "value": 5
+  },
+  {
+   "trait_type": "Chromie Squiggle",
+   "value": "#7"
+  },
+  {
+   "trait_type": "Squiggle Type",
+   "value": "Fuzzy"
+  }
+ ],
+ "81": [
+  {
+   "trait_type": "Clock",
+   "value": "Horizontal Sundial"
+  },
+  {
+   "trait_type": "Gnomon",
+   "value": "Solid"
+  },
+  {
+   "trait_type": "Plinth",
+   "value": "Round"
+  },
+  {
+   "trait_type": "Motto",
+   "value": "I COUNT ONLY THE SUNNY HOURS"
+  },
+  {
+   "trait_type": "Noon Mark",
+   "value": "None"
+  },
+  {
+   "trait_type": "Keeps Time By",
+   "value": "Shadow"
+  },
+  {
+   "trait_type": "Place",
+   "value": "Aerostat Field"
+  },
+  {
+   "trait_type": "Material",
+   "value": "Obsidian"
+  },
+  {
+   "trait_type": "Sky",
+   "value": "Clear"
+  },
+  {
+   "trait_type": "Wind",
+   "value": "Gusty"
+  },
+  {
+   "trait_type": "Film",
+   "value": "Ektachrome"
+  },
+  {
+   "trait_type": "Tag",
+   "value": "\"NOW\""
+  },
+  {
+   "trait_type": "Lens",
+   "value": "35mm"
+  },
+  {
+   "trait_type": "Framing",
+   "value": "Centered"
+  },
+  {
+   "trait_type": "Condition",
+   "value": "Pristine"
+  },
+  {
+   "trait_type": "Ground Bloom",
+   "value": "Mixed Wildflowers"
+  },
+  {
+   "trait_type": "Visitors",
+   "value": "Empty"
+  },
+  {
+   "trait_type": "Light Work",
+   "value": "Fluorescent Barrier"
+  },
+  {
+   "trait_type": "Birds",
+   "value": "Sandhill Cranes"
+  },
+  {
+   "trait_type": "Sky Event",
+   "value": "None"
+  },
+  {
+   "trait_type": "Anomaly",
+   "value": "None"
+  },
+  {
+   "trait_type": "Alignment",
+   "value": "Winter Solstice Sunrise, DEC 21 08:30"
+  },
+  {
+   "trait_type": "Alignment Gate",
+   "value": "None"
+  },
+  {
+   "trait_type": "Ground Work",
+   "value": "Stone Line"
+  },
+  {
+   "trait_type": "Palette",
+   "value": "Marfa"
+  },
+  {
+   "trait_type": "Barrier Form",
+   "value": "Straight"
+  },
+  {
+   "trait_type": "Label Tie",
+   "value": "Safety Orange"
+  },
+  {
+   "trait_type": "Pigment Palette",
+   "value": "Marfa"
+  },
+  {
+   "trait_type": "Pigment Source",
+   "value": "Token palette"
+  },
+  {
+   "trait_type": "Landscape Score",
+   "value": "Chromie Trace"
+  },
+  {
+   "trait_type": "Score Reference",
+   "value": "Chromie Squiggle / Snowfro"
+  },
+  {
+   "trait_type": "Score Density",
+   "value": "Abundant"
+  },
+  {
+   "trait_type": "Score Scale",
+   "value": "Field"
+  },
+  {
+   "trait_type": "Score Composition",
+   "value": "Open Arc"
+  },
+  {
+   "trait_type": "Pigment Rhythm",
+   "value": "Grouped"
+  },
+  {
+   "trait_type": "Clock Accent",
+   "value": "Contour Paint"
+  },
+  {
+   "trait_type": "Accent Finish",
+   "value": "Satin Enamel"
+  },
+  {
+   "trait_type": "Atmospheric Depth",
+   "value": "High Desert"
+  },
+  {
+   "trait_type": "Mineral Cut",
+   "value": "Long Vein"
+  },
+  {
+   "trait_type": "Surface Grain",
+   "value": "Fine"
+  },
+  {
+   "trait_type": "Easter Eggs",
+   "value": "On Air · Evil Eye · Dossier Cabinet"
+  },
+  {
+   "trait_type": "Egg Count",
+   "value": 3
+  }
+ ],
+ "82": [
+  {
+   "trait_type": "Clock",
+   "value": "Pumpjack"
+  },
+  {
+   "trait_type": "Paint",
+   "value": "Faded Blue"
+  },
+  {
+   "trait_type": "Counter",
+   "value": "Brass Wheels"
+  },
+  {
+   "trait_type": "Lease",
+   "value": "HIGH LONESOME No. 3"
+  },
+  {
+   "trait_type": "Keeps Time By",
+   "value": "Strokes"
+  },
+  {
+   "trait_type": "Place",
+   "value": "Railroad Depot"
+  },
+  {
+   "trait_type": "Material",
+   "value": "Ink Black"
+  },
+  {
+   "trait_type": "Sky",
+   "value": "Clear"
+  },
+  {
+   "trait_type": "Wind",
+   "value": "Calm"
+  },
+  {
+   "trait_type": "Film",
+   "value": "Clean"
+  },
+  {
+   "trait_type": "Tag",
+   "value": "\"MARFA\""
+  },
+  {
+   "trait_type": "Lens",
+   "value": "35mm"
+  },
+  {
+   "trait_type": "Framing",
+   "value": "Centered"
+  },
+  {
+   "trait_type": "Condition",
+   "value": "Calcified"
+  },
+  {
+   "trait_type": "Ground Bloom",
+   "value": "None"
+  },
+  {
+   "trait_type": "Visitors",
+   "value": "Empty"
+  },
+  {
+   "trait_type": "Light Work",
+   "value": "Fluorescent Barrier"
+  },
+  {
+   "trait_type": "Birds",
+   "value": "Swallows"
+  },
+  {
+   "trait_type": "Sky Event",
+   "value": "Meteor Shower"
+  },
+  {
+   "trait_type": "Anomaly",
+   "value": "None"
+  },
+  {
+   "trait_type": "Alignment",
+   "value": "Summer Solstice Sunset, JUN 21 19:59"
+  },
+  {
+   "trait_type": "Alignment Gate",
+   "value": "None"
+  },
+  {
+   "trait_type": "Ground Work",
+   "value": "Stone Circle"
+  },
+  {
+   "trait_type": "Palette",
+   "value": "NimBuds"
+  },
+  {
+   "trait_type": "Palette Source",
+   "value": "NimBuds, Bryan Brinkman"
+  },
+  {
+   "trait_type": "Barrier Form",
+   "value": "Squiggle"
+  },
+  {
+   "trait_type": "Label Tie",
+   "value": "Woven, NimBuds"
+  },
+  {
+   "trait_type": "Pigment Palette",
+   "value": "NimBuds"
+  },
+  {
+   "trait_type": "Pigment Source",
+   "value": "Token palette"
+  },
+  {
+   "trait_type": "Landscape Score",
+   "value": "Contour Isobars"
+  },
+  {
+   "trait_type": "Score Reference",
+   "value": "Meridian / Matt DesLauriers"
+  },
+  {
+   "trait_type": "Score Density",
+   "value": "Measured"
+  },
+  {
+   "trait_type": "Score Scale",
+   "value": "Expansive"
+  },
+  {
+   "trait_type": "Score Composition",
+   "value": "Open Arc"
+  },
+  {
+   "trait_type": "Pigment Rhythm",
+   "value": "Grouped"
+  },
+  {
+   "trait_type": "Clock Accent",
+   "value": "Contour Paint"
+  },
+  {
+   "trait_type": "Accent Finish",
+   "value": "Mineral Inlay"
+  },
+  {
+   "trait_type": "Atmospheric Depth",
+   "value": "High Desert"
+  },
+  {
+   "trait_type": "Mineral Cut",
+   "value": "Cross Bedding"
+  },
+  {
+   "trait_type": "Surface Grain",
+   "value": "Balanced"
+  },
+  {
+   "trait_type": "Tie Weave",
+   "value": "Three Strand"
+  },
+  {
+   "trait_type": "Meridian Reference",
+   "value": "#11"
+  },
+  {
+   "trait_type": "Easter Eggs",
+   "value": "Pronghorn · Now Serving 317 · Meridian Painting · Calcified Taxi"
+  },
+  {
+   "trait_type": "Egg Count",
+   "value": 4
+  }
  ]
 }
