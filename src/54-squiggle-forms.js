@@ -1,6 +1,6 @@
   // =====================================================================
   // SQUIGGLE FORMS, the woven tie, painted bloom, skywriting
-  // Ideas taken from the works this series honours, with permission, and
+  // Ideas taken from the works this series honours, in homage, and
   // made into Marfa things:
   //   Barrier Form  Squiggle types for the fluorescent barrier. Straight is
   //                 Flavin's row. Squiggle lays the row on a real Squiggle's

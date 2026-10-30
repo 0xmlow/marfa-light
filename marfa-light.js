@@ -14095,8 +14095,8 @@
 
   // =====================================================================
   // ART BLOCKS EXHIBITS
-  // Two works run their artists' own algorithms inside the token, with the
-  // artists' written permission, each on a real minted token from its hash:
+  // Two works run their artists' own algorithms inside the token, in homage,
+  // each on a real minted token from its hash:
   //   Chromie Squiggle (Snowfro, 2020): the p5.js script ported line for line
   //     to a 2D canvas. Same maths, same order, same xorshift. Click the
   //     screen to set it looping, as the original does.
@@ -14107,26 +14107,27 @@
   // hashRng(hash, 710) and hashRng(hash, 711).
   // =====================================================================
 
-  // [token id, hash, Type, Spectrum], from Art Blocks token metadata
+  // [token id, hash, Type, Spectrum], from Art Blocks token metadata. All held by
+  // Snowfro himself, so no collector's Squiggle is shown without asking
   var SQG_TOKENS = [
     [0, "0x722899b10c66da3b72fb60a8e71df442ee1c004547ba2227d76bed357469b4ea", "Normal", "Normal"],
     [1, "0xabb38907c20339f8b5e6c62d9f653550f717b56ddad8a1f888bb4129e84ac725", "Normal", "Normal"],
-    [2, "0x7e103907920e51c32cf298f550e8f0dbd65f98073ef8af5c378021758daf43ed", "Normal", "Normal"],
-    [5, "0x7eff1723ccf67ef9d2aa3156980f57f03b73a8b19721b52db3c74b60a26a2e1f", "Slinky", "Normal"],
-    [7, "0x3c17af010c7af574f5dab0f449e3e360212d9bc9521e16709aff20a8b0fb44ba", "Fuzzy", "Normal"],
-    [8, "0x9b5f9ee14c2d7971b4303528ed6b700cc66007d271e69ce40b3e8549f6d3e00d", "Slinky", "Normal"],
-    [10, "0x86278fc72cd40995d59932bdd470626d14d3522edf2dd0191d186b815587fc3e", "Ribbed", "Normal"],
-    [17, "0xfb1ad3d1a431cb3dd5c38965ffce564445af0662db39205d1f88a08eadc5e821", "Slinky", "Normal"],
-    [19, "0xbfb9fddbea859bcd07023ba37da8052679c7a8b0d87edfda1de561823a5e617b", "Ribbed", "Normal"],
-    [20, "0xd899e79f25e989ed51fe27c0db473e1fadcae13fb7543b0586f2a6cf5284f7f5", "Bold", "Normal"],
-    [22, "0x76c1896e152f4269e8c3ebd118e63fae95450a4c4b2c1f3e5b6c8678d7785d48", "Fuzzy", "Normal"],
-    [37, "0x0112b89e189dfa6acc89ef08bf741ca1babbde940f83b501f6b3648b19fa45ea", "Bold", "Normal"],
-    [40, "0x2c1ac2a13b55e20e371f3c5dfa2659db23ac916186c01fdae89d33ba90ac9f92", "Fuzzy", "Normal"],
-    [66, "0x77ffd5d55c8643b873597e7ca98bba9afdda1c714162bc33343ce197397723b3", "Normal", "Full Spectrum"],
-    [74, "0x99c16472173f7bc710f371d81cced716f9f9aeec5d791ce3aef24ca81eeba61a", "Pipe", "Normal"],
-    [95, "0x7291dd5da9aaa7857f3f250eb204feed3ab2ad691d994b55412c2f84017567ac", "Normal", "HyperRainbow"],
-    [125, "0x4d79769fdc971da364604ab6f21a422262a09a3795cf0a8e9de78001a0d93300", "Pipe", "Normal"],
-    [368, "0x01ed56951a4b3c099de1756180d7e66e908ef18f89a6f4a00bd34c1f267694ad", "Ribbed", "Perfect Spectrum"]
+    [233, "0xe36fe19ba3e5382b31e7e31d55531fb5cf69073c4eec6488539d90ef908139de", "Normal", "Normal"],
+    [248, "0x3f37cd27626137da2534d3d6a9fd5b25140495b3a16e47e8af1211cfccdd1819", "Slinky", "Normal"],
+    [886, "0x0c85a076beb2539b80e0ebb4dc2f71761b7da3d1067e12730f8e593df708b383", "Fuzzy", "Normal"],
+    [1650, "0x0392a50ef3702418ae71bc4e75df8e8960086894eb4f33e283aff8048e002c17", "Slinky", "Normal"],
+    [1427, "0x6f2ccd1986e2d30322e0ec55a81bad5ca5b5af3ff56cf28d14cbab8bbc2ec396", "Ribbed", "Normal"],
+    [1982, "0x855a346dcd965c2b0629e754caba52c15ae6e8145d75f50c05b4521cc2fc3b1b", "Slinky", "Normal"],
+    [1428, "0x021727716a87a67f56af423a43d85b9a31efe7ee89f32e461da6f0a165e1ba36", "Ribbed", "Normal"],
+    [1871, "0x260b95fb9af2909beb8af188b5e7b5de23a7c36be644e9032d09d0a82438d14b", "Bold", "Normal"],
+    [1326, "0x18a176c18fc96d3dc4ba40286d6573bc7a584d8fe6901c0725f2d6b33edb9095", "Fuzzy", "Normal"],
+    [2976, "0xf63409c8ff00d616ac165b3b648007ddf9613ac2457b480235880d474d95dadb", "Bold", "Normal"],
+    [1430, "0x9c99677220004334454f7de8fa141e23ba4d2030cc4f08d23b5644cc7fe977d7", "Fuzzy", "Normal"],
+    [3593, "0x2e4f6fdc8291a4ad9bbecb0b1fc6ca01182d7749517e5be08e08ccf63438d9d9", "Normal", "Full Spectrum"],
+    [2990, "0xac26cb2d501c2244613fab7d05946f86337a0bbf9af90e1835cd4ba4cfd6e207", "Pipe", "Normal"],
+    [804, "0x0c8e101950dca74e5fca3782c830671b26e6b992f8c13e9eb3fe7ca80055075f", "Normal", "HyperRainbow"],
+    [3978, "0xb16ebe6df244eb30efd43418487e8b43d1210489bbe503238c170a9fdfb3a510", "Pipe", "Normal"],
+    [5618, "0x44cfb1ad637e92da77f77425730f1b0bfefc44abc253789220e1459725642cdd", "Normal", "Perfect Spectrum"]
   ];
   // [token id, hash, Palette, Fill, View]; the Marfa Sunset bracelets weigh triple
   var BRC_TOKENS = [
@@ -14314,13 +14315,13 @@
   }
 
   if (EGG_DEFS['Chromie Squiggle']) {
-    EGG_DEFS['Chromie Squiggle'].line = 'Chromie Squiggle by Snowfro, Art Blocks project zero, drawn by his own algorithm with his permission.';
+    EGG_DEFS['Chromie Squiggle'].line = 'Chromie Squiggle by Snowfro, Art Blocks project zero, drawn by his own algorithm, in homage.';
     EGG_DEFS['Chromie Squiggle'].build = function (W) {
       var tok = sqgPick(W.P.hash), S = sqgState(tok.hash);
       var cv = root.document.createElement('canvas'); cv.width = 1200; cv.height = 800;
       var g2 = cv.getContext('2d'); sqgDraw(g2, cv.width, cv.height, S);
       var tex = new THREE.CanvasTexture(cv); tex.encoding = THREE.sRGBEncoding; tex.anisotropy = 4;
-      var E = exh_screen(W, 4.8, 3.2, 2.75, tex, ['CHROMIE SQUIGGLE #' + tok.id, 'SNOWFRO  ·  ' + tok.type.toUpperCase() + (tok.spectrum !== 'Normal' ? '  ·  ' + tok.spectrum.toUpperCase() : ''), 'HIS ALGORITHM, WITH PERMISSION']);
+      var E = exh_screen(W, 4.8, 3.2, 2.75, tex, ['CHROMIE SQUIGGLE #' + tok.id, 'SNOWFRO  ·  ' + tok.type.toUpperCase() + (tok.spectrum !== 'Normal' ? '  ·  ' + tok.spectrum.toUpperCase() : ''), 'HIS ALGORITHM, IN HOMAGE']);
       if (!exh_place(W, E.g, 3.2)) return;
       var acc = 0;
       E.g.userData.onClick = E.screen.userData.onClick = function () { S.loops = !S.loops; };
@@ -14330,16 +14331,16 @@
         if (acc < 1 / 30) return;
         sqgDraw(g2, cv.width, cv.height, S); S.index += S.speed * (acc * 60 - 1); acc = 0; tex.needsUpdate = true;
       });
-      W.pick(E.g, 'Chromie Squiggle #' + tok.id, 'Snowfro, 2020. Art Blocks project zero. A ' + tok.type.toLowerCase() + ' Squiggle, drawn by the original algorithm from token #' + tok.id + '’s own hash, with the artist’s permission. Click the screen to set it looping.');
+      W.pick(E.g, 'Chromie Squiggle #' + tok.id, 'Snowfro, 2020. Art Blocks project zero. A ' + tok.type.toLowerCase() + ' Squiggle, drawn by the original algorithm from token #' + tok.id + '’s own hash, in homage. Click the screen to set it looping.');
     };
   }
   if (EGG_DEFS['Friendship Bracelets']) {
-    EGG_DEFS['Friendship Bracelets'].line = 'Friendship Bracelets by Alexis André, run from his onchain script with his permission.';
+    EGG_DEFS['Friendship Bracelets'].line = 'Friendship Bracelets by Alexis André, run from his onchain script, in homage.';
     EGG_DEFS['Friendship Bracelets'].build = function (W) {
       var tok = brcPick(W.P.hash), run;
       try { run = brcRun(tok, 900); for (var i = 0; i < 4; i++) run.step(i * 33); } catch (e) { if (root.console) console.warn('friendship bracelets', e); return; }
       var tex = new THREE.CanvasTexture(run.canvas); tex.encoding = THREE.sRGBEncoding;
-      var E = exh_screen(W, 2.6, 2.6, 2.1, tex, ['FRIENDSHIP BRACELETS #' + tok.id, 'ALEXIS ANDRÉ  ·  ' + tok.palette.toUpperCase(), 'HIS SCRIPT, WITH PERMISSION']);
+      var E = exh_screen(W, 2.6, 2.6, 2.1, tex, ['FRIENDSHIP BRACELETS #' + tok.id, 'ALEXIS ANDRÉ  ·  ' + tok.palette.toUpperCase(), 'HIS SCRIPT, IN HOMAGE']);
       if (!exh_place(W, E.g, 2.4)) { run.dispose(); return; }
       var acc = 0, t = 132;
       E.g.userData.onClick = E.screen.userData.onClick = function () { run.click(); };
@@ -14348,7 +14349,7 @@
         t += acc * 1000; acc = 0; run.step(t); tex.needsUpdate = true;
       });
       (W.disposers = W.disposers || []).push(run.dispose);
-      W.pick(E.g, 'Friendship Bracelets #' + tok.id, 'Alexis André, 2022. Palette: ' + tok.palette + '. Token #' + tok.id + ', run from the artist’s own onchain script with his permission. Click the screen for the tying instructions.');
+      W.pick(E.g, 'Friendship Bracelets #' + tok.id, 'Alexis André, 2022. Palette: ' + tok.palette + '. Token #' + tok.id + ', run from the artist’s own onchain script, in homage. Click the screen for the tying instructions.');
     };
   }
 
@@ -14638,7 +14639,7 @@
   // =====================================================================
   // BORROWED PALETTES
   // Most tokens keep Marfa's own colours. The rest borrow a palette from a
-  // collection this work honours, with the artists' permission, and use it
+  // collection this work honours, in homage, and use it
   // for the light and the people in the scene: the fluorescent barrier and
   // its spill, the visitors' clothes, the luminaria bags, the courts' inlays.
   // The sky, the stone and the clock keep their own colours.
@@ -14697,7 +14698,7 @@
 
   // =====================================================================
   // SQUIGGLE FORMS, the woven tie, painted bloom, skywriting
-  // Ideas taken from the works this series honours, with permission, and
+  // Ideas taken from the works this series honours, in homage, and
   // made into Marfa things:
   //   Barrier Form  Squiggle types for the fluorescent barrier. Straight is
   //                 Flavin's row. Squiggle lays the row on a real Squiggle's

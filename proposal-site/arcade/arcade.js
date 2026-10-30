@@ -63,7 +63,7 @@
     frame.title = it.name + ', token ' + t.n + ', live';
     frame.src = url;
     $('directPlay').href = url;
-    $('playCredit').textContent = p.permission || "Shown with the artist's permission. Runs the original onchain script through Art Blocks' generator.";
+    $('playCredit').textContent = p.permission || "Runs the original onchain script through Art Blocks' generator.";
     $('playToken').textContent = 'Token #' + t.n + '  ·  ' + (state.idx + 1) + ' of ' + p.tokens.length + (p.chain === 42161 ? '  ·  Arbitrum' : '');
     $('tokLink').href = TOKEN_PAGE + p.chain + '/' + p.contract + '/' + t.id;
     $('tokLink').setAttribute('aria-label', 'View ' + it.name + ' token ' + t.n + ' on Art Blocks (opens in a new tab)');

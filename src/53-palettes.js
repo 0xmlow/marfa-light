@@ -1,7 +1,7 @@
   // =====================================================================
   // BORROWED PALETTES
   // Most tokens keep Marfa's own colours. The rest borrow a palette from a
-  // collection this work honours, with the artists' permission, and use it
+  // collection this work honours, in homage, and use it
   // for the light and the people in the scene: the fluorescent barrier and
   // its spill, the visitors' clothes, the luminaria bags, the courts' inlays.
   // The sky, the stone and the clock keep their own colours.
