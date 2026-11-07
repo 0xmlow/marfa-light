@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T22:19:02.730Z",
+ "updated": "2026-11-07T15:17:59.445Z",
  "chainId": 1,
  "token": "0x4504570d25b710942BeE78b7Ff5720950c1FC02D",
  "minter": "0xfb5C61274a3A7dA83CcDD88DdEC914438244E2c9",
@@ -315,7 +315,7 @@
   },
   {
    "id": 43,
-   "owner": "0x3297a27f6dbad9c2a6ec06998238bf03164ee552",
+   "owner": "0x904fe85cf247c489ebb878f759a0027f73edf804",
    "clock": "Orbital",
    "place": "Adobe Courtyard",
    "rendered": true
@@ -1248,21 +1248,16 @@
    "avatar": ""
   },
   {
-   "address": "0x3297a27f6dbad9c2a6ec06998238bf03164ee552",
+   "address": "0x904fe85cf247c489ebb878f759a0027f73edf804",
    "ids": [
     43
    ],
    "count": 1,
-   "name": "along7",
-   "x": "pengwinpants",
-   "ens": "along7.eth",
+   "name": "",
+   "x": "",
+   "ens": "",
    "artist": false,
-   "honorary": {
-    "id": "along",
-    "title": "Briefcase Full of Dinosaurs",
-    "src": "along-ef082a87s.jpg",
-    "url": "https://n3wyorkers.com/h/along"
-   },
+   "honorary": null,
    "avatar": ""
   },
   {
